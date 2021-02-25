@@ -1,0 +1,24 @@
+.payment {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 85vh;
+  background-color: #f1f1f1;
+}
+.payment h4 {
+  color: #342ead;
+  font-weight: bold;
+  padding: 0.5rem;
+}
+.payment > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.stripCard {
+  display: flex;
+  width: 30vw;
+}

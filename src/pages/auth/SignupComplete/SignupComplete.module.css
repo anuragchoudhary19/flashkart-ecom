@@ -1,0 +1,33 @@
+.signupModal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  left: 40%;
+  top: 30%;
+  background-color: #53c7f0;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.signupModal input {
+  display: inline-block;
+  width: 80%;
+  height: 30px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  margin: 10px !important;
+  color: black;
+}
+.signupModal button {
+  width: 80%;
+  height: 30px;
+  margin: 10px !important;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  background-color: #00a1db;
+  color: #fff !important;
+  border: 1px solid #00a1db;
+}

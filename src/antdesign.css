@@ -1,0 +1,20 @@
+.menu {
+  display: flex;
+  justify-content: space-evenly;
+  background-color: #21209c;
+  color: #f1f1f1;
+  border-bottom: none;
+  justify-content: center;
+}
+.menu .submenu {
+  width: 140px;
+}
+.menu .submenu:hover {
+  background-color: transparent;
+}
+.menu .submenu:hover li > div {
+  color: #21209c;
+}
+.menu .submenu:hover .itemgroup {
+  border: 1px solid red !important;
+}

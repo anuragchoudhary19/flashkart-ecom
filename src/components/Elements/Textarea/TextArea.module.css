@@ -1,0 +1,42 @@
+.textarea {
+  display: inline-block;
+  justify-content: flex-end;
+  flex-direction: column;
+  height: fit-content;
+}
+.textarea > div {
+  display: flex;
+  flex-direction: row;
+}
+.textarea textarea {
+  width: 300px;
+  height: 100px;
+  outline: none;
+  resize: none;
+  border: 1px solid #ccc;
+}
+.textarea textarea:focus {
+  border-color: orange;
+  box-shadow: 0 0 2px 0 orange;
+}
+.textarea textarea:hover {
+  border-color: orange;
+}
+.textarea span {
+  font-size: 12px;
+  color: #c70039;
+}
+.danger input {
+  border: 1px solid #c70039;
+}
+.danger input:focus {
+  border-color: #c70039;
+  box-shadow: 0 0 2px 0 #c70039;
+}
+.danger input:hover {
+  border-color: #c70039;
+}
+.danger span {
+  font-size: 12px;
+  color: #c70039;
+}

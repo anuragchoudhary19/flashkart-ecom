@@ -1,0 +1,32 @@
+.btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem;
+  outline: none;
+  border: none;
+  color: #21209c;
+  min-width: fit-content;
+  background-image: linear-gradient(#ffd66b, #fdb827);
+  transition: all 0.1s;
+}
+.btn:hover {
+  transform: scale(1.05);
+}
+.btn:focus {
+  outline: none;
+}
+.btn_disabled {
+  background-image: none;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  color: #21209c;
+  cursor: not-allowed;
+}
+.btn_disabled:hover {
+  transform: scale(1);
+}
+.btn_disabled:focus {
+  outline: none;
+}

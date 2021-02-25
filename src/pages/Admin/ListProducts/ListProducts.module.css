@@ -1,0 +1,25 @@
+.products {
+  position: relative;
+  display: grid;
+  grid-template-columns: 15% 1fr;
+  height: 100%;
+  min-height: 95vh;
+}
+.workspace {
+  display: flex;
+  flex-direction: column;
+}
+.workspace > div {
+  display: flex;
+  margin: 20px;
+}
+.workspace .list {
+  display: inline-flex;
+  justify-content: left;
+  align-content: flex-start;
+  flex-wrap: wrap;
+}
+.workspace .list > div {
+  display: flex;
+  margin: 20px;
+}

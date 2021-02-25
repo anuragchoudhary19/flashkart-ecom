@@ -1,0 +1,145 @@
+.Admin {
+  position: relative;
+  display: grid;
+  grid-template-columns: 15% 1fr;
+  height: 100%;
+  min-height: 95vh;
+}
+
+.updatePassword input {
+  border-bottom: 1px #ccc solid;
+}
+/* .category {
+  display: flex;
+  flex: 1;
+  height: 3rem;
+  background-color: #ccc;
+  margin: 10px;
+  padding: 10px;
+}
+.category div {
+  position: relative;
+  margin-right: 10px;
+  margin-left: auto;
+} */
+
+.category,
+.subs,
+.product {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.createCategory {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  align-items: center;
+}
+.createSubs {
+  display: grid;
+  grid-template-columns: 20% 50% 20%;
+}
+
+.createCategory > div,
+.createSubs > div {
+  margin: 10px;
+  padding: 10px;
+}
+.createCategory form > div,
+.createSubs form > div {
+  display: flex;
+  justify-content: left;
+  flex-direction: column;
+}
+.createCategory input,
+.createSubs input {
+  width: 400px;
+  height: 2rem;
+  border: 2px solid #eee;
+  outline: none;
+}
+.createCategory button,
+.createSubs button,
+.list > div div button {
+  width: 100px;
+  height: 2rem;
+  background-color: orange;
+  outline: none;
+  border: none;
+  margin: 5px;
+}
+.list > div div a {
+  padding: 6.5px 27.5px 6.5px 27.5px;
+  background-color: orange;
+  outline: none;
+  border: none;
+  text-decoration: none;
+  color: black;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+}
+.list > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #ccc;
+  margin: 10px;
+  padding: 10px;
+}
+.list > div div {
+  margin-right: 20px;
+  margin-left: auto;
+}
+
+.product > div {
+  margin: 20px;
+}
+.product > div > div {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  height: 50px;
+}
+.product > div > form div {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 20px;
+  height: 50px;
+}
+.product label {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin: 20px;
+  height: 50px;
+}
+.product input {
+  width: 400px;
+  height: 2rem;
+  border: 2px solid #eee;
+  outline: none;
+}
+.product > div button {
+  width: 100px;
+  height: 2rem;
+  background-color: orange;
+  outline: none;
+  border: none;
+  margin: 5px;
+}
+.card {
+  position: relative;
+}
+.list {
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  grid-template-rows: 50%;
+  flex-direction: row;
+  background-color: transparent;
+}
+.list > div {
+  margin: 20px;
+}

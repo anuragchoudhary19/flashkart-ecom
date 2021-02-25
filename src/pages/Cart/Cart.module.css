@@ -1,0 +1,171 @@
+.cartPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  background-color: #f1f1f1;
+}
+.cart {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 90%;
+}
+.cart > div:first-child {
+  flex-basis: 50%;
+}
+.cart > div:nth-child(2) {
+  flex-basis: 25%;
+}
+.empty {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 70vh;
+}
+.table,
+.orderSummary {
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  box-shadow: 0px 0px 10px 0px #ccc;
+}
+.table > header,
+.orderSummary > header {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #21209c;
+  padding: 10px;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+}
+.table {
+  top: 16vh;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+.table::-webkit-scrollbar {
+  display: none;
+}
+.tableRow {
+  display: flex;
+  flex-direction: column;
+  padding: 0.25rem;
+  background-color: white;
+  border-bottom: 2px solid #f1f1f1;
+}
+.tableRow .product {
+  display: flex;
+  align-items: flex-start;
+  justify-content: left;
+}
+.tableRow .product > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: flex-start;
+}
+.tableRow .product > div:nth-child(2) > b:first-child {
+  font-size: 1.1rem;
+}
+.tableRow .product > div:nth-child(2) > b:nth-child(2) {
+  font-size: 1.5rem;
+}
+.tableRow .controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem;
+}
+.tableRow .controls button {
+  padding: 0.5rem 0.75rem;
+  height: 100%;
+}
+.tableRow .controls > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-basis: 50%;
+}
+.checkout {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  background-color: #21209c;
+  font-size: 1.3rem;
+  padding: 0.25rem;
+}
+.checkout button {
+  height: 3rem;
+  width: 10rem;
+  font-size: 1.3rem;
+}
+.price {
+  display: flex;
+  flex-direction: column;
+}
+.price > div {
+  display: flex;
+  flex-direction: row;
+}
+.orderSummary {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  background-color: white;
+  margin-left: 20px;
+}
+.orderSummary > div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px;
+}
+.orderSummary > div > div {
+  color: rgba(35, 18, 11, 0.7);
+  font-weight: 900;
+}
+.orderSummary .total {
+  border-top: 1px solid #ccc;
+}
+.orderSummary .total > div {
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+.emptyCart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 85%;
+  background-color: white;
+  box-shadow: 0 0px 5px 0px rgba(0, 0, 0, 0.4);
+  margin-top: 1rem;
+}
+.emptyCart > div {
+  text-align: center;
+  padding: 5px;
+  font-weight: bold;
+}
+.emptyCart > div:nth-child(2) {
+  font-size: large;
+}
+.cartIcon {
+  font-size: 12rem;
+  color: #21209c;
+  filter: drop-shadow(4px 5px 3px rgba(128, 128, 128, 0.5));
+}
+.saved {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+}
+.saved > div:first-child {
+  width: 50%;
+  max-height: none;
+  margin-left: 11.6%;
+  margin-bottom: 1rem;
+  overflow-y: initial !important;
+}

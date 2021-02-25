@@ -1,0 +1,100 @@
+.subs {
+  position: relative;
+  display: grid;
+  grid-template-columns: 15% 1fr;
+  min-height: 95vh;
+}
+.workspace {
+  display: flex;
+  flex-direction: column;
+}
+.workspace > div {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+.workspace > div:nth-child(2) {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+.workspace > div:nth-child(2) > div {
+  display: flex;
+  flex-direction: column;
+}
+.workspace form {
+  display: flex;
+  flex-direction: row;
+}
+.workspace form button {
+  margin-top: 26px;
+  margin-left: 20px;
+}
+.list {
+  display: flex;
+  height: 85vh;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.list > div {
+  display: flex;
+  justify-content: left;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+  height: fit-content;
+  flex: 1;
+}
+.list > div > div {
+  display: block;
+  text-align: left;
+  height: fit-content;
+  width: 22.4%;
+  background-color: #f1f1f1;
+  padding: 10px;
+  margin: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 4px 0 rgba(35, 18, 11, 0.3);
+}
+.list > div > div .options {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.list > div > div .options div {
+  display: block;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+.list > div > div .options div:hover {
+  background-color: #fdb827;
+}
+.list > div > div .options div:hover button {
+  color: #f1f1f1;
+}
+.list > div > div p {
+  display: block;
+  font-size: 18px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.list > div > div p span {
+  font-weight: 600;
+}
+.list > div > div button {
+  margin: 10px;
+  outline: none;
+  border: none;
+  color: red;
+  background-color: transparent;
+}
+.list > div > div a {
+  width: 100%;
+}
+.list > div > div a button {
+  color: blue;
+  background-color: transparent;
+}
