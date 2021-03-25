@@ -1,26 +1,31 @@
-.products {
-  position: relative;
-  display: grid;
-  grid-template-columns: 15% 1fr;
-  height: 100%;
-  min-height: 95vh;
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+  background-color: white;
 }
 
-.workspace {
+@media only screen and (min-width: 1500px) {
+  .page {
+    width: 80vw;
+    margin: 1rem 0;
+    box-shadow: 0 0 5px 0 #ccc;
+  }
+}
+.content {
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
   > div {
-    display: flex;
-    margin: 20px;
+    padding: 10px;
   }
-  .list {
-    display: inline-flex;
-    justify-content: left;
-    align-content: flex-start;
-    flex-wrap: wrap;
-    > div {
-      display: flex;
-      margin: 20px;
-    }
-  }
+}
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }

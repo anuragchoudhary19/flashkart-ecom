@@ -6,7 +6,6 @@ import styles from './Checkout.module.css';
 import TextArea from '../../components/Elements/Textarea/TextArea';
 import { addAddress } from '../../axiosFunctions/user';
 import csc from 'country-state-city';
-import { CheckCircleOutlined } from '@ant-design/icons';
 import { Select } from 'antd';
 const { Option } = Select;
 const initialState = {
@@ -19,7 +18,7 @@ const initialState = {
 };
 const CheckoutForm = () => {
   const [addressForm, setAddressForm] = useState(initialState);
-  const { name, mobile, address, city, pincode, state } = addressForm;
+  const { name, mobile, address, city, pincode } = addressForm;
   const [states, setStates] = useState([]);
   const [saved, setSaved] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
@@ -41,17 +40,21 @@ const CheckoutForm = () => {
     });
   };
   return (
-    <div className={styles.checkoutForm}>      
+    <div className={styles.form}>
       <div>
         <form onSubmit={save}>
+          <label>Name</label>
           <Input label='Name' type='text' name='name' value={name} change={changeHandle} error='' />
+          <label>Mobile</label>
           <Input label='Mobile' type='number' name='mobile' value={mobile} change={changeHandle} error='' />
           <TextArea label='Address' type='text' name='address' value={address} change={changeHandle} />
+          <label>City/Town/District</label>
           <Input label='City/District/Town' type='text' name='city' value={city} change={changeHandle} error='' />
+          <label>Pincode</label>
           <Input label='Pincode' type='number' name='pincode' value={pincode} change={changeHandle} error='' />
           <div>
             <label>State</label>
-            <Select defaultValue='Select' style={{ width: '300px', minWidth: '120px' }} onChange={selectHandle}>
+            <Select defaultValue='Select' style={{ width: '300px' }} onChange={selectHandle}>
               {states.map((state) => (
                 <Option title='state' key={state.name} value={state.name}>
                   {state.name}
@@ -62,7 +65,6 @@ const CheckoutForm = () => {
           <Button type='submit'>Save</Button>
         </form>
       </div>
-      {/* {states.forEach(state=>div>)} */}      
     </div>
   );
 };

@@ -1,37 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+
+import CartProducts from './CartProducts';
 import EmptyCart from './EmptyCart';
 import Saved from './SavedForLater';
-import Button from './../../components/Elements/Button/Button';
+
 import { getCart } from '../../axiosFunctions/cart';
-import _ from 'lodash';
 import styles from './Cart.module.css';
-import Confirmation from './CartProducts';
-import CartProducts from './CartProducts';
 
 const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalDiscountedPrice, setTotalDiscountedPrice] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [confirmation, setConfirmation] = useState(false);
 
   const { user, localCart, savedForLater } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user) {
-      getCart(user.idToken).then((res) => {
+    if (user && user.token) {
+      getCart(user.token).then((res) => {
         console.log(res.data);
         let products = [];
         if (res.data) {
           res.data.products.forEach((item) => {
-            products.push({ ...item.product, color: item.color, count: item.count });
+            products.push({ ...item.product, count: item.count });
           });
         }
         let orderSummary = calculate(products);
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('localCart', JSON.stringify({ products: products, ...orderSummary }));
+        }
         dispatch({
           type: 'ADD_TO_CART',
           payload: { products: products, ...orderSummary },
@@ -56,9 +56,9 @@ const Cart = () => {
   };
 
   return (
-    <div className={styles.cartPage}>
+    <div className={styles.page}>
       {localCart.products && localCart.products.length ? (
-        <div className={styles.cart}>
+        <div className={styles.content}>
           <CartProducts
             cart={localCart}
             user={user}
@@ -90,7 +90,7 @@ const Cart = () => {
             </div>
             <div className={styles.total}>
               <div>Total Price</div>
-              <div>{totalDiscountedPrice}</div>
+              <div>Rs {totalDiscountedPrice.toLocaleString('en-IN')}</div>
             </div>
           </div>
         </div>

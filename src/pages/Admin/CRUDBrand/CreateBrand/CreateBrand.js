@@ -1,97 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 //components
 import Input from '../../../../components/Elements/Input/Input';
 import Button from '../../../../components/Elements/Button/Button';
 import Sidebar from '../../../../components/nav/Sidebar/Sidebar';
 //functions
-import { createBrand, getBrands, removeBrand } from '../../../../axiosFunctions/brand';
+import { createBrand, getBrands, removeBrand, updateBrand } from '../../../../axiosFunctions/brand';
 //css
 import classes from './CreateBrand.module.css';
-//antd
-// import { Select } from 'antd';
-// const { Option } = Select;
-
+import { validate } from './../../../../functions/validateString';
+import { message } from 'antd';
 const Brand = () => {
   const [name, setName] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [newName, setNewName] = useState('');
   const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState('');
+  const [edit, setEdit] = useState(false);
   const [error, setError] = useState('');
   const { user } = useSelector((state) => ({ ...state }));
-  //step 1
   const [keyword, setKeyword] = useState('');
 
   useEffect(() => {
     loadBrands();
-  }, [loading]);
+  }, []);
 
   const loadBrands = () => {
-    getBrands().then((res) => setBrands(res.data));
-  };
-
-  // const loadCategoryBrands = (e) => {
-  //   setCategoryError('');
-  //   console.log(e);
-  //   if (e === 'Select') {
-  //     setBrands([]);
-  //     setCategory(e);
-  //     loadBrands();
-  //     console.log(category);
-  //     return;
-  //   }
-  //   setBrands([]);
-  //   setCategory(e);
-  //   getCategoryBrands(e).then((res) => {
-  //     console.log(res.data);
-  //     setBrands(res.data);
-  //   });
-  // };
-
-  const inputHandle = (e) => {
-    setName(e.target.value);
-    setError('');
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (name === '' || /^\s+$/.test(name)) {
-      console.log(e.target);
-      setError('Name cannot be empty');
-      return;
-    }
-    if (/^[0-9]+$/.test(name)) {
-      console.log(e.target);
-      setError('Name cannot start with number');
-      return;
-    }
-    if (name.length > 32) {
-      setError('Name cannot be longer than 32 characters');
-      return;
-    }
-    setLoading(true);
-    console.log(name);
-    createBrand({ name }, user.idToken)
+    getBrands()
       .then((res) => {
-        console.log(res);
-        setName('');
-        setLoading(false);
+        setBrands(res.data);
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
       });
   };
 
+  const inputHandle = (e) => {
+    setError('');
+    if (!edit) {
+      setName(e.target.value);
+    }
+    if (edit) {
+      setNewName(e.target.value);
+    }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const checked = validate(name);
+    if (checked !== 'valid') {
+      message.error('Brand name is not valid');
+      setError(checked);
+      return;
+    }
+    createBrand({ name }, user.token)
+      .then((res) => {
+        message.success('SAVED SUCCESSFULLY');
+        setName('');
+        loadBrands();
+      })
+      .catch((err) => {
+        message.error('SAVE FAILED');
+        loadBrands();
+      });
+  };
+
+  const updateHandle = (e) => {
+    e.preventDefault();
+    updateBrand(selectedBrand, { name: newName }, user.token)
+      .then((res) => {
+        console.log(res.data);
+        message.success('UPDATED SUCCESSFULLY');
+        setEdit(false);
+        loadBrands();
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error('UPDATE FAILED');
+        setEdit(false);
+        loadBrands();
+      });
+  };
+  const editHandle = (brand) => {
+    setSelectedBrand(brand.slug);
+    setEdit(true);
+    setNewName(brand.name);
+  };
   const deleteHandle = (slug) => {
     if (window.confirm('Are you sure you want to delete this item?')) {
-      setLoading(true);
-      removeBrand(slug, user.idToken)
+      removeBrand(slug, user.token)
         .then((res) => {
-          setLoading(false);
+          message.success('DELETED SUCCESSFULLY ');
+          loadBrands();
         })
         .catch((err) => {
-          console.log(err);
-          setLoading(false);
+          message.error('DELETE FAILED');
+          loadBrands();
         });
     }
   };
@@ -101,72 +103,61 @@ const Brand = () => {
 
   //step 4
   return (
-    <div className={classes.category}>
-      <div>
-        <Sidebar />
-      </div>
-      <div className={classes.workspace}>
-        <div>
-          <h1>Create Brand</h1>
-        </div>
-        <div className={classes.form}>
-          {/* <div>
-            <label>Category</label>
-            <Select defaultValue='Select' style={{ width: 180 }} onChange={(e) => loadCategoryBrands(e)}>
-              <Option value='Select'>Select</Option>
-              {categories.length > 0 &&
-                categories.filter(searched(keyword)).map((category) => (
-                  <Option key={category._id} value={category._id}>
-                    {category.name}
-                  </Option>
-                ))}
-            </Select>
-            <span style={{ color: '#ef4f4f', fontSize: '12px' }}>{categoryError}</span>
-          </div> */}
-          <div>
-            <form onSubmit={handleSubmit}>
-              <Input label='Brand Name' type='text' name='brand' value={name} error={error} change={inputHandle} />
-              <Button type='submit'>Submit</Button>
-            </form>
-          </div>
-          <div>
-            {/* //step 2 */}
+    <div className={classes.page}>
+      <Sidebar />
+      <div className={classes.content}>
+        <h2>Create Brand</h2>
+        <div className={classes.inputFields}>
+          <form onSubmit={handleSubmit}>
+            <label>Brand</label>
+            <Input type='text' name='brand' value={name} error={error} change={inputHandle} />
+            <Button type='submit'>Submit</Button>
+          </form>
+          <form>
+            <label>Search</label>
             <Input
-              label='Search'
-              type='search'
+              type='text'
               placeholder='Search'
               value={keyword}
-              error=''
               change={(e) => setKeyword(e.target.value.toLowerCase())}
             />
-          </div>
-          <hr />
+            <Button type='submit'>Submit</Button>
+          </form>
         </div>
         <div className={classes.list}>
-          <div>
-            {brands.filter(searched(keyword)).map((brand) => {
-              return (
-                <div key={brand._id}>
-                  <p>
-                    <span>Brand : </span>
-                    {brand.name}
-                  </p>
-                  <div className={classes.options}>
-                    <Link to={{ pathname: `/admin/brand/update`, search: `?brand=${brand.slug}` }}>
-                      <div>
-                        <button>Edit</button>
-                      </div>
-                    </Link>
-                    <div onClick={() => deleteHandle(brand.slug)}>
-                      <button>Delete</button>
-                    </div>
+          {brands.filter(searched(keyword)).map((brand) => {
+            return (
+              <div className={classes.card} key={brand._id}>
+                <p>
+                  <b>{brand.name}</b>
+                </p>
+                <div className={classes.actions}>
+                  <div onClick={() => editHandle(brand)}>
+                    <b>Edit</b>
+                  </div>
+                  <div onClick={() => deleteHandle(brand.slug)}>
+                    <b>Delete</b>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
       </div>
+      {edit && (
+        <div className={classes.editModal}>
+          <div>
+            <span onClick={() => setEdit(false)}>X</span>
+            <div className={classes.inputFields}>
+              <form onSubmit={updateHandle}>
+                <label>New Brand</label>
+                <Input type='text' name='brand' value={newName} error={error} change={inputHandle} />
+                <Button type='submit'>Submit</Button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

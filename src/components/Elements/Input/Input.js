@@ -1,27 +1,22 @@
 import React from 'react';
 import classes from './Input.module.css';
-const Input = (props) => {
+
+const Input = ({ type, name, value, change, placeholder, error, ...rest }) => {
   const style = [];
   style.push(classes.input);
-  if (props.error !== '') {
+  if (error && error.length) {
     style.push(classes.danger);
   }
   return (
-    <div className={style.join(' ')}>
-      <label>{props.label}</label>
-      <div>
-        <input
-          style={props.style}
-          type={props.type}
-          name={props.name}
-          value={props.value}
-          onChange={props.change}
-          placeholder={props.placeholder}
-        />
-        {props.button}
-      </div>
-      <span>{props.error}</span>
-    </div>
+    <input
+      className={style.join(' ')}
+      type={type}
+      name={name}
+      value={value}
+      onChange={change}
+      placeholder={placeholder}
+      {...rest}
+    />
   );
 };
 

@@ -1,0 +1,54 @@
+@bgcolor: #023047;
+@color: #ffb703;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: fit-content;
+  > header {
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 0.25rem;
+    background-color: @bgcolor;
+    color: @color;
+  }
+  span {
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: @bgcolor;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  > p {
+    font-weight: bold;
+  }
+}
+
+.form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  button {
+    margin: 0.5rem;
+  }
+  span {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+.google {
+  display: flex;
+  margin: 1rem 0;
+  cursor: pointer;
+  > img {
+    width: 100%;
+  }
+}

@@ -31,7 +31,34 @@ export const updateProductProfile = async (slug, product, authtoken) => {
     },
   });
 };
-
+export const addRating = async (id, rating, authtoken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/productProfiles/rating/${id}`,
+    { rating },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
+export const addReview = async (id, review, authtoken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/productProfiles/review/${id}`,
+    { review },
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
 export const getProfiles = async (sort, order, page) => {
   return await axios.post(`${process.env.REACT_APP_API}/productProfiles`, { sort, order, page });
+};
+export const fetchProductsByFilter = async (arg) => {
+  return await axios.post(`${process.env.REACT_APP_API}/search/filters`, arg);
+};
+export const relatedProducts = async (brand, page) => {
+  return await axios.post(`${process.env.REACT_APP_API}/productProfiles/related-products`, { brand, page });
 };

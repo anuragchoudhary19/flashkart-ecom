@@ -5,10 +5,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createPaymentIntent } from '../../axiosFunctions/stripe';
 import { createOrder } from '../../axiosFunctions/user';
 import { emptyCart } from '../../axiosFunctions/cart';
+import styles from './Payment.module.css';
 import './Stripe.css';
 const StripePayment = ({ history }) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => ({ ...state }));
+  const { user, localCart } = useSelector((state) => ({ ...state }));
   const [succeedded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
@@ -19,7 +20,7 @@ const StripePayment = ({ history }) => {
   const elements = useElements();
 
   useEffect(() => {
-    createPaymentIntent(user.idToken).then((res) => {
+    createPaymentIntent(user.token).then((res) => {
       console.log('create payment intent', res.data);
       setClientSecret(res.data.clientSecret);
     });
@@ -41,7 +42,7 @@ const StripePayment = ({ history }) => {
       setProcessing(false);
     } else {
       //create orderand save to Database
-      createOrder(user.idToken, payload).then((res) => {
+      createOrder(user.token, payload).then((res) => {
         if (res.data.ok) {
           //empty cart from local storage
           if (typeof window !== 'undefined') localStorage.removeItem('localCart');
@@ -83,10 +84,19 @@ const StripePayment = ({ history }) => {
     },
   };
   return (
-    <>
-      <p className={succeedded ? 'result-message' : 'result-message hidden'}>
-        Payment Successful<Link to='/user/orders'>See it in your orders</Link>
-      </p>
+    <div className={styles.stripCard}>
+      {succeedded || error ? null : <h2>Complete Your Purchase</h2>}
+      <p>Use this card number for dummy payment</p>
+      <p>4242 4242 4242 4242</p>
+      {succeedded ? <h2>Payment Successful</h2> : null}
+      {error ? <h2>Payment Failed</h2> : null}
+      {succeedded ? (
+        <p className={succeedded ? 'result-message' : 'result-message hidden'}>
+          Payment Successful<Link to='/user/orders'>See it in your orders</Link>
+        </p>
+      ) : null}
+      <div>Amount to be paid : {localCart.totalDiscountedPrice.toLocaleString('en-IN')}</div>
+
       <form id='payment-form' className='stripe-form' onSubmit={handleSubmit}>
         <CardElement id='card-element' options={cartStyle} onChange={handleChange} />
         <button className='stripe-button' disabled={processing || disabled || succeedded}>
@@ -98,7 +108,7 @@ const StripePayment = ({ history }) => {
           </div>
         )}
       </form>
-    </>
+    </div>
   );
 };
 

@@ -12,7 +12,8 @@ import { getBrands } from '../../../../axiosFunctions/brand';
 //css
 import classes from './CreateProductProfile.module.css';
 //antd
-import { Select, Radio } from 'antd';
+import { notification } from 'antd';
+import { Select, Radio, message } from 'antd';
 const { Option } = Select;
 
 const initialState = {
@@ -24,7 +25,7 @@ const initialState = {
   discount: '',
   specification: {
     SIM: '',
-    network: '',
+    network: ['2G', '3G', '4G'],
     memory: {
       ram: { size: '', unit: '' },
       rom: { size: '', unit: '' },
@@ -34,7 +35,7 @@ const initialState = {
       screen: { size: '', unit: '' },
       resolution: '',
     },
-    colors: [],
+    color: '',
     camera: {
       front: { value: '', unit: 'MP' },
       rear: { value: '', unit: 'MP' },
@@ -45,7 +46,7 @@ const initialState = {
   },
   quantity: '',
   images: [],
-  allColors: ['Black', 'Blue', 'Red', 'White', 'Grey'],
+  colors: ['Black', 'Blue', 'Red', 'White', 'Grey'],
 };
 
 const Product = () => {
@@ -54,7 +55,7 @@ const Product = () => {
   const [products, setProducts] = useState([]);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const { title, description, price, discount, quantity, allColors } = profile;
+  const { title, description, price, discount, quantity, colors } = profile;
 
   //redux
   const { user } = useSelector((state) => ({ ...state }));
@@ -97,39 +98,31 @@ const Product = () => {
     });
   };
   const selectHandle = (_, e) => {
-    let selected = [];
-    Array.from(e).forEach((color) => {
-      selected.push(color.value);
-    });
+    console.log(e);
     setProfile({
       ...profile,
-      'specification.colors': selected,
+      'specification.color': e.value,
     });
   };
 
   const submitHandle = (e) => {
     e.preventDefault();
-    createProductProfile(unflatten(profile), user.idToken)
+    createProductProfile(unflatten(profile), user.token)
       .then((res) => {
         console.log(res);
-        setMessage(`"${title}" was created`);
+        message.success('PRODUCTPROFILE CREATED');
       })
       .catch((err) => {
         console.log(err);
-        setMessage(`"${err.response.data.err}"`);
+        message.error('PRODUCTPROFILE CREATE FAILED');
       });
   };
-
   return (
-    <div className={classes.product}>
-      <div>
-        <Sidebar />
-      </div>
-      <div className={classes.workspace}>
-        <div>
-          <h1>Create Product Profile </h1>
-        </div>
-        <div className={classes.form}>
+    <div className={classes.page}>
+      <Sidebar />
+      <div className={classes.content}>
+        <h2>Create Product Profile </h2>
+        <div className={classes.inputFields}>
           <div className={classes.images}>
             <ImageUpload value={profile} setValue={setProfile} />
           </div>
@@ -180,10 +173,9 @@ const Product = () => {
               <label>Discount</label>
               <Input type='number' name='discount' value={discount} error={error} change={changeHandle} />
             </div>
+            <hr />
             <div>
-              <label>
-                <b>Specification :</b>
-              </label>
+              <label>Specification :</label>
             </div>
             <div>
               <label>SIM</label>
@@ -196,17 +188,13 @@ const Product = () => {
             </div>
             <div>
               <label>Network</label>
-              <Radio.Group
-                name='specification.network'
-                value={profile['specification.network']}
-                onChange={changeHandle}>
-                <div style={{ display: 'inline-flex' }}>
-                  <Radio value='2G'>2G</Radio>
-                  <Radio value='3G'>3G</Radio>
-                  <Radio value='4G'>4G</Radio>
-                  <Radio value='5G'>5G</Radio>
-                </div>
-              </Radio.Group>
+              <Select mode='multiple' style={{ width: '240px', minWidth: '120px' }} onChange={selectHandle}>
+                {profile['specification.network'].map((c) => (
+                  <Option title='specification.network' key={c} value={c}>
+                    {c}
+                  </Option>
+                ))}
+              </Select>
             </div>
             <div>
               <label>RAM :</label>
@@ -218,7 +206,7 @@ const Product = () => {
                 change={changeHandle}
               />
               <Radio.Group
-                style={{ display: 'flex', flexDirection: 'row', width: 'fit-content' }}
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '240px' }}
                 name='specification.memory.ram.unit'
                 value={profile['specification.memory.ram.unit']}
                 onChange={changeHandle}>
@@ -237,7 +225,7 @@ const Product = () => {
                 change={changeHandle}
               />
               <Radio.Group
-                style={{ display: 'flex', flexDirection: 'row', width: 'fit-content' }}
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '240px' }}
                 name='specification.memory.rom.unit'
                 value={profile['specification.memory.rom.unit']}
                 onChange={changeHandle}>
@@ -256,7 +244,7 @@ const Product = () => {
                 change={changeHandle}
               />
               <Radio.Group
-                style={{ display: 'flex', flexDirection: 'row', width: 'fit-content' }}
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '240px' }}
                 name='specification.memory.expandable.unit'
                 value={profile['specification.memory.expandable.unit']}
                 onChange={changeHandle}>
@@ -275,7 +263,7 @@ const Product = () => {
                 change={changeHandle}
               />
               <Radio.Group
-                style={{ display: 'flex', flexDirection: 'row', width: 'fit-content' }}
+                style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', width: '240px' }}
                 name='specification.display.screen.unit'
                 value={profile['specification.display.screen.unit']}
                 onChange={changeHandle}>
@@ -348,13 +336,12 @@ const Product = () => {
               <Input type='number' name='quantity' value={quantity} error={error} change={changeHandle} />
             </div>
             <div>
-              <label>Colors</label>
+              <label>Color</label>
               <Select
-                mode='multiple'
                 defaultValue={profile['specification.colors']}
                 style={{ width: 'auto', minWidth: '120px' }}
                 onChange={selectHandle}>
-                {allColors.map((c) => (
+                {colors.map((c) => (
                   <Option title='specification.colors' key={c} value={c}>
                     {c}
                   </Option>

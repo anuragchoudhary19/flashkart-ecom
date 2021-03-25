@@ -1,3 +1,33 @@
+@bgcolor: #023047;
+@color: #ffb703;
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  background-color: transparent;
+}
+
+@media only screen and (min-width: 1500px) {
+  .page {
+    width: 80vw;
+    margin: 1rem 0;
+  }
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  background-color: transparent;
+  h2,
+  h4 {
+    color: bgcolor;
+  }
+}
 .payment {
   display: flex;
   flex-direction: column;
@@ -21,5 +51,9 @@
 
 .stripCard {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 30vw;
+  height: fit-content;
 }

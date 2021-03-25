@@ -1,39 +1,19 @@
-import React, { useEffect, useState } from 'react';
-//functions
-import { getProfiles } from '../../axiosFunctions/productProfile';
-import styles from './Home.module.css';
-
+import React from 'react';
+import { useSelector } from 'react-redux';
+//components
 import NewArrivals from './NewArrivals';
 import BestSellers from './BestSellers';
+//css
+import styles from './Home.module.css';
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const { user } = useSelector((state) => ({ ...state }));
 
-  useEffect(() => {
-    loadAllProducts();
-    return () => loadAllProducts();
-  }, []);
-
-  const loadAllProducts = async () => {
-    setLoading(true);
-    await getProfiles('createdAt', 'desc', 3)
-      .then((result) => {
-        setProducts(result.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        console.log(err);
-      });
-  };
   return (
-    products && (
-      <div className={styles.home}>
-        <NewArrivals />
-        <BestSellers />
-      </div>
-    )
+    <div className={styles.home}>
+      <NewArrivals />
+      <BestSellers />
+    </div>
   );
 };
 

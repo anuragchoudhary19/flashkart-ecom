@@ -1,59 +1,58 @@
-.productUpdate {
-  position: relative;
-  display: grid;
-  grid-template-columns: 15% 1fr;
-  height: 100%;
-  min-height: 95vh;
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+  background-color: white;
 }
-.productUpdate a {
-  color: black;
+@media only screen and (min-width: 1500px) {
+  .page {
+    width: 80vw;
+    margin: 1rem 0;
+    box-shadow: 0 0 5px 0 #ccc;
+  }
 }
-.workspace > div {
+.content {
   display: flex;
   flex-direction: column;
-  margin: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
-.workspace .form form {
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+.content > div {
+  padding: 10px;
 }
-.workspace .form form > div {
+.inputFields {
   display: flex;
-  justify-content: left;
-  align-items: center;
-  margin: 20px;
+  flex-direction: column;
+  justify-content: space-between;
 }
-.workspace .form form > div label {
+.inputFields > div {
   display: flex;
-  margin: auto 10px auto 0;
-  width: 120px;
+  flex-direction: column;
 }
-.workspace .form .images {
+.inputFields label {
+  font-size: 16px;
+  font-weight: bold;
+}
+.inputFields form {
+  width: auto;
   display: flex;
-  flex-direction: row;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  padding: 20px;
+  flex-direction: column;
 }
-.workspace .form .images > div {
-  display: flex;
-  flex-direction: row-reverse;
-}
-.workspace .form .images > div > div {
+.inputFields form > div {
   display: flex;
   flex-direction: row;
+  padding: 10px;
 }
-.workspace .form .images > div > div > div {
-  margin: 0 20px;
-  transition: all 0.2s linear;
-  cursor: pointer;
+.inputFields form > div > label {
+  flex-basis: 20%;
 }
-.workspace .form .images > div > div > div:hover {
-  transform: scale(5);
-  z-index: 10;
+.inputFields form input {
+  width: 360px;
 }
-.workspace .form .images label {
-  height: 2.5rem;
+.inputFields form button {
+  width: 20%;
 }

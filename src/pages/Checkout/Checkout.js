@@ -6,8 +6,8 @@ import Button from '../../components/Elements/Button/Button';
 import styles from './Checkout.module.css';
 import CheckoutForm from './CheckoutForm';
 import { currentUser } from '../../axiosFunctions/auth';
-import { addAddress } from './../../axiosFunctions/user';
-import { Radio, Collapse } from 'antd';
+import { emptyCart } from './../../axiosFunctions/cart';
+import { Radio, Collapse, message } from 'antd';
 
 const { Panel } = Collapse;
 
@@ -18,6 +18,7 @@ const Checkout = () => {
   const [addresses, setAddresses] = useState([]);
   const [address, setAddress] = useState('');
   const { user, localCart, savedForLater } = useSelector((state) => ({ ...state }));
+  let dispatch = useDispatch();
   let history = useHistory();
   useEffect(() => {
     orderSummary();
@@ -25,83 +26,98 @@ const Checkout = () => {
   }, [localCart, savedForLater]);
 
   useEffect(() => {
-    currentUser(user.idToken).then((res) => {
+    currentUser(user.token).then((res) => {
       setAddresses(res.data.address);
       console.log(res);
     });
   }, []);
 
   const orderSummary = () => {
-    let totalPrice = 0;
-    let totalDiscountedPrice = 0;
-    let totalItems = 0;
-    let products = localCart.products;
-    products.forEach((item) => {
-      totalPrice += item.price;
-      totalDiscountedPrice += item.price * (1 - item.discount / 100) * item.count;
-      totalItems += 1;
-    });
-    setTotalPrice(totalPrice);
-    setTotalDiscountedPrice(totalDiscountedPrice);
-    setTotalItems(totalItems);
+    if (localCart.products) {
+      let totalPrice = 0;
+      let totalDiscountedPrice = 0;
+      let totalItems = 0;
+      let products = localCart.products;
+      products.forEach((item) => {
+        totalPrice += item.price;
+        totalDiscountedPrice += item.price * (1 - item.discount / 100) * item.count;
+        totalItems += 1;
+      });
+      setTotalPrice(totalPrice);
+      setTotalDiscountedPrice(totalDiscountedPrice);
+      setTotalItems(totalItems);
+    }
   };
-
+  const emptyCartHandle = () => {
+    if (localStorage.getItem('localCart')) {
+      localStorage.setItem('localCart', '');
+    }
+    dispatch({
+      type: 'ADD_TO_CART',
+      payload: null,
+    });
+    emptyCart(user.token).then((res) => {
+      message.success('CART EMPTIED SUCCESSFULLY');
+    });
+  };
   return (
-    <div className={styles.checkout}>
-      <div>
-        <div className={styles.addressOptions}>
-          <header>Select Address</header>
-          <Radio.Group onChange={(e) => setAddress(e.target.value)}>
-            {addresses.map((a) => (
-              <div key={a._id}>
-                <Radio value={a._id}>
-                  <b>
-                    {a.name + ', ' + a.address + ', ' + a.city + ', ' + a.state + ', ' + a.pincode + ', ' + a.mobile}
-                  </b>
-                </Radio>
-              </div>
-            ))}
-          </Radio.Group>
+    <div className={styles.page}>
+      <div className={styles.content}>
+        <div className={styles.checkoutForm}>
+          <div className={styles.addressOptions}>
+            <header>Select Address</header>
+            <Radio.Group onChange={(e) => setAddress(e.target.value)}>
+              {addresses.map((a) => (
+                <div key={a._id}>
+                  <Radio value={a._id}>
+                    <b>
+                      {a.name + ', ' + a.address + ', ' + a.city + ', ' + a.state + ', ' + a.pincode + ', ' + a.mobile}
+                    </b>
+                  </Radio>
+                </div>
+              ))}
+            </Radio.Group>
+          </div>
+          <Collapse bordered>
+            <Panel header='Add Address' key='1'>
+              <CheckoutForm />
+            </Panel>
+          </Collapse>
+          <div className={styles.paymentButton}>
+            <Button disabled={address === ''} click={() => history.push('/payment')}>
+              {address ? 'Proceed to Pay' : 'Select Address'}
+            </Button>
+          </div>
         </div>
-        <Collapse defaultActiveKey={['1']} bordered>
-          <Panel header='Add Address' key='1'>
-            <CheckoutForm />
-          </Panel>
-        </Collapse>
-        <div className={styles.paymentButton}>
-          <Button disabled={address === ''} click={() => history.push('/payment')}>
-            Proceed to Pay
-          </Button>
-        </div>
-      </div>
-      <div className={styles.orderSummary}>
-        <header>Order Summary</header>
-        <div>
-          <div>Total Items</div>
-          <div>{totalItems}</div>
-        </div>
-        <div>
-          <div>Price</div>
-          <div>&#8377; {totalPrice}</div>
-        </div>
-        <div>
-          <div>Discount</div>
-          <div style={{ color: 'green' }}>-&#8377;{totalPrice - totalDiscountedPrice}</div>
-        </div>
-        <div>
-          <div>Delivery Charges</div>
-          <div style={{ color: 'green' }}>&#x20b9;0</div>
-        </div>
-        <div>
-          <div>Saved</div>
-          <div>18000</div>
-        </div>
-        <div className={styles.total}>
-          <div>Total Price</div>
-          <div>{totalDiscountedPrice}</div>
-        </div>
-        <div className={styles.paymentButton}>
-          <Button>Empty Cart</Button>
+        <div className={styles.orderSummary}>
+          <header>Order Summary</header>
+          <div>
+            <div>Total Items</div>
+            <div>{totalItems}</div>
+          </div>
+          <div>
+            <div>Price</div>
+            <div>&#8377; {totalPrice}</div>
+          </div>
+          <div>
+            <div>Discount</div>
+            <div style={{ color: 'green' }}>-&#8377;{totalPrice - totalDiscountedPrice}</div>
+          </div>
+          <div>
+            <div>Delivery Charges</div>
+            <div style={{ color: 'green' }}>&#x20b9;0</div>
+          </div>
+          <div>
+            <div>Saved</div>
+            <div>18000</div>
+          </div>
+          <div className={styles.total}>
+            <div>Total Price</div>
+            <div>Rs {totalDiscountedPrice.toLocaleString('en-IN')}</div>
+          </div>
+          <div className={styles.paymentButton} onClick={emptyCartHandle}>
+            <Button>Empty Cart</Button>
+          </div>
         </div>
       </div>
     </div>

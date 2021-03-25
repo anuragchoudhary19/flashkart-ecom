@@ -1,0 +1,142 @@
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+  background-color: white;
+}
+@media only screen and (min-width: 1500px) {
+  .page {
+    width: 80vw;
+    margin: 1rem 0;
+    box-shadow: 0 0 5px 0 #ccc;
+  }
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+}
+.content > div {
+  padding: 10px;
+}
+.inputFields {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.inputFields label {
+  font-size: 16px;
+  font-weight: bold;
+}
+.inputFields form {
+  width: auto;
+  display: grid;
+  grid-template-rows: 2rem auto;
+  grid-template-areas: 'label1 label2 label3 label3    ' 'input1 input2 input3 button';
+  grid-column-gap: 10px;
+}
+.inputFields form label:first-child {
+  grid-area: label1;
+}
+.inputFields form label:nth-child(2) {
+  grid-area: label2;
+}
+.inputFields form label:nth-child(3) {
+  grid-area: label3;
+}
+.inputFields form > input:first-child {
+  grid-area: input1;
+}
+.inputFields form > input:nth-child(2) {
+  grid-area: input2;
+}
+.inputFields form > input:nth-child(3) {
+  grid-area: input3;
+}
+.inputFields form button {
+  width: 100px;
+  grid-area: button;
+}
+.inputFields form:nth-child(2) {
+  width: auto;
+  display: grid;
+  grid-template-rows: 2rem auto;
+  grid-template-areas: 'label label' 'input button';
+  grid-column-gap: 10px;
+}
+.inputFields form:nth-child(2) label {
+  grid-area: label;
+}
+.inputFields form:nth-child(2) input {
+  grid-area: input;
+}
+.inputFields form:nth-child(2) button {
+  width: 100px;
+  grid-area: button;
+}
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+  border: 1px solid #ccc;
+  height: 100%;
+}
+.card {
+  display: block;
+  text-align: center;
+  height: fit-content;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  text-overflow: clip;
+}
+.card p {
+  font-size: 1rem;
+}
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.buttons > div {
+  cursor: pointer;
+}
+.buttons > div:first-child {
+  color: #023047;
+}
+.buttons > div:nth-child(2) {
+  color: #dd2e44;
+}
+.editModal {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 101;
+}
+.editModal > div {
+  position: relative;
+}
+.editModal span {
+  color: white;
+  font-size: 2rem;
+  position: absolute;
+  right: -30px;
+  top: -20px;
+  cursor: pointer;
+}
+.editModal .inputFields {
+  background-color: white;
+  padding: 1rem;
+}

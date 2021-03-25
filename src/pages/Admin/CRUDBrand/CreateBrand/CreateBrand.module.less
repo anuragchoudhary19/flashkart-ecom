@@ -1,106 +1,116 @@
-.category {
-  position: relative;
-  display: grid;
-  grid-template-columns: 15% 1fr;
-  min-height: 95vh;
+.page {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  height: auto;
+  width: 100%;
+  background-color: white;
 }
 
-.workspace {
+@media only screen and (min-width: 1500px) {
+  .page {
+    width: 80vw;
+    margin: 1rem 0;
+    box-shadow: 0 0 5px 0 #ccc;
+  }
+}
+.content {
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
   > div {
-    display: flex;
-    margin: 10px;
     padding: 10px;
   }
 }
-.form {
+.inputFields {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  > div {
-    display: flex;
-    flex-direction: column;
-  }
   form {
-    display: flex;
-    flex-direction: row;
+    width: auto;
+    display: grid;
+    grid-template-rows: 2rem auto;
+    grid-template-areas:
+      'label label'
+      'input button';
+    grid-column-gap: 10px;
+    label {
+      grid-area: label;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    input {
+      grid-area: input;
+    }
     button {
-      margin-top: 26px;
-      margin-left: 20px;
+      width: 100px;
+      grid-area: button;
     }
   }
 }
 
 .list {
-  display: flex;
-  height: 85vh;
-  overflow-y: auto;
-  > div {
-    display: flex;
-    justify-content: left;
-    align-content: flex-start;
-    flex-wrap: wrap;
-    width: 100%;
-    height: fit-content;
-    flex: 1;
-  }
-  > div > div {
-    display: block;
-    text-align: left;
-    // justify-content: center;
-    // align-items: center;
-    // flex-direction: column;
-    height: fit-content;
-    width: 22.4%;
-    background-color: #f1f1f1;
-    padding: 10px;
-    margin: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 4px 0 fade(#23120b, 30%);
-
-    .options {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
-      div {
-        display: block;
-        text-align: center;
-        width: 100%;
-        cursor: pointer;
-        &:hover {
-          background-color: #fdb827;
-          button {
-            color: #f1f1f1;
-          }
-        }
-      }
-    }
-    p {
-      display: block;
-      font-size: 18px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      span {
-        font-weight: 600;
-      }
-    }
-    button {
-      margin: 10px;
-      outline: none;
-      border: none;
-      color: red;
-      background-color: transparent;
-    }
-    a {
-      width: 100%;
-      button {
-        color: blue;
-        background-color: transparent;
-      }
-    }
-  }
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  height: 100%;
+}
+.card {
+  display: block;
+  text-align: center;
+  height: fit-content;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  text-overflow: clip;
+  p {
+    font-size: 1.5rem;
+  }
+}
+.actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  > div {
+    cursor: pointer;
+  }
+  > div:first-child {
+    color: #023047;
+  }
+  > div:nth-child(2) {
+    color: #dd2e44;
+  }
+}
+.editModal {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: fade(black, 50%);
+  z-index: 101;
+  > div {
+    position: relative;
+  }
+  > span {
+    color: white;
+    font-size: 2rem;
+    position: absolute;
+    right: -30px;
+    top: -20px;
+    cursor: pointer;
+  }
+  .inputFields {
+    background-color: white;
+    padding: 1rem;
+  }
 }

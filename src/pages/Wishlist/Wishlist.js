@@ -14,13 +14,13 @@ const Wishlist = () => {
     return loadWishlist;
   }, []);
   const loadWishlist = () => {
-    getWishlist(user.idToken).then((res) => {
+    getWishlist(user.token).then((res) => {
       setWishlist(res.data.wishlist);
       console.log(JSON.stringify(res.data, null, 4));
     });
   };
   const removeHandle = (id) => {
-    removeFromWishlist(user.idToken, id).then((res) => {
+    removeFromWishlist(user.token, id).then((res) => {
       console.log(res.data);
       loadWishlist();
     });

@@ -10,11 +10,11 @@ const Saved = ({ calculate }) => {
   const { user, localCart, savedForLater } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
-  const moveToCart = (id, color) => {
+  const moveToCart = (id) => {
     let products = [...localCart.products];
     if (typeof window !== 'undefined') {
       savedForLater.forEach((item, i) => {
-        if (item._id === id && item.color === color) {
+        if (item._id === id) {
           products.push(item);
           removeFromSave(id);
           let uniqueArray = _.uniqWith(products, _.isEqual);
@@ -25,7 +25,7 @@ const Saved = ({ calculate }) => {
             payload: { products: uniqueArray, ...orderSummary },
           });
           if (user) {
-            addToCart(user.idToken, user.email, uniqueArray)
+            addToCart(user.token, user.email, uniqueArray)
               .then((res) => {
                 console.log(res.data);
               })
@@ -50,7 +50,7 @@ const Saved = ({ calculate }) => {
             payload: saved,
           });
           if (user) {
-            saveForLater(user.idToken, user.email, saved)
+            saveForLater(user.token, user.email, saved)
               .then((res) => {
                 console.log(res.data);
               })
@@ -64,18 +64,16 @@ const Saved = ({ calculate }) => {
   };
 
   return savedForLater.length ? (
-    <div className={styles.table}>
+    <div className={styles.cart}>
       <header>Saved For Later</header>
       {savedForLater.map((item, i) => (
         <div className={styles.tableRow} key={i}>
           <div className={styles.product}>
             <div>
-              <img alt='img' src={item.images[0].url} width='150px' height='fit-content' />
+              <img alt='img' src={item.images[0].url} width='150px' height='200px' />
             </div>
             <div>
-              <b>
-                {item.title} ({item.color})
-              </b>
+              <b>{item.title}</b>
               <b>
                 &#8377;
                 {item.price * (1 - item.discount / 100) * item.count}
@@ -95,14 +93,14 @@ const Saved = ({ calculate }) => {
           <div className={styles.controls}>
             <div>
               <Button disabled>+</Button>
-              <div style={{ width: 'fit-content', padding: '0.75rem', height: '100%', border: '1px solid #ccc' }}>
+              <div style={{ width: 'fit-content', padding: '0.5rem', height: '100%', border: '1px solid #ccc' }}>
                 {item.count.toString()}
               </div>
               <Button disabled>-</Button>
             </div>
             <div style={{ justifyContent: 'flex-end' }}>
-              <Button click={() => moveToCart(item._id, item.color)}>Move to Cart</Button>
-              <Button click={() => removeFromSave(item._id, item.color)}>Remove</Button>
+              <Button click={() => moveToCart(item._id)}>Move to Cart</Button>
+              <Button click={() => removeFromSave(item._id)}>Remove</Button>
             </div>
           </div>
         </div>

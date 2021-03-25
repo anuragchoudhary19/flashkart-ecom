@@ -1,0 +1,29 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  height: fit-content;
+  width: 100%;
+  background-color: #023047;
+  color: #ffb703;
+  padding: 1rem;
+  > ul {
+    list-style: none;
+  }
+  > ul > li {
+    padding: 4px 0;
+    text-align: left;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  > ul > li:first-child {
+    color: white;
+    cursor: default;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}

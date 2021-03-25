@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { auth } from '../../../firebase';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import classes from './ForgotPassword.module.css';
-import Spinner from '../../../components/Spinner/Spinner';
+import Button from '../../../components/Elements/Button/Button';
+import Input from '../../../components/Elements/Input/Input';
+import { LoadingOutlined } from '@ant-design/icons';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -14,8 +13,9 @@ function ForgotPassword() {
 
   const { user } = useSelector((state) => ({ ...state }));
   let history = useHistory();
+  let dispatch = useDispatch();
   useEffect(() => {
-    if (user && user.idToken) {
+    if (user && user.token) {
       history.push('/');
     }
   }, [user]);
@@ -27,35 +27,50 @@ function ForgotPassword() {
       url: process.env.REACT_APP_FORGOT_PASSWORD_REDIRECT,
       handleCodeInApp: true,
     };
-
     await auth
       .sendPasswordResetEmail(email, config)
       .then(() => {
         setEmail('');
         setLoading(false);
-        toast.success('Check your email for password reset link');
+        dispatch({
+          type: 'HIDE_MODAL',
+          payload: null,
+        });
       })
       .catch((err) => {
         setLoading(false);
-        toast.error(err.message);
       });
+  };
+  const showSignupAuthModal = () => {
+    dispatch({
+      type: 'SHOW_SIGNUP_MODAL',
+      payload: { showSignupModal: true },
+    });
+  };
+  const showLoginAuthModal = () => {
+    dispatch({
+      type: 'SHOW_LOGIN_MODAL',
+      payload: { showLoginModal: true },
+    });
   };
 
   return (
     <div className={classes.form}>
-      <ToastContainer />
-      <h2>Forgot Password</h2>
+      <header>Forgot Password</header>
       <form onSubmit={submitHandler}>
-        <input
+        <Input
           type='email'
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          change={(e) => setEmail(e.target.value)}
           placeholder='Enter your Email'
           autoFocus
+          autoComplete
         />
-        <button type='submit' disabled={!email}>
-          {loading ? <Spinner>Submit</Spinner> : 'Signup'}
-        </button>
+        <Button type='submit' disabled={!email}>
+          {loading ? <LoadingOutlined /> : 'Send Link'}
+        </Button>
+        <Button click={showLoginAuthModal}>Log In</Button>
+        <Button click={showSignupAuthModal}>New User?Create an account</Button>
       </form>
     </div>
   );

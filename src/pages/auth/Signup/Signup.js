@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import Button from '../../../components/Elements/Button/Button';
+import Input from '../../../components/Elements/Input/Input';
 import classes from './Signup.module.css';
 import { auth } from '../../../firebase';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import Spinner from '../../../components/Spinner/Spinner';
+import { message } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { user } = useSelector((state) => ({ ...state }));
-  let history = useHistory();
-  useEffect(() => {
-    if (user && user.idToken) {
-      history.push('/');
-    }
-  }, [user]);
+  let dispatch = useDispatch();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -27,32 +22,43 @@ const SignUp = () => {
       handleCodeInApp: true,
     };
     await auth.sendSignInLinkToEmail(email, config);
-    setLoading(false);
-    toast.success(`Email is sent to ${email}`);
     window.localStorage.setItem('emailForSignUp', email);
+    setLoading(false);
     setEmail('');
+    message.success(`SignIn link was sent to ${email}`, 2).then(() => {
+      dispatch({
+        type: 'HIDE_MODAL',
+        payload: null,
+      });
+    });
   };
-
-  const signupform = () => (
-    <form onSubmit={submitHandler}>
-      <input
-        type='email'
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder='Enter your email...'
-        autoFocus
-        autoComplete='true'></input>
-      <button type='submit'>{loading ? <Spinner>Signup</Spinner> : 'Signup'}</button>
-    </form>
-  );
-
+  const showPasswordRecoveryModal = () => {
+    dispatch({
+      type: 'SHOW_PASSWORD_RECOVERY_MODAL',
+      payload: { showPasswordRecoveryModal: true },
+    });
+  };
+  const showLoginAuthModal = () => {
+    dispatch({
+      type: 'SHOW_LOGIN_MODAL',
+      payload: { showLoginModal: true },
+    });
+  };
   return (
     <div className={classes.form}>
-      <ToastContainer />
-      <div>
-        <h2 style={{ color: '#342ead' }}>SignUp</h2>
-      </div>
-      {signupform()}
+      <header>Sign Up</header>
+      <form onSubmit={submitHandler}>
+        <Input
+          type='email'
+          error=''
+          value={email}
+          change={(e) => setEmail(e.target.value)}
+          placeholder='Email'
+          autoFocus
+          autoComplete='true'></Input>
+        <Button type='submit'>{loading ? <LoadingOutlined /> : 'Sign Up'}</Button>
+        <Button click={showLoginAuthModal}>Log In</Button>
+      </form>
     </div>
   );
 };

@@ -1,25 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Link } from 'react-router-dom';
+import React, { useRef, useEffect, useState } from 'react';
+import { Route, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import LoadingToRedirect from './LoadingToRedirect';
 import { currentAdmin } from '../../axiosFunctions/auth';
+import LoadingToRedirect from './LoadingToRedirect';
 
-const AdminRoute = ({ children, ...rest }) => {
+const AdminRoute = ({ component: Component, ...rest }) => {
   const { user } = useSelector((state) => ({ ...state }));
-  const [ok, setOk] = useState(false);
+  let [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    if (user && user.idToken) {
-      currentAdmin(user.idToken)
-        .then(() => {
-          setOk(true);
+    if (user && user.token) {
+      currentAdmin(user.token)
+        .then((res) => {
+          setIsAuthenticated(true);
+          console.log(res);
         })
-        .catch(() => {
-          setOk(false);
+        .catch((err) => {
+          console.log(err);
+          setIsAuthenticated(false);
         });
     }
+    return () => {
+      setIsAuthenticated(false);
+    };
   }, [user]);
-  return ok ? <Route {...rest} /> : <LoadingToRedirect />;
+
+  return user && user.token ? (
+    <Route
+      {...rest}
+      render={(props) =>
+        isAuthenticated ? <Component {...props} /> : <LoadingToRedirect isAuthenticated={isAuthenticated} />
+      }
+    />
+  ) : (
+    <Redirect to='/' />
+  );
 };
 
 export default AdminRoute;

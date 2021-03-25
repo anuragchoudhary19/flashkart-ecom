@@ -23,6 +23,13 @@ export const updateProduct = async (slug, product, authtoken) => {
     },
   });
 };
+export const addRating = async (id, star, authtoken) => {
+  return await axios.put(`${process.env.REACT_APP_API}/product/rating/${id}`, star, {
+    headers: {
+      authtoken,
+    },
+  });
+};
 
 export const createProduct = async (product, authtoken) => {
   return await axios.post(`${process.env.REACT_APP_API}/product`, product, {

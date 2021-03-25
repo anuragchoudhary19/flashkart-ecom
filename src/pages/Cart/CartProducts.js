@@ -5,14 +5,14 @@ import { updateCart, saveForLater } from '../../axiosFunctions/cart';
 import Button from '../../components/Elements/Button/Button';
 import styles from './Cart.module.css';
 
-const CartContent = ({ user, cart, savedForLater, setloading, calculate }) => {
+const CartContent = ({ user, cart, savedForLater, calculate }) => {
   const dispatch = useDispatch();
 
-  const update = (id, color, operation) => {
+  const update = (id, operation) => {
     let productsArray = [...cart.products];
     if (typeof window !== 'undefined') {
       productsArray.forEach((item, i) => {
-        if (item._id === id && item.color === color) {
+        if (item._id === id) {
           let updatedItem;
           if (operation === 'add') {
             updatedItem = { ...item, count: item.count + 1 };
@@ -31,7 +31,7 @@ const CartContent = ({ user, cart, savedForLater, setloading, calculate }) => {
           }
           let orderSummary = calculate(productsArray);
           if (user) {
-            updateCart(user.idToken, user.email, operation, id, color)
+            updateCart(user.token, user.email, operation, id)
               .then((res) => {
                 console.log(res.data);
               })
@@ -57,7 +57,7 @@ const CartContent = ({ user, cart, savedForLater, setloading, calculate }) => {
       payload: saved,
     });
     if (user) {
-      saveForLater(user.idToken, user.email, item)
+      saveForLater(user.token, user.email, item)
         .then((res) => {
           console.log(res.data);
         })
@@ -68,18 +68,16 @@ const CartContent = ({ user, cart, savedForLater, setloading, calculate }) => {
   };
 
   return (
-    <div className={styles.table}>
+    <div className={styles.cart}>
       <header>My Cart</header>
       {cart.products.map((item, i) => (
         <div className={styles.tableRow} key={i}>
           <div className={styles.product}>
             <div>
-              <img alt='img' src={item.images[0].url} width='150px' height='fit-content' />
+              <img alt='img' src={item.images[0].url} width='150px' height='200px' />
             </div>
             <div>
-              <b>
-                {item.title} ({item.color})
-              </b>
+              <b>{item.title}</b>
               <b>
                 &#8377;
                 {item.price * (1 - item.discount / 100) * item.count}
@@ -98,17 +96,24 @@ const CartContent = ({ user, cart, savedForLater, setloading, calculate }) => {
           </div>
           <div className={styles.controls}>
             <div>
-              <Button click={() => update(item._id, item.color, 'add')}>+</Button>
-              <div style={{ width: 'fit-content', padding: '0.75rem', height: '100%', border: '1px solid #ccc' }}>
+              <Button click={() => update(item._id, 'add')}>+</Button>
+              <div
+                style={{
+                  width: 'fit-content',
+                  margin: '0 0.25rem',
+                  padding: '0.5rem',
+                  height: '100%',
+                  border: '1px solid #ccc',
+                }}>
                 <b>{item.count.toString()}</b>
               </div>
-              <Button click={() => update(item._id, item.color, 'subtract')} disabled={item.count === 0}>
+              <Button click={() => update(item._id, 'subtract')} disabled={item.count === 0}>
                 -
               </Button>
             </div>
             <div style={{ justifyContent: 'flex-end' }}>
-              <Button click={() => update(item._id, item.color, 'save')}>Save for later</Button>
-              <Button click={() => update(item._id, item.color, 'remove')}>Remove</Button>
+              <Button click={() => update(item._id, 'save')}>Save for later</Button>
+              <Button click={() => update(item._id, 'remove')}>Remove</Button>
             </div>
           </div>
         </div>

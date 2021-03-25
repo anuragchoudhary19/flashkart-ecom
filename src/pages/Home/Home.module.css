@@ -1,56 +1,33 @@
 .home {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  padding: 1rem 0;
   height: auto;
-  width: 100%;
-  background-color: #f1f1f1;
+  flex-grow: 1;
+  background-color: transparent;
 }
 .arrivals,
 .bestsellers {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  width: 90%;
-  margin: 2rem;
-  border-radius: 4px;
+  width: 100%;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 5px 0 #ccc;
+}
+.arrivals > header,
+.bestsellers > header {
+  font-weight: 500;
+  font-size: 1.5rem;
+  color: rgba(0, 0, 0, 0.7);
   background-color: white;
-  box-shadow: 0 3px 5px 0 #ccc;
+  padding: 0.4rem;
+  border-bottom: 2px solid #ccc;
 }
-.arrivals header,
-.bestsellers header {
-  margin: 10px auto 0px 20px;
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: rgba(35, 18, 11, 0.7);
-}
-.arrivals > div,
-.bestsellers > div {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  height: fit-content;
-}
-.arrivals > div > div,
-.bestsellers > div > div {
-  flex-basis: 25%;
-}
-.carousel {
-  padding: 0 2rem;
-}
-.carousel .card {
-  height: fit-content;
-  flex-direction: column;
-  margin: 0 1rem;
-}
-.carousel .card > div {
-  width: 250px;
-}
-.pagination {
-  margin: 0.25rem;
-}
-.pagination li {
-  height: 100%;
-  width: fit-content;
+@media only screen and (min-width: 1500px) {
+  .arrivals,
+  .bestsellers {
+    width: 80%;
+  }
 }

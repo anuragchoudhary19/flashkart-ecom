@@ -22,7 +22,7 @@ const EmptyCart = ({ user }) => {
       </div>
       <div>Cart seems to be Empty!</div>
       <div>
-        {user && user.idToken ? (
+        {user && user.token ? (
           <NavLink exact to='/'>
             <Button>Start Building Your Cart Here...</Button>
           </NavLink>

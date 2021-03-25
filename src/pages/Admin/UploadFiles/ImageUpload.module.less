@@ -1,0 +1,30 @@
+.upload {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  > div:first-child {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: fit-content;
+    min-height: 20vh;
+    padding: 1rem;
+    font-size: 2rem;
+    > div {
+      margin: auto 20px;
+      cursor: pointer;
+    }
+  }
+  label {
+    background-color: #023047;
+    color: #ffb703;
+    width: 15%;
+    &:hover {
+      color: #023047;
+      background-color: #ffb703;
+    }
+  }
+}
