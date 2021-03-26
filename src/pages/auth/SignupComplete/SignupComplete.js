@@ -1,32 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import classes from './SignupComplete.module.css';
+import { useDispatch } from 'react-redux';
 import { auth } from '../../../firebase';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from 'react-redux';
+
+import Button from '../../../components/Elements/Button/Button';
+import Input from '../../../components/Elements/Input/Input';
 import { createOrUpdateUser } from '../../../axiosFunctions/auth';
+import { LoadingOutlined } from '@ant-design/icons';
+import { message } from 'antd';
+import classes from './SignupComplete.module.css';
 
 const SignupComplete = ({ history }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [length, setLength] = useState(false);
+  const [capital, setCapital] = useState(false);
+  const [small, setSmall] = useState(false);
+  const [number, setNumber] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const { user } = useSelector((state) => ({ ...state }));
   let dispatch = useDispatch();
+  useEffect(() => {
+    checkPassword(password);
+  }, [password]);
 
+  const checkPassword = (password) => {
+    password?.length >= 6 ? setLength(true) : setLength(false);
+    /[A-Z]/.test(password) ? setCapital(true) : setCapital(false);
+    /[a-z]/.test(password) ? setSmall(true) : setSmall(false);
+    /[0-9]/.test(password) ? setNumber(true) : setNumber(false);
+  };
+  const passwordHandler = (e) => {
+    let value = e.target.value;
+    setError('');
+    setPassword(value);
+  };
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (!email && !password) {
-      toast.error('Email and Password cannot be empty');
+    if (!password) {
+      setError('Password id required');
+      return;
     }
     if (password.length < 6) {
-      toast.error('Password must be more than 6 characters long');
+      message.error('Password must be atleast 6 characters long');
+      return;
     }
+    if (!/[A-Z]/.test(password)) {
+      message.error('Password must have atleast one capital letter');
+      return;
+    }
+    if (!/[a-z]/.test(password)) {
+      message.error('Password must have atleast one small letter');
+      return;
+    }
+    if (!/[0-9]/.test(password)) {
+      message.error('Password must have atleast one number');
+      return;
+    }
+    setLoading(true);
     try {
       const result = await auth.signInWithEmailLink(email, window.location.href);
       // console.log(result)
       if (result.user.emailVerified) {
         // remove user from localstorage
-        window.localStorage.removeItem('emailForSignUp');
+        window.localStorage.removeItem('emailForSignIn');
         //get user id token
         let user = auth.currentUser;
         await user.updatePassword(password);
@@ -40,7 +77,7 @@ const SignupComplete = ({ history }) => {
               payload: {
                 name: res.data.name,
                 email: res.data.email,
-                idToken: idTokenResult.token,
+                token: idTokenResult.token,
                 role: res.data.role,
                 _id: res.data._id,
               },
@@ -50,31 +87,38 @@ const SignupComplete = ({ history }) => {
         //redirect
         history.push('/');
       }
+      setLoading(false);
     } catch (e) {
-      console.log(e);
-      toast.error(e.message);
+      message.error(e.message);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    setEmail(window.localStorage.getItem('emailForSignUp'));
+    setEmail(window.localStorage.getItem('emailForSignIn'));
   }, []);
 
-  const signupCompleteform = () => (
-    <form onSubmit={submitHandler}>
-      <input type='email' value={email} placeholder='Please enter your email...' disabled autoFocus></input>
-      <input type='password' value={password} onChange={(e) => setPassword(e.target.value)} autoFocus></input>
-      <button type='submit'>SignUp</button>
-    </form>
-  );
-
   return (
-    <div className={classes.signupModal}>
-      <div>
-        <h4 style={{ color: '#fff' }}>SignUp</h4>
-      </div>
-      {signupCompleteform()}
-      <ToastContainer />
+    <div className={classes.form}>
+      <header>Sign Up</header>
+      <form onSubmit={submitHandler}>
+        <div>
+          <label>Email</label>
+          <Input type='email' value={email} disabled />
+        </div>
+        <div>
+          <label>Password</label>
+          <Input type='password' value={password} change={passwordHandler} autoFocus />
+        </div>
+        <span>{error}</span>
+        <ul>
+          <li style={{ color: length ? '#9ede73' : 'grey' }}>Atleast 6 characters long</li>
+          <li style={{ color: capital ? '#9ede73' : 'grey' }}>Atleast one capital letter</li>
+          <li style={{ color: small ? '#9ede73' : 'grey' }}>Atleast one small letter</li>
+          <li style={{ color: number ? '#9ede73' : 'grey' }}>Atleast one number</li>
+        </ul>
+        <Button type='submit'>{loading ? <LoadingOutlined /> : 'Sign Up'}</Button>
+      </form>
     </div>
   );
 };

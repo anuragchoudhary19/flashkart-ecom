@@ -1,16 +1,15 @@
 import React from 'react';
-
 import LoadingCard from '../Card/LoadingCard';
 import ProductCard from '../Card/ProductCard';
 
-import styles from './ProductsCarousel.module.css';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import styles from './ProductsCarousel.module.css';
 
 const ProductsCarousel = ({ loading, products, page, setPage }) => {
   return (
     <div className={styles.carousel}>
       {page > 1 && (
-        <button className={styles.back} onClick={() => setPage((currentPage) => --currentPage)} disabled={page === 1}>
+        <button className={styles.back} onClick={() => setPage((currentPage) => --currentPage)}>
           <LeftOutlined style={{ fontSize: '2rem' }} />
         </button>
       )}
@@ -25,7 +24,7 @@ const ProductsCarousel = ({ loading, products, page, setPage }) => {
           ))
         )}
       </div>
-      {!(page === 3 || products.length <= 3) && (
+      {!(page === 4 || products.length <= 3) && (
         <button className={styles.next} onClick={() => setPage((currentPage) => ++currentPage)}>
           <RightOutlined style={{ fontSize: '2rem' }} />
         </button>

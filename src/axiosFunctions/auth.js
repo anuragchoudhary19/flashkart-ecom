@@ -34,3 +34,7 @@ export const currentAdmin = async (authToken) => {
     }
   );
 };
+
+export const checkDuplicateEmail = async (email) => {
+  return await axios.post(`${process.env.REACT_APP_API}/email-already-registered`, { email });
+};

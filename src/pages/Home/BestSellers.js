@@ -3,13 +3,12 @@ import React, { useEffect, useState } from 'react';
 import ProductsCarousel from '../../components/ProductsCarousel/ProductsCarousel';
 
 import { getProfiles } from '../../axiosFunctions/productProfile';
-import classes from './Home.module.css';
+import styles from './Home.module.css';
 
-const BestSellers = ({ user }) => {
+const BestSellers = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     loadAllProducts();
@@ -19,20 +18,18 @@ const BestSellers = ({ user }) => {
     setLoading(true);
     await getProfiles('sold', 'desc', page)
       .then((res) => {
-        console.log(res.data);
         setProducts(res.data);
-        setLoading(false);
       })
       .catch((err) => {
-        setLoading(false);
         console.log(err);
       });
+    setLoading(false);
   };
   // loading, products, page, setPage, perPage;
   return (
-    <div className={classes.arrivals}>
+    <div className={styles.productsCarousel}>
       <header>Best Sellers</header>
-      <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} perPage={perPage} />
+      <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} />
     </div>
   );
 };

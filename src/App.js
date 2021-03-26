@@ -36,6 +36,7 @@ import 'antd/dist/antd.less';
 
 //auth component
 const Home = lazy(() => import('./pages/Home/Home'));
+const SignUpComplete = lazy(() => import('./pages/auth/SignupComplete/SignupComplete'));
 //admin component
 const CreateBrand = lazy(() => import('./pages/Admin/CRUDBrand/CreateBrand/CreateBrand'));
 const CreateProduct = lazy(() => import('./pages/Admin/CRUDProduct/CreateProduct/CreateProduct'));
@@ -86,19 +87,18 @@ function App() {
         <div className={classes.content}>
           <Switch>
             <Route exact path='/' component={Home} />
+            <Route exact path='/signup/complete' component={SignUpComplete} />
             <Route exact path='/product/:slug' component={Product} />
-            <Route exact path='/cart' component={Cart} />
-            <Route exact path='/products' component={FilteredProducts} />
             <Route exact path='/search' component={FilteredProducts} />
+            <Route exact path='/products' component={FilteredProducts} />
+            <Route exact path='/cart' component={Cart} />
 
             <UserRoute exact path='/checkout' component={Checkout} />
             <UserRoute exact path='/payment' component={Payment} />
-
             <UserRoute exact path='/user/orders' component={Orders} />
-            {/* <UserRoute exact path='/user/password' component={Password} /> */}
             <UserRoute exact path='/user/wishlist' component={Wishlist} />
-            <AdminRoute exact path='/admin/orders' component={OrdersByUser} />
 
+            <AdminRoute exact path='/admin/orders' component={OrdersByUser} />
             <AdminRoute exact path='/admin/brand' component={CreateBrand} />
             <AdminRoute exact path='/admin/product' component={CreateProduct} />
             <AdminRoute exact path='/admin/product-profile' component={CreateProductProfile} />

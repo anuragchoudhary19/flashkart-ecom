@@ -7,7 +7,7 @@ import { searchReducer } from './searchReducer';
 const rootReducer = combineReducers({
   user: userReducer,
   authModal: authModal,
-  localCart: cartReducer,
+  cart: cartReducer,
   savedForLater: savedForLaterReducer,
   search: searchReducer,
 });

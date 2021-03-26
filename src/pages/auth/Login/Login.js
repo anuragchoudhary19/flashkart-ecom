@@ -4,17 +4,21 @@ import { useHistory } from 'react-router-dom';
 
 import Input from '../../../components/Elements/Input/Input';
 import Button from '../../../components/Elements/Button/Button';
+
 import SignInWithGoogle from './images/google.png';
-import classes from './Login.module.css';
+
 import { validateEmail } from '../../../functions/validateString';
 import { auth, googleAuthProvider } from '../../../firebase';
 import { createOrUpdateUser } from '../../../axiosFunctions/auth';
 import { LoadingOutlined } from '@ant-design/icons';
 import { message } from 'antd';
-const Login = (props) => {
+import classes from './Login.module.css';
+
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ email: '', password: '' });
 
   let history = useHistory();
   let dispatch = useDispatch();
@@ -36,11 +40,11 @@ const Login = (props) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (email === '') {
-      message.error('Please enter email');
+      message.error('Email is required');
       return;
     }
     if (password === '') {
-      message.error('Please enter password');
+      message.error('Password is required');
       return;
     }
     if (!validateEmail(email)) {
@@ -55,6 +59,7 @@ const Login = (props) => {
 
       createOrUpdateUser(idTokenResult.token)
         .then((res) => {
+          console.log(res.data);
           window.localStorage.setItem(
             'user',
             JSON.stringify({
@@ -81,10 +86,17 @@ const Login = (props) => {
           });
           roleBasedRedirect(res);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          message.error('Server Error');
+        });
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      if (error.code === 'auth/user-not-found') {
+        setError({ ...error, email: 'Email is not registered' });
+      }
+      if (error.code === 'auth/wrong-password') {
+        setError({ ...error, password: 'Password do not match' });
+      }
       setLoading(false);
     }
   };
@@ -113,9 +125,13 @@ const Login = (props) => {
             });
             roleBasedRedirect(res);
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            setError('Error in Sign In with Google');
+            console.log(err);
+          });
       })
       .catch((err) => {
+        setError('Error in Sign In with Google');
         console.log(err);
       });
   };
@@ -133,28 +149,41 @@ const Login = (props) => {
   };
   return (
     <div className={classes.form}>
-      <header>Login</header>
+      <header>Log In</header>
       <form onSubmit={submitHandler}>
-        <Input
-          type='email'
-          value={email}
-          change={(e) => setEmail(e.target.value)}
-          placeholder='Email'
-          autoFocus
-          autoComplete='true'></Input>
-        <Input
-          type='password'
-          value={password}
-          change={(e) => setPassword(e.target.value)}
-          placeholder='Password'></Input>
-        <span onClick={showPasswordRecoveryModal}>Forgot Password?</span>
-        <Button type='submit'>{loading ? <LoadingOutlined /> : 'Login'}</Button>
+        <div>
+          <label>Email</label>
+          <Input
+            type='email'
+            error={error.email}
+            value={email}
+            change={(e) => setEmail(e.target.value)}
+            placeholder='Email'
+            autoFocus
+            autoComplete='true'
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <Input
+            type='password'
+            error={error.password}
+            value={password}
+            change={(e) => setPassword(e.target.value)}
+            placeholder='Password'
+          />
+        </div>
+        <div>
+          <span>{error.email || error.password}</span>
+          <span onClick={showPasswordRecoveryModal}>Forgot Password?</span>
+        </div>
+        <Button type='submit'>{loading ? <LoadingOutlined /> : 'Log In'}</Button>
       </form>
       <p>or</p>
       <div className={classes.google} onClick={loginWithGoogle}>
         <img src={SignInWithGoogle} alt='' />
       </div>
-      <span onClick={showSignupAuthModal}>New User? Create an account</span>
+      <span onClick={showSignupAuthModal}>New User? Sign Up</span>
     </div>
   );
 };

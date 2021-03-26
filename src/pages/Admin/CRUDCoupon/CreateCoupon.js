@@ -8,7 +8,6 @@ import Sidebar from '../../../components/nav/Sidebar/Sidebar';
 import { createCoupon, getCoupons, removeCoupon, updateCoupon } from '../../../axiosFunctions/coupon';
 //css
 import classes from './Coupon.module.css';
-import { validate } from './../../../functions/validateString';
 
 const Coupon = () => {
   const [name, setName] = useState('');

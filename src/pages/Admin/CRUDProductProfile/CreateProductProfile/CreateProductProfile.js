@@ -12,7 +12,6 @@ import { getBrands } from '../../../../axiosFunctions/brand';
 //css
 import classes from './CreateProductProfile.module.css';
 //antd
-import { notification } from 'antd';
 import { Select, Radio, message } from 'antd';
 const { Option } = Select;
 
@@ -53,7 +52,6 @@ const Product = () => {
   const [profile, setProfile] = useState(() => flatten(initialState, { safe: true }));
   const [brands, setBrands] = useState([]);
   const [products, setProducts] = useState([]);
-  const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const { title, description, price, discount, quantity, colors } = profile;
 

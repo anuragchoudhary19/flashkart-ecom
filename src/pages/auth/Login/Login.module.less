@@ -4,9 +4,9 @@
 .form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: fit-content;
+  padding-bottom: 1rem;
   > header {
     width: 100%;
     font-size: 2rem;
@@ -31,18 +31,35 @@
 }
 
 .form form {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   padding: 1rem;
+  > div {
+    width: 100%;
+    label {
+      font-weight: 500;
+      font-size: 1rem;
+      margin: 0;
+    }
+  }
+  > div:nth-child(3) {
+    display: flex;
+    justify-content: space-between;
+    > span:first-child {
+      font-size: 14px;
+      color: red;
+    }
+  }
   button {
     margin: 0.5rem;
   }
-  span {
-    margin-left: auto;
-    margin-right: 0;
-  }
+  // span {
+  //   margin-left: auto;
+  //   margin-right: 0;
+  // }
 }
 .google {
   display: flex;

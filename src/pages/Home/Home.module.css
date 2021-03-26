@@ -8,16 +8,14 @@
   flex-grow: 1;
   background-color: transparent;
 }
-.arrivals,
-.bestsellers {
+.productsCarousel {
   display: flex;
   flex-direction: column;
   width: 100%;
   margin-bottom: 1rem;
   box-shadow: 0 2px 5px 0 #ccc;
 }
-.arrivals > header,
-.bestsellers > header {
+.productsCarousel > header {
   font-weight: 500;
   font-size: 1.5rem;
   color: rgba(0, 0, 0, 0.7);
@@ -26,8 +24,7 @@
   border-bottom: 2px solid #ccc;
 }
 @media only screen and (min-width: 1500px) {
-  .arrivals,
-  .bestsellers {
+  .productsCarousel {
     width: 80%;
   }
 }

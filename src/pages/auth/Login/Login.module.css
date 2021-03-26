@@ -1,9 +1,9 @@
 .form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: fit-content;
+  padding-bottom: 1rem;
 }
 .form > header {
   width: 100%;
@@ -27,18 +27,31 @@
   font-weight: bold;
 }
 .form form {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
   padding: 1rem;
 }
+.form form > div {
+  width: 100%;
+}
+.form form > div label {
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+}
+.form form > div:nth-child(3) {
+  display: flex;
+  justify-content: space-between;
+}
+.form form > div:nth-child(3) > span:first-child {
+  font-size: 14px;
+  color: red;
+}
 .form form button {
   margin: 0.5rem;
-}
-.form form span {
-  margin-left: auto;
-  margin-right: 0;
 }
 .google {
   display: flex;

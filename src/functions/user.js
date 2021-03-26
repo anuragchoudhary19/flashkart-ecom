@@ -4,7 +4,7 @@ import { auth } from '../firebase';
 export const unsubscribe = (dispatch) => {
   return auth.onIdTokenChanged(async (user) => {
     if (user) {
-      const idTokenResult = await user.getIdTokenResult(true);
+      const idTokenResult = await user.getIdTokenResult();
       currentUser(idTokenResult.token)
         .then((res) => {
           console.log(res);

@@ -75,7 +75,6 @@ const Orders = () => {
               </>
             ))}
         </div>
-        {/* <pre>{JSON.stringify(orders, null, 4)}</pre> */}
       </div>
     )
   );

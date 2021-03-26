@@ -16,7 +16,7 @@ import { UserOutlined } from '@ant-design/icons';
 
 function Header() {
   const [dropdown, setDropdown] = useState(false);
-  let { user, localCart } = useSelector((state) => ({ ...state }));
+  let { user, cart } = useSelector((state) => ({ ...state }));
 
   let dispatch = useDispatch();
   let history = useHistory();
@@ -82,9 +82,7 @@ function Header() {
         )}
         <div className={classes.cart}>
           <Link to={'/cart'}>
-            <Badge
-              count={localCart.products && localCart.products.length}
-              style={{ backgroundColor: '#ffb703', color: '#023047' }}>
+            <Badge count={cart?.products?.length} style={{ backgroundColor: '#ffb703', color: '#023047' }}>
               <ShoppingCartOutlined style={{ color: '#ffb703', fontSize: '2rem' }} />
             </Badge>
           </Link>

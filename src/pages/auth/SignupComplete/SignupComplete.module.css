@@ -1,33 +1,55 @@
-.signupModal {
-  position: absolute;
+.form {
   display: flex;
   flex-direction: column;
-  width: 20%;
-  left: 40%;
-  top: 30%;
-  background-color: #53c7f0;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  width: 400px;
+  background-color: white;
+  margin: 2rem;
+}
+.form > header {
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 500;
   text-align: center;
-  border-radius: 5px;
+  padding: 0.25rem;
+  background-color: #023047;
+  color: #ffb703;
 }
-
-.signupModal input {
-  display: inline-block;
-  width: 80%;
-  height: 30px;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-  margin: 10px !important;
-  color: black;
+.form form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
 }
-.signupModal button {
-  width: 80%;
-  height: 30px;
-  margin: 10px !important;
-  border: none;
-  outline: none;
-  border-radius: 5px;
-  background-color: #00a1db;
-  color: #fff !important;
-  border: 1px solid #00a1db;
+.form form > div {
+  width: 100%;
+}
+.form form > div label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+.form form > ul {
+  display: flex;
+  align-self: flex-start;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  margin-left: 1rem;
+  margin-bottom: 0;
+}
+.form form > ul li {
+  font-weight: 500;
+}
+.form form > span:nth-child(2) {
+  color: red;
+  font-weight: bold;
+}
+.form form button {
+  margin: 0.5rem;
 }

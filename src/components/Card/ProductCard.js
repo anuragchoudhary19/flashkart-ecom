@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import laptop from '../../images/laptop.jpeg';
 import StarRating from '../StarRating/StarRating';
 import Button from '../Elements/Button/Button';
@@ -10,25 +10,23 @@ import { unsubscribe } from '../../functions/user';
 import { addToCartHandle } from '../../functions/cart';
 import { addToWishlist, removeFromWishlist } from '../../axiosFunctions/user';
 
-import styles from './ProductCard.module.css';
-import { Tooltip } from 'antd';
-import { message } from 'antd';
+import { Tooltip, message } from 'antd';
 import { HeartTwoTone } from '@ant-design/icons';
+import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product }) => {
-  const [wishlisted, setWishlisted] = useState(false);
-  const { title, images, price, discount } = product;
+  const [wishlist, setWishlist] = useState(false);
+  const { title, images, price, discount, _id, ratings } = product;
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('wishlist useeffect');
-    if (user && user.wishlist) {
-      setWishlisted(user.wishlist.find((ele) => ele === product._id));
+    if (user?.wishlist) {
+      setWishlist(user.wishlist.find((ele) => ele === _id));
     }
   }, [user]);
 
-  const addToCart = (product) => {
+  const addToCart = () => {
     addToCartHandle(product, dispatch, user);
   };
   const wishlistHandle = () => {
@@ -36,7 +34,7 @@ const ProductCard = ({ product }) => {
       message.error('Login to add to wishlist');
       return;
     }
-    if (wishlisted) {
+    if (wishlist) {
       handleRemoveFromWishlist();
     } else {
       handleAddToWishlist();
@@ -57,29 +55,33 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className={styles.card}>
-      <div onClick={wishlistHandle} className={styles.heart}>
-        <Tooltip title={wishlisted ? 'Added To Wishlist' : 'Add To Wishlist'}>
-          <HeartTwoTone twoToneColor={wishlisted ? '#d62828' : 'grey'} />
+      <div onClick={wishlistHandle} className={styles.wishlist}>
+        <Tooltip title={wishlist ? 'Wishlisted' : 'Add To Wishlist'}>
+          <HeartTwoTone twoToneColor={wishlist ? '#d62828' : 'grey'} />
         </Tooltip>
       </div>
       <div>
         <Link to={`/product/${product.slug}`}>
-          <img src={images && images.length ? images[0].url : laptop} alt='' width='100px' height='150px' />
-          <StarRating ratings={product.ratings} style={{ fontSize: '12px', color: '#ffb703' }} />
-          <span>{title}</span>
+          <img src={images?.length ? images[0].url : laptop} alt={product.name} width='100px' height='180px' />
+          <StarRating ratings={ratings} />
           <span>
+            <b>{title}</b>
+          </span>
+          <span style={{ fontSize: '1.3rem' }}>
             <b>{(price - (discount * price) / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</b>
           </span>
           <div>
             {discount > 0 && (
-              <span>
-                <s>{price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</s>
-              </span>
+              <>
+                <span>
+                  <s>{price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</s>
+                </span>
+                <span style={{ marginLeft: '5px', color: 'green', fontWeight: 'bold' }}>{discount}%Off</span>
+              </>
             )}
-            {discount > 0 && <span style={{ marginLeft: '5px', color: 'green', fontWeight: '500' }}>{discount}%</span>}
           </div>
         </Link>
-        <Button click={() => addToCart(product)}>Add To Cart</Button>
+        <Button click={addToCart}>Add To Cart</Button>
       </div>
     </div>
   );

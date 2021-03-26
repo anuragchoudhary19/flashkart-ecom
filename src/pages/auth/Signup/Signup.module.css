@@ -1,9 +1,8 @@
 .form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: fit-content;
+  height: 400px;
+  width: 100%;
 }
 .form > header {
   width: 100%;
@@ -15,16 +14,26 @@
   color: #ffb703;
 }
 .form form {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: 100%;
   padding: 1rem;
+}
+.form form > div {
+  width: 100%;
+}
+.form form > div label {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+.form form > span:nth-child(2) {
+  color: red;
+  font-weight: bold;
 }
 .form form button {
   margin: 0.5rem;
-}
-.form form > button:nth-child(3) {
-  background-color: white;
-  box-shadow: 0 0 8px 0 #ccc;
 }

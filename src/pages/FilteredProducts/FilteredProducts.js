@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getProductProfilesByCount, fetchProductsByFilter } from '../../axiosFunctions/productProfile';
+import { fetchProductsByFilter } from '../../axiosFunctions/productProfile';
 import { getBrands } from '../../axiosFunctions/brand';
-import { createSelectorHook, useDispatch, useSelector } from 'react-redux';
-import FilterMenu from './FilterMenu';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingCard from '../../components/Card/LoadingCard';
 import ProductCard from '../../components/Card/ProductCard';
 import styles from './FilteredProducts.module.css';
 import { Menu, Slider, Checkbox } from 'antd';
 import { Rate } from 'antd';
-const { SubMenu, ItemGroup } = Menu;
+const { SubMenu } = Menu;
 
 const FilteredProducts = () => {
   const [results, setResults] = useState([]);
