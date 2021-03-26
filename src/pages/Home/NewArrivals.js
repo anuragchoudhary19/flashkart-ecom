@@ -13,12 +13,15 @@ const NewArrivals = () => {
   }, [page]);
 
   const loadAllProducts = async () => {
+    setLoading(true);
     await getProfiles('createdAt', 'desc', page)
       .then((res) => {
         setProducts(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
