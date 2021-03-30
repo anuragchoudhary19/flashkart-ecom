@@ -9,17 +9,16 @@ const RelatedProducts = ({ brand }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(1);
 
   useEffect(() => {
     loadAllProducts();
+    return loadAllProducts;
   }, [page]);
 
-  const loadAllProducts = async () => {
+  const loadAllProducts = () => {
     setLoading(true);
-    await relatedProducts(brand, page)
+    relatedProducts(brand, page)
       .then((res) => {
-        console.log(res.data);
         setProducts(res.data);
         setLoading(false);
       })
@@ -30,10 +29,12 @@ const RelatedProducts = ({ brand }) => {
   };
 
   return (
-    <div className={classes.products}>
-      <header>Related Products</header>
-      <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} />
-    </div>
+    products.length && (
+      <div className={classes.products}>
+        <header>Related Products</header>
+        <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} />
+      </div>
+    )
   );
 };
 

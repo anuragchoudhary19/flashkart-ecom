@@ -1,63 +1,79 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import { updateCart, saveForLater } from '../../axiosFunctions/cart';
 import Button from '../../components/Elements/Button/Button';
 import styles from './Cart.module.css';
-
-const CartContent = ({ user, cart, savedForLater, calculate }) => {
+import { message } from 'antd';
+const CartContent = ({ user, cart, savedForLater, cartSummary, setLoading }) => {
   const dispatch = useDispatch();
+  let history = useHistory();
 
   const update = (id, operation) => {
-    let productsArray = [...cart.products];
+    setLoading(true);
+    let products = [...cart.products];
     if (typeof window !== 'undefined') {
-      productsArray.forEach((item, i) => {
+      products.forEach((item, i) => {
+        let updatedProduct;
         if (item._id === id) {
-          let updatedItem;
           if (operation === 'add') {
-            updatedItem = { ...item, count: item.count + 1 };
-            productsArray.splice(i, 1, updatedItem);
+            updatedProduct = { ...item, count: item.count + 1 };
+            products.splice(i, 1, updatedProduct);
           }
           if (operation === 'subtract') {
-            updatedItem = { ...item, count: item.count - 1 };
-            productsArray.splice(i, 1, updatedItem);
+            updatedProduct = { ...item, count: item.count - 1 };
+            products.splice(i, 1, updatedProduct);
           }
           if (operation === 'remove') {
-            productsArray.splice(i, 1);
+            products.splice(i, 1);
           }
           if (operation === 'save') {
             save(item);
-            productsArray.splice(i, 1);
+            products.splice(i, 1);
           }
-          let orderSummary = calculate(productsArray);
-          if (user) {
-            updateCart(user.token, user.email, operation, id)
+          if (user?.token) {
+            updateCart(user.token, operation, id)
               .then((res) => {
-                console.log(res.data);
+                let orderSummary = cartSummary(products);
+                localStorage.setItem('cart', JSON.stringify({ products: products, ...orderSummary }));
+                dispatch({
+                  type: 'ADD_TO_CART',
+                  payload: { products: products, ...orderSummary },
+                });
+                if (res.data.updated) {
+                  message.success('Cart Updated');
+                }
               })
               .catch((err) => {
                 console.log(err);
               });
+          } else {
+            let orderSummary = cartSummary(products);
+            localStorage.setItem('cart', JSON.stringify({ products: products, ...orderSummary }));
+            dispatch({
+              type: 'ADD_TO_CART',
+              payload: { products: products, ...orderSummary },
+            });
           }
-          localStorage.setItem('localCart', JSON.stringify({ products: productsArray, ...orderSummary }));
-          dispatch({
-            type: 'ADD_TO_CART',
-            payload: { products: productsArray, ...orderSummary },
-          });
         }
       });
     }
+    setLoading(false);
   };
   const save = (item) => {
+    setLoading(true);
     let saved = [...savedForLater];
     saved.push(item);
-    localStorage.setItem('savedForLater', JSON.stringify(saved));
+    let uniqueArray = _.uniqWith(saved, _.isEqual);
+    localStorage.setItem('savedForLater', JSON.stringify(uniqueArray));
     dispatch({
       type: 'SAVE_FOR_LATER',
       payload: saved,
     });
-    if (user) {
-      saveForLater(user.token, user.email, item)
+    if (user?.token) {
+      saveForLater(user.token, saved)
         .then((res) => {
           console.log(res.data);
         })
@@ -65,8 +81,19 @@ const CartContent = ({ user, cart, savedForLater, calculate }) => {
           console.log(err);
         });
     }
+    setLoading(false);
   };
-
+  const checkoutHandle = () => {
+    if (user?.token) {
+      history.push('/checkout');
+    } else {
+      history.push({ state: { from: '/cart' } });
+      dispatch({
+        type: 'SHOW_LOGIN_MODAL',
+        payload: { showLoginModal: true },
+      });
+    }
+  };
   return (
     <div className={styles.cart}>
       <header>My Cart</header>
@@ -79,14 +106,13 @@ const CartContent = ({ user, cart, savedForLater, calculate }) => {
             <div>
               <b>{item.title}</b>
               <b>
-                &#8377;
-                {item.price * (1 - item.discount / 100) * item.count}
+                {(item.price * (1 - item.discount / 100) * item.count).toLocaleString('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                })}
               </b>
               <span>
-                <s>
-                  &#8377;
-                  {item.price * item.count}
-                </s>
+                <s>{(item.price * item.count).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</s>
                 <b style={{ marginLeft: '5px', color: 'green' }}>
                   {item.discount}
                   %off
@@ -120,9 +146,7 @@ const CartContent = ({ user, cart, savedForLater, calculate }) => {
       ))}
 
       <div className={styles.checkout}>
-        <Link to='/checkout'>
-          <Button>Checkout</Button>
-        </Link>
+        <Button click={checkoutHandle}>{user?.token ? 'Checkout' : 'Login to Checkout'}</Button>
       </div>
     </div>
   );

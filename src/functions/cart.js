@@ -18,9 +18,9 @@ const calculate = (items) => {
   return { totalPrice, totalDiscountedPrice, totalItems, totalSaved, deliveryCharges };
 };
 
-export const addToCartHandle = async (product, dispatch, user) => {
-  let cartItems = [];
-  let uniqueItems = [];
+export const addToCartHandle = (item, dispatch, user) => {
+  let products = [];
+  let uniqueProducts = [];
   let orderSummary;
   let cart;
   let addedToCart = false;
@@ -28,29 +28,37 @@ export const addToCartHandle = async (product, dispatch, user) => {
   if (typeof window !== 'undefined') {
     if (localStorage.getItem('cart')) {
       cart = JSON.parse(localStorage.getItem('cart'));
-      cartItems = cart.products;
+      products = cart.products;
     }
-    cartItems.push({
-      ...product,
+    products.push({
+      ...item,
       count: 1,
     });
-    uniqueItems = _.uniqWith(cartItems, _.isEqual);
-    orderSummary = calculate(uniqueItems);
-    localStorage.setItem('cart', JSON.stringify({ products: uniqueItems, ...orderSummary }));
-  }
-  dispatch({
-    type: 'ADD_TO_CART',
-    payload: { products: uniqueItems, ...orderSummary },
-  });
-  addedToCart = true;
-  if (user?.token) {
-    await addToCart(user.token, uniqueItems)
-      .then((res) => {
-        addedToCartDB = res.data.successful;
-      })
-      .catch((err) => {
-        console.log(err);
+    uniqueProducts = _.uniqWith(products, _.isEqual);
+    addedToCart = true;
+    if (user?.token) {
+      addToCart(user.token, uniqueProducts)
+        .then((res) => {
+          orderSummary = calculate(uniqueProducts);
+          localStorage.setItem('cart', JSON.stringify({ products: uniqueProducts, ...orderSummary }));
+          dispatch({
+            type: 'ADD_TO_CART',
+            payload: { products: uniqueProducts, ...orderSummary },
+          });
+          addedToCartDB = res.data.successful;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      orderSummary = calculate(uniqueProducts);
+      localStorage.setItem('cart', JSON.stringify({ products: uniqueProducts, ...orderSummary }));
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: { products: uniqueProducts, ...orderSummary },
       });
+    }
   }
+
   return Promise.resolve(addedToCart || addedToCartDB);
 };

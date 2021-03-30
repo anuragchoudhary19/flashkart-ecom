@@ -14,16 +14,17 @@ const BestSellers = () => {
     loadAllProducts();
   }, [page]);
 
-  const loadAllProducts = async () => {
+  const loadAllProducts = () => {
     setLoading(true);
-    await getProfiles('sold', 'desc', page)
+    getProfiles('sold', 'desc', page)
       .then((res) => {
         setProducts(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
-    setLoading(false);
   };
   // loading, products, page, setPage, perPage;
   return (

@@ -142,12 +142,6 @@
     color: blue;
   }
 }
-.ram {
-  margin: 10px 0 10px 0;
-  > div {
-    margin-right: 20px;
-  }
-}
 .color {
   display: flex;
   align-items: center;
@@ -173,25 +167,29 @@
 }
 
 .data {
+  display: flex;
+  flex-direction: column;
+  > div {
+    display: flex;
+    flex-direction: column;
+    > div {
+      display: grid;
+      grid-template-columns: 40% 40%;
+      span {
+        padding: 8px;
+      }
+    }
+    > div:first-child {
+      padding: 8px;
+      font-size: 1.2rem;
+      color: grey;
+      font-weight: 500;
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
   overflow-y: hidden;
   height: 300px;
-  table {
-    width: 100%;
-  }
-  tbody {
-    border-bottom: 1px solid #ccc;
-  }
-  th {
-    color: grey;
-    padding: 10px;
-    font-size: 1.2rem;
-    margin-left: 10px;
-  }
-  td {
-    padding: 10px;
-    width: 50%;
-    font-weight: 500;
-  }
 }
 
 .rating {

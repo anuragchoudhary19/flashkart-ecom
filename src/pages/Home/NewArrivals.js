@@ -10,11 +10,12 @@ const NewArrivals = () => {
 
   useEffect(() => {
     loadAllProducts();
+    return loadAllProducts;
   }, [page]);
 
-  const loadAllProducts = async () => {
+  const loadAllProducts = () => {
     setLoading(true);
-    await getProfiles('createdAt', 'desc', page)
+    getProfiles('createdAt', 'desc', page)
       .then((res) => {
         setProducts(res.data);
         setLoading(false);

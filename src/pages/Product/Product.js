@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-//dependency
-import _, { set } from 'lodash';
 //components
 import Button from './../../components/Elements/Button/Button';
 import RatingAndReviews from './RatingAndReviews';
@@ -20,7 +18,7 @@ import { addToWishlist, removeFromWishlist } from '../../axiosFunctions/user';
 const Product = ({ match, history }) => {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
-  const [addedToWishlist, setAddedToWishlist] = useState(false);
+  const [wishlist, setWishlist] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
@@ -33,12 +31,11 @@ const Product = ({ match, history }) => {
     await getProductProfile(match.params.slug)
       .then((res) => {
         setProduct(res.data);
-        user.wishlist.forEach((item) => {
+        user?.wishlist.forEach((item) => {
           if (item === res.data._id) {
-            setAddedToWishlist(true);
+            setWishlist(true);
           }
         });
-        console.log(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -46,13 +43,10 @@ const Product = ({ match, history }) => {
         setLoading(false);
       });
   };
-  const addToCart = async () => {
-    let ok = addToCartHandle(product, dispatch, user);
-    return ok;
-  };
-  const proceedToBuy = async () => {
-    const addedToCart = addToCart();
-    if (addedToCart) {
+  const addToCart = async () => await addToCartHandle(product, dispatch, user);
+
+  const proceedToBuy = () => {
+    if (addToCart()) {
       history.push('/cart');
     }
   };
@@ -62,18 +56,21 @@ const Product = ({ match, history }) => {
   };
 
   const handleAddToWishlist = () => {
-    if (addedToWishlist) {
-      removeFromWishlist(user.token, product._id).then((res) => {
-        setAddedToWishlist(false);
+    if (!user?.token) {
+      message.error('Log In to add to wishlist');
+      return;
+    }
+    if (wishlist) {
+      removeFromWishlist(user?.token, product._id).then((res) => {
         message.success('REMOVED FROM WISHLIST');
+        setWishlist(false);
       });
     }
-    if (!addedToWishlist) {
+    if (!wishlist) {
       console.log(product._id);
-      addToWishlist(user.token, product._id).then((res) => {
-        setAddedToWishlist(res.data.ok);
+      addToWishlist(user?.token, product._id).then((res) => {
         message.success('ADDED TO WISHLIST');
-        console.log(res.data);
+        setWishlist(res.data.ok);
       });
     }
   };
@@ -96,27 +93,30 @@ const Product = ({ match, history }) => {
             <div className={classes.title}>
               <span>{product.title}</span>
               <div onClick={handleAddToWishlist}>
-                <Tooltip title={addedToWishlist ? 'Remove from Wishlist' : 'Add To Wishlist'}>
-                  <HeartTwoTone twoToneColor={addedToWishlist ? '#eb2f96' : 'grey'} />
+                <Tooltip title={wishlist ? 'Wishlisted' : 'Add To Wishlist'}>
+                  <HeartTwoTone twoToneColor={wishlist ? '#d62828' : 'grey'} />
                 </Tooltip>
               </div>
             </div>
             <div className={classes.stars}>
-              {product.ratings && product.ratings.length > 0 && (
+              {product.ratings?.length > 0 && (
                 <span>
                   <StarRating ratings={product.ratings} style={{ fontSize: '12px', color: 'white' }} />
                   <span>{'Ratings(' + product.ratings.length + ')'}</span>
                 </span>
               )}
               <span>
-                {product.reviews && product.reviews.length > 0
-                  ? 'Reviews(' + product.reviews.length + ')'
-                  : 'Be the first one to review'}
+                {product.reviews?.length > 0 ? 'Reviews(' + product.reviews.length + ')' : 'Be the first one to review'}
               </span>
             </div>
             <div className={classes.price}>
               <h2>
-                <b>&#8377; {product.price * (1 - product.discount / 100)}</b>
+                <b>
+                  {(product.price * (1 - product.discount / 100)).toLocaleString('en-IN', {
+                    style: 'currency',
+                    currency: 'INR',
+                  })}
+                </b>
               </h2>
               <s>
                 <b>&#8377; {product.price}</b>

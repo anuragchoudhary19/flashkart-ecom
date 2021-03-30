@@ -4,8 +4,8 @@ import { auth } from '../firebase';
 export const unsubscribe = (dispatch) => {
   return auth.onIdTokenChanged(async (user) => {
     if (user) {
-      const idTokenResult = await user.getIdTokenResult();
-      currentUser(idTokenResult.token)
+      const token = await user.getIdToken();
+      currentUser(token)
         .then((res) => {
           console.log(res);
           window.localStorage.setItem(
@@ -13,7 +13,7 @@ export const unsubscribe = (dispatch) => {
             JSON.stringify({
               name: res.data.name,
               email: res.data.email,
-              token: idTokenResult.token,
+              token: token,
               wishlist: res.data.wishlist,
               role: res.data.role,
               _id: res.data._id,
@@ -24,7 +24,7 @@ export const unsubscribe = (dispatch) => {
             payload: {
               name: res.data.name,
               email: res.data.email,
-              token: idTokenResult.token,
+              token: token,
               wishlist: res.data.wishlist,
               role: res.data.role,
               _id: res.data._id,

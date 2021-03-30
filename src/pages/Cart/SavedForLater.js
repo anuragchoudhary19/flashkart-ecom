@@ -1,66 +1,55 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './Cart.module.css';
 import { useSelector } from 'react-redux';
-import { addToCart, updateCart, saveForLater } from '../../axiosFunctions/cart';
+import { saveForLater } from '../../axiosFunctions/cart';
+import { addToCartHandle } from '../../functions/cart';
 import Button from '../../components/Elements/Button/Button';
-import _ from 'lodash';
 
-const Saved = ({ calculate }) => {
-  const { user, localCart, savedForLater } = useSelector((state) => ({ ...state }));
+const Saved = ({ setLoading }) => {
+  const { user, savedForLater } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
-  const moveToCart = (id) => {
-    let products = [...localCart.products];
-    if (typeof window !== 'undefined') {
-      savedForLater.forEach((item, i) => {
-        if (item._id === id) {
-          products.push(item);
-          removeFromSave(id);
-          let uniqueArray = _.uniqWith(products, _.isEqual);
-          let orderSummary = calculate(uniqueArray);
-          localStorage.setItem('localCart', JSON.stringify({ products: uniqueArray, ...orderSummary }));
-          dispatch({
-            type: 'ADD_TO_CART',
-            payload: { products: uniqueArray, ...orderSummary },
-          });
-          if (user) {
-            addToCart(user.token, user.email, uniqueArray)
-              .then((res) => {
-                console.log(res.data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-        }
-      });
+  const moveToCart = async (item) => {
+    setLoading(true);
+    const ok = await addToCartHandle(item, dispatch, user);
+    if (ok) {
+      removeFromSave(item._id);
     }
+    setLoading(false);
   };
 
   const removeFromSave = (id) => {
+    setLoading(true);
     let saved = [...savedForLater];
     if (typeof window !== 'undefined') {
-      savedForLater.forEach((item, i) => {
-        if (item._id === id) {
+      for (let i = 0; i < saved.length; i++) {
+        if (saved[i]._id === id) {
           saved.splice(i, 1);
-          localStorage.setItem('savedForLater', JSON.stringify(saved));
-          dispatch({
-            type: 'SAVE_FOR_LATER',
-            payload: saved,
-          });
-          if (user) {
-            saveForLater(user.token, user.email, saved)
-              .then((res) => {
-                console.log(res.data);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
         }
-      });
+      }
+      if (user?.token) {
+        saveForLater(user.token, saved)
+          .then((res) => {
+            localStorage.setItem('savedForLater', JSON.stringify(saved));
+            dispatch({
+              type: 'SAVE_FOR_LATER',
+              payload: saved,
+            });
+            console.log(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        localStorage.setItem('savedForLater', JSON.stringify(saved));
+        dispatch({
+          type: 'SAVE_FOR_LATER',
+          payload: saved,
+        });
+      }
     }
+    setLoading(false);
   };
 
   return savedForLater.length ? (
@@ -99,7 +88,7 @@ const Saved = ({ calculate }) => {
               <Button disabled>-</Button>
             </div>
             <div style={{ justifyContent: 'flex-end' }}>
-              <Button click={() => moveToCart(item._id)}>Move to Cart</Button>
+              <Button click={() => moveToCart(item)}>Move to Cart</Button>
               <Button click={() => removeFromSave(item._id)}>Remove</Button>
             </div>
           </div>

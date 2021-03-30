@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-export const addToCart = async (authToken, cart) => {
+export const addToCart = async (authToken, products) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/user/cart`,
-    { cart },
+    {
+      products,
+    },
     {
       headers: {
         authToken,
@@ -18,17 +20,7 @@ export const getCart = async (authToken) => {
     },
   });
 };
-export const removeFromCart = async (authToken, email, cart) => {
-  return await axios.post(
-    `${process.env.REACT_APP_API}/user/removeFromCart`,
-    { email, cart },
-    {
-      headers: {
-        authToken,
-      },
-    }
-  );
-};
+
 export const emptyCart = async (authToken) => {
   return await axios.delete(`${process.env.REACT_APP_API}/user/cart`, {
     headers: {
@@ -36,10 +28,13 @@ export const emptyCart = async (authToken) => {
     },
   });
 };
-export const updateCart = async (authToken, email, operation, item_id, color) => {
+export const updateCart = async (authToken, operation, id) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/user/updateCart`,
-    { email, operation, item_id, color },
+    {
+      operation,
+      id,
+    },
     {
       headers: {
         authToken,
@@ -47,10 +42,12 @@ export const updateCart = async (authToken, email, operation, item_id, color) =>
     }
   );
 };
-export const saveForLater = async (authToken, email, item) => {
+export const saveForLater = async (authToken, saved) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/user/saveForLater`,
-    { email, item },
+    {
+      saved,
+    },
     {
       headers: {
         authToken,

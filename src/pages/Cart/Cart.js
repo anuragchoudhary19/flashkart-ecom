@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 import CartProducts from './CartProducts';
 import EmptyCart from './EmptyCart';
 import Saved from './SavedForLater';
@@ -15,32 +14,47 @@ const Cart = () => {
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
 
-  const { user, localCart, savedForLater } = useSelector((state) => ({ ...state }));
+  const { user, cart, savedForLater } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user && user.token) {
+    let products = [];
+    let orderSummary;
+    if (user?.token) {
       getCart(user.token).then((res) => {
-        console.log(res.data);
-        let products = [];
+        let uniqueProducts = [];
         if (res.data) {
           res.data.products.forEach((item) => {
             products.push({ ...item.product, count: item.count });
           });
+          uniqueProducts = _.uniqWith(products, _.isEqual);
+          orderSummary = cartSummary(uniqueProducts);
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('cart', JSON.stringify({ products: uniqueProducts, ...orderSummary }));
+          }
+          dispatch({
+            type: 'ADD_TO_CART',
+            payload: { products: uniqueProducts, ...orderSummary },
+          });
         }
-        let orderSummary = calculate(products);
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('localCart', JSON.stringify({ products: products, ...orderSummary }));
+      });
+    } else {
+      if (typeof window !== 'undefined') {
+        if (localStorage.getItem('cart')) {
+          let cart = JSON.parse(localStorage.getItem('cart'));
+          products = cart.products;
         }
-        dispatch({
-          type: 'ADD_TO_CART',
-          payload: { products: products, ...orderSummary },
-        });
+        orderSummary = cartSummary(products);
+        localStorage.setItem('cart', JSON.stringify({ products, ...orderSummary }));
+      }
+      dispatch({
+        type: 'ADD_TO_CART',
+        payload: { products, ...orderSummary },
       });
     }
-  }, [loading, user]);
+  }, [loading]);
 
-  const calculate = (products) => {
+  const cartSummary = (products) => {
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
     let totalItems = 0;
@@ -57,14 +71,14 @@ const Cart = () => {
 
   return (
     <div className={styles.page}>
-      {localCart.products && localCart.products.length ? (
+      {cart?.products?.length ? (
         <div className={styles.content}>
           <CartProducts
-            cart={localCart}
+            cart={cart}
             user={user}
             savedForLater={savedForLater}
-            setloading={setLoading}
-            calculate={calculate}
+            cartSummary={cartSummary}
+            setLoading={setLoading}
           />
           <div className={styles.orderSummary}>
             <header>Order Summary</header>
@@ -74,23 +88,28 @@ const Cart = () => {
             </div>
             <div>
               <div>Price</div>
-              <div>&#8377; {totalPrice}</div>
+              <div>{totalPrice.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</div>
             </div>
             <div>
               <div>Discount</div>
-              <div style={{ color: 'green' }}>-&#8377;{totalPrice - totalDiscountedPrice}</div>
+              <div style={{ color: 'green' }}>
+                {(totalPrice - totalDiscountedPrice).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+              </div>
             </div>
             <div>
               <div>Delivery Charges</div>
-              <div style={{ color: 'green' }}>&#x20b9;0</div>
-            </div>
-            <div>
-              <div>Saved</div>
-              <div>18000</div>
+              <div style={{ color: 'green' }}>
+                {(totalItems * 10).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+              </div>
             </div>
             <div className={styles.total}>
               <div>Total Price</div>
-              <div>Rs {totalDiscountedPrice.toLocaleString('en-IN')}</div>
+              <div>
+                {(totalDiscountedPrice + totalItems * 10).toLocaleString('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                })}
+              </div>
             </div>
           </div>
         </div>
@@ -101,7 +120,7 @@ const Cart = () => {
       )}
       {savedForLater.length ? (
         <div className={styles.saved}>
-          <Saved calculate={calculate} />
+          <Saved setLoading={setLoading} />
         </div>
       ) : null}
     </div>
