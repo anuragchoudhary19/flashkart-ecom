@@ -46,11 +46,11 @@ const Cart = () => {
         }
         orderSummary = cartSummary(products);
         localStorage.setItem('cart', JSON.stringify({ products, ...orderSummary }));
+        dispatch({
+          type: 'ADD_TO_CART',
+          payload: { products, ...orderSummary },
+        });
       }
-      dispatch({
-        type: 'ADD_TO_CART',
-        payload: { products, ...orderSummary },
-      });
     }
   }, [loading]);
 
@@ -118,7 +118,7 @@ const Cart = () => {
           <EmptyCart user={user} />
         </div>
       )}
-      {savedForLater.length ? (
+      {savedForLater?.length ? (
         <div className={styles.saved}>
           <Saved setLoading={setLoading} />
         </div>

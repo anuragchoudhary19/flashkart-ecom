@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Dropdown from './../../Dropdown/Dropdown';
 import Search from '../../Search/Search';
 //functions
 import firebase from 'firebase';
+import { getCart } from '../../../axiosFunctions/cart';
 //css
 import classes from './Header.module.css';
 import { ShoppingCartOutlined } from '@ant-design/icons';

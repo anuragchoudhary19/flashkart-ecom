@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { addToCart } from '../axiosFunctions/cart';
+import { message } from 'antd';
 
 const calculate = (items) => {
   let totalPrice = 0;
@@ -45,9 +46,11 @@ export const addToCartHandle = (item, dispatch, user) => {
             type: 'ADD_TO_CART',
             payload: { products: uniqueProducts, ...orderSummary },
           });
+          message.success('Added To Cart');
           addedToCartDB = res.data.successful;
         })
         .catch((err) => {
+          message.success('Add To Cart Failed');
           console.log(err);
         });
     } else {

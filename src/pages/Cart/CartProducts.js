@@ -42,7 +42,7 @@ const CartContent = ({ user, cart, savedForLater, cartSummary, setLoading }) => 
                   type: 'ADD_TO_CART',
                   payload: { products: products, ...orderSummary },
                 });
-                if (res.data.updated) {
+                if (res.data) {
                   message.success('Cart Updated');
                 }
               })
@@ -101,7 +101,9 @@ const CartContent = ({ user, cart, savedForLater, cartSummary, setLoading }) => 
         <div className={styles.tableRow} key={i}>
           <div className={styles.product}>
             <div>
-              <img alt='img' src={item.images[0].url} width='150px' height='200px' />
+              <Link exact to={`product/${item.slug}`}>
+                <img alt='img' src={item.images[0].url} width='150px' height='200px' />
+              </Link>
             </div>
             <div>
               <b>{item.title}</b>
