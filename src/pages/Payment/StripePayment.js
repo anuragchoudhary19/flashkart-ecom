@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPaymentIntent } from '../../axiosFunctions/stripe';
@@ -7,9 +7,10 @@ import { createOrder } from '../../axiosFunctions/user';
 import { emptyCart } from '../../axiosFunctions/cart';
 import styles from './Payment.module.css';
 import './Stripe.css';
-const StripePayment = ({ history }) => {
+
+const StripePayment = () => {
   const dispatch = useDispatch();
-  const { user, localCart } = useSelector((state) => ({ ...state }));
+  const { user, cart } = useSelector((state) => ({ ...state }));
   const [succeedded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
@@ -18,12 +19,16 @@ const StripePayment = ({ history }) => {
 
   const stripe = useStripe();
   const elements = useElements();
-
+  const history = useHistory();
   useEffect(() => {
-    createPaymentIntent(user.token).then((res) => {
-      console.log('create payment intent', res.data);
-      setClientSecret(res.data.clientSecret);
-    });
+    if (cart?.products) {
+      createPaymentIntent(user.token).then((res) => {
+        console.log('create payment intent', res.data);
+        setClientSecret(res.data.clientSecret);
+      });
+    } else {
+      history.push('/');
+    }
   }, []);
 
   const handleSubmit = async (e) => {
@@ -37,6 +42,7 @@ const StripePayment = ({ history }) => {
         },
       },
     });
+    console.log(payload);
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -45,14 +51,14 @@ const StripePayment = ({ history }) => {
       createOrder(user.token, payload).then((res) => {
         if (res.data.ok) {
           //empty cart from local storage
-          if (typeof window !== 'undefined') localStorage.removeItem('localCart');
+          if (typeof window !== 'undefined') localStorage.removeItem('cart');
           //empty redux cart
           dispatch({
             type: 'ADD_TO_CART',
             payload: [],
           });
           //empty cart from DB
-          emptyCart(user.idToken);
+          emptyCart(user.token);
         }
       });
       //empty cart from reduc and localstorage
@@ -86,16 +92,22 @@ const StripePayment = ({ history }) => {
   return (
     <div className={styles.stripCard}>
       {succeedded || error ? null : <h2>Complete Your Purchase</h2>}
-      <p>Use this card number for dummy payment</p>
-      <p>4242 4242 4242 4242</p>
       {succeedded ? <h2>Payment Successful</h2> : null}
       {error ? <h2>Payment Failed</h2> : null}
       {succeedded ? (
         <p className={succeedded ? 'result-message' : 'result-message hidden'}>
-          Payment Successful<Link to='/user/orders'>See it in your orders</Link>
+          <Link to='/user/orders'>
+            <span>See it in your orders section</span>
+          </Link>
         </p>
       ) : null}
-      <div>Amount to be paid : {localCart.totalDiscountedPrice.toLocaleString('en-IN')}</div>
+      {error ? <p className={error ? 'result-message' : 'result-message hidden'}>{error}</p> : null}
+      <div>
+        <b>
+          Amount to be paid :{' '}
+          {cart?.totalDiscountedPrice?.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+        </b>
+      </div>
 
       <form id='payment-form' className='stripe-form' onSubmit={handleSubmit}>
         <CardElement id='card-element' options={cartStyle} onChange={handleChange} />
@@ -108,6 +120,8 @@ const StripePayment = ({ history }) => {
           </div>
         )}
       </form>
+      <p>Use this card number for dummy payment</p>
+      <p>Card no. : 4242 4242 4242 4242</p>
     </div>
   );
 };

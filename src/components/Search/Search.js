@@ -1,15 +1,19 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
 import Input from '../Elements/Input/Input';
 import { SearchOutlined } from '@ant-design/icons';
+
 import styles from './Search.module.css';
 
 const Search = () => {
-  let dispatch = useDispatch();
   const { search } = useSelector((state) => ({ ...state }));
-  const { text } = useHistory();
+  const { text } = search;
+
+  let dispatch = useDispatch();
   const history = useHistory();
+
   const handleChange = (e) => {
     dispatch({
       type: 'SEARCH_QUERY',
@@ -18,7 +22,7 @@ const Search = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push(`/search?${text}`);
+    history.push(`/search?text=${text}`);
   };
   const style = { cursor: 'pointer', fontSize: '28px', position: 'absolute', right: '0', left: 'auto' };
   return (

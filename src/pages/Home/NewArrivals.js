@@ -10,7 +10,6 @@ const NewArrivals = () => {
 
   useEffect(() => {
     loadAllProducts();
-    return loadAllProducts;
   }, [page]);
 
   const loadAllProducts = () => {

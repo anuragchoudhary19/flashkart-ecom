@@ -19,7 +19,6 @@ const TextArea = (props) => {
           onChange={props.change}
           placeholder={props.placeholder}
         />
-        {props.button}
       </div>
       <span>{props.error}</span>
     </div>

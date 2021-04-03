@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -9,13 +8,13 @@ import StripePayment from './StripePayment';
 const promise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const Payment = () => {
-  const { localCart } = useSelector((state) => ({ ...state }));
   let history = useHistory();
 
   useEffect(() => {
-    if (localCart?.totalItems < 1) {
+    if (history.location.state?.from !== '/checkout') {
       history.push('/');
     }
+    console.log(promise);
   }, []);
   return (
     <div className={styles.page}>

@@ -3,6 +3,7 @@ import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
 
 const Invoice = ({ order }) => {
+  console.log(order);
   return (
     <Document>
       <Page style={styles.body}>
@@ -15,7 +16,6 @@ const Invoice = ({ order }) => {
             <TableCell>Title</TableCell>
             <TableCell>Price</TableCell>
             <TableCell>Quantity</TableCell>
-            <TableCell>Color</TableCell>
           </TableHeader>
         </Table>
         <Table data={order.products}>
@@ -25,7 +25,6 @@ const Invoice = ({ order }) => {
               getContent={(i) => i.product.price.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
             />
             <DataTableCell getContent={(i) => i.count} />
-            <DataTableCell getContent={(i) => i.color} />
           </TableBody>
         </Table>
         <Text>
@@ -37,7 +36,10 @@ const Invoice = ({ order }) => {
           {'\n'}
           <Text style={styles.text}>Order Status:{order.orderStatus}</Text>
           {'\n'}
-          <Text style={styles.text}>Total Paid:{order.paymentIntent.amount}</Text>
+          <Text style={styles.text}>
+            Total Paid:
+            {(order.paymentIntent.amount / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
+          </Text>
         </Text>
         <Text style={styles.footer}>~Thank You For Shopping With Us~</Text>
       </Page>

@@ -23,7 +23,7 @@ const EmptyCart = ({ user }) => {
       </div>
       <div>
         {user && user.token ? (
-          <Link exact to='/'>
+          <Link to='/'>
             <Button>Build your Cart</Button>
           </Link>
         ) : (

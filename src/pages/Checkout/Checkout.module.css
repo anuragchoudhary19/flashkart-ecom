@@ -6,17 +6,17 @@
   height: auto;
   width: 100%;
   background-color: transparent;
+  margin: 1rem 0;
 }
 @media only screen and (min-width: 1500px) {
   .page {
     width: 80vw;
-    margin: 1rem 0;
   }
 }
 .content {
   display: grid;
   grid-template-columns: 70% 30%;
-  width: 80%;
+  width: 90%;
   background-color: transparent;
 }
 .form button {
@@ -48,7 +48,7 @@
   background-color: white;
   border-bottom: 1px solid #ccc;
 }
-.paymentButton {
+.controls {
   display: flex;
 }
 .addressOptions {
@@ -72,11 +72,25 @@
 .addressOptions > div > div {
   padding: 0.5rem;
 }
+.radio {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+.radio > div {
+  display: flex;
+  flex-direction: row;
+}
+.radio > div span {
+  margin: 0 1rem;
+  cursor: pointer;
+}
 .orderSummary {
   display: flex;
   flex-direction: column;
   justify-content: left;
-  margin-left: 2rem;
+  margin-right: 1rem;
 }
 .orderSummary > div {
   display: flex;

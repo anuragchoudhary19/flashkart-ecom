@@ -7,6 +7,7 @@ import { updateCart, saveForLater } from '../../axiosFunctions/cart';
 import Button from '../../components/Elements/Button/Button';
 import styles from './Cart.module.css';
 import { message } from 'antd';
+
 const CartContent = ({ user, cart, savedForLater, cartSummary, setLoading }) => {
   const dispatch = useDispatch();
   let history = useHistory();
@@ -85,7 +86,7 @@ const CartContent = ({ user, cart, savedForLater, cartSummary, setLoading }) => 
   };
   const checkoutHandle = () => {
     if (user?.token) {
-      history.push('/checkout');
+      history.push({ pathname: '/checkout', state: { from: '/cart' } });
     } else {
       history.push({ state: { from: '/cart' } });
       dispatch({
@@ -101,7 +102,7 @@ const CartContent = ({ user, cart, savedForLater, cartSummary, setLoading }) => 
         <div className={styles.tableRow} key={i}>
           <div className={styles.product}>
             <div>
-              <Link exact to={`product/${item.slug}`}>
+              <Link to={`/product/${item.slug}`}>
                 <img alt='img' src={item.images[0].url} width='150px' height='200px' />
               </Link>
             </div>

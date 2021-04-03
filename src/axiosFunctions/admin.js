@@ -7,9 +7,10 @@ export const getOrders = async (authToken) => {
     },
   });
 };
-export const changeOrderStatus = async (authToken, orderId, orderStatus) => {
-  return await axios.put(
-    `${process.env.REACT_APP_API}/admin/order-status`,
+
+export const updateOrderStatus = async (authToken, orderId, orderStatus) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/admin/order/status`,
     { orderId, orderStatus },
     {
       headers: {

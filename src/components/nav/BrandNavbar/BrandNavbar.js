@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 //components
 import Dropdown from '../../Dropdown/Dropdown';
 
@@ -12,14 +12,13 @@ import '../../../antdesign.css';
 const BrandNavbar = () => {
   const [brands, setBrands] = useState([]);
   const [key, setKey] = useState('');
-
+  const history = useHistory();
   useEffect(() => {
     loadBrands();
   }, []);
 
   const loadBrands = () => {
     getBrands().then((res) => {
-      console.log(res.data);
       setBrands(res.data);
     });
   };
@@ -29,6 +28,12 @@ const BrandNavbar = () => {
   };
   const handleDropdownOnMouseLeave = () => {
     setKey('');
+  };
+  const handleBrandSearch = (brand) => {
+    history.push(`/search?brandId=${brand._id}&brand=${brand.slug}`);
+  };
+  const handleProductSearch = (product) => {
+    history.push(`/search?productId=${product._id}&product=${product.slug}`);
   };
 
   return (
@@ -41,11 +46,11 @@ const BrandNavbar = () => {
               key={brand._id}
               onMouseOver={() => handleDropdownOnMouseEnter(brand._id)}
               onMouseLeave={() => handleDropdownOnMouseLeave()}>
-              <div>{brand.name}</div>
+              <div onClick={() => handleBrandSearch(brand)}>{brand.name}</div>
               <Dropdown dropdown={key === brand._id}>
                 {brand.products.map((product) => (
-                  <div key={product._id}>
-                    <Link to={`/product/${product.slug}`}>{product.name}</Link>
+                  <div key={product._id} onClick={() => handleProductSearch(product)}>
+                    {product.name}
                   </div>
                 ))}
               </Dropdown>

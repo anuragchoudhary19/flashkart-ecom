@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export const addAddress = async (authToken, address) => {
   return await axios.post(
-    `${process.env.REACT_APP_API}/user/addAddress`,
+    `${process.env.REACT_APP_API}/user/address`,
     { address },
     {
       headers: {
@@ -10,6 +10,13 @@ export const addAddress = async (authToken, address) => {
       },
     }
   );
+};
+export const removeAddress = async (authToken, id) => {
+  return await axios.delete(`${process.env.REACT_APP_API}/user/address/${id}`, {
+    headers: {
+      authToken,
+    },
+  });
 };
 
 export const createOrder = async (authToken, stripeResponse) => {
@@ -30,6 +37,7 @@ export const getUserOrders = async (authToken) => {
     },
   });
 };
+
 export const addToWishlist = async (authToken, productId) => {
   return await axios.post(
     `${process.env.REACT_APP_API}/user/wishlist`,

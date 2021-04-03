@@ -60,9 +60,9 @@ const Cart = lazy(() => import('./pages/Cart/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout/Checkout'));
 const Payment = lazy(() => import('./pages/Payment/Payment'));
 const Orders = lazy(() => import('./pages/Orders/Orders'));
-const OrdersByUser = lazy(() => import('./pages/Admin/Orders/Orders'));
+const OrdersByUsers = lazy(() => import('./pages/Orders/OrdersByUsers'));
 const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'));
-const FilteredProducts = lazy(() => import('./pages/FilteredProducts/FilteredProducts'));
+const SearchResults = lazy(() => import('./pages/SearchResults/SearchResults'));
 
 function App() {
   const dispatch = useDispatch();
@@ -89,8 +89,8 @@ function App() {
             <Route exact path='/' component={Home} />
             <Route exact path='/signup/complete' component={SignUpComplete} />
             <Route exact path='/product/:slug' component={Product} />
-            <Route exact path='/search' component={FilteredProducts} />
-            <Route exact path='/products' component={FilteredProducts} />
+            <Route exact path='/search' component={SearchResults} />
+            <Route exact path='/products' component={SearchResults} />
             <Route exact path='/cart' component={Cart} />
 
             <UserRoute exact path='/checkout' component={Checkout} />
@@ -98,7 +98,7 @@ function App() {
             <UserRoute exact path='/user/orders' component={Orders} />
             <UserRoute exact path='/user/wishlist' component={Wishlist} />
 
-            <AdminRoute exact path='/admin/orders' component={OrdersByUser} />
+            <AdminRoute exact path='/admin/orders' component={OrdersByUsers} />
             <AdminRoute exact path='/admin/brand' component={CreateBrand} />
             <AdminRoute exact path='/admin/product' component={CreateProduct} />
             <AdminRoute exact path='/admin/product-profile' component={CreateProductProfile} />

@@ -52,14 +52,14 @@ const Saved = ({ setLoading }) => {
     setLoading(false);
   };
 
-  return savedForLater.length ? (
+  return savedForLater?.length ? (
     <div className={styles.cart}>
       <header>Saved For Later</header>
-      {savedForLater.map((item, i) => (
+      {savedForLater?.map((item, i) => (
         <div className={styles.tableRow} key={i}>
           <div className={styles.product}>
             <div>
-              <img alt='img' src={item.images[0].url} width='150px' height='200px' />
+              <img alt='img' src={item?.images[0]?.url} width='150px' height='200px' />
             </div>
             <div>
               <b>{item.title}</b>

@@ -16,11 +16,18 @@ const initialState = {
   pincode: '',
   state: '',
 };
-const CheckoutForm = () => {
+const CheckoutForm = ({ getAddress }) => {
   const [addressForm, setAddressForm] = useState(initialState);
   const { name, mobile, address, city, pincode } = addressForm;
   const [states, setStates] = useState([]);
-  const [saved, setSaved] = useState(false);
+  const [error, setError] = useState({
+    name: '',
+    mobile: '',
+    address: '',
+    city: '',
+    pincode: '',
+    state: '',
+  });
   const { user } = useSelector((state) => ({ ...state }));
   useEffect(() => {
     setStates(csc.getStatesOfCountry('IN'));
@@ -33,9 +40,10 @@ const CheckoutForm = () => {
   };
   const save = (e) => {
     e.preventDefault();
-    addAddress(user.idToken, addressForm).then((res) => {
+    addAddress(user.token, addressForm).then((res) => {
       if (res.data.saved) {
-        setSaved(true);
+        setAddressForm(initialState);
+        getAddress();
       }
     });
   };
@@ -47,14 +55,21 @@ const CheckoutForm = () => {
           <Input label='Name' type='text' name='name' value={name} change={changeHandle} error='' />
           <label>Mobile</label>
           <Input label='Mobile' type='number' name='mobile' value={mobile} change={changeHandle} error='' />
-          <TextArea label='Address' type='text' name='address' value={address} change={changeHandle} />
+          <TextArea
+            label='Address'
+            type='text'
+            name='address'
+            error={error.address}
+            value={address}
+            change={changeHandle}
+          />
           <label>City/Town/District</label>
           <Input label='City/District/Town' type='text' name='city' value={city} change={changeHandle} error='' />
           <label>Pincode</label>
           <Input label='Pincode' type='number' name='pincode' value={pincode} change={changeHandle} error='' />
           <div>
             <label>State</label>
-            <Select defaultValue='Select' style={{ width: '300px' }} onChange={selectHandle}>
+            <Select defaultValue='Select' style={{ width: '100%' }} onChange={selectHandle}>
               {states.map((state) => (
                 <Option title='state' key={state.name} value={state.name}>
                   {state.name}

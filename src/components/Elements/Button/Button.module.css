@@ -24,9 +24,9 @@
   font-weight: 500;
   padding: 0.5rem 1rem;
   width: 100%;
-  background-color: #f1f1f1;
+  background-color: #ccc;
   outline: none;
   border: none;
   color: #023047;
-  cursor: auto;
+  cursor: not-allowed;
 }
