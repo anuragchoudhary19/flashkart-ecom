@@ -30,17 +30,24 @@ export const useAddToCart = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   useEffect(() => {
-    if (!item?._id) return;
+    if (item === null) return;
     let products = [];
     if (typeof window !== 'undefined') {
       if (user?.token) {
         addToCart(user.token, item._id)
           .then((res) => {
-            addToCartLS('cartOnDB', res.data);
-            addToCartRS(res.data, dispatch);
-            message.success('Added to cart successfully');
-            if (buy) {
+            if (res.data.alreadyInCart && buy) {
               history.push('/cart');
+            } else if (res.data.alreadyInCart) {
+              message.success('Already in cart');
+            } else {
+              addToCartLS('cartOnDB', res.data);
+              addToCartRS(res.data, dispatch);
+              message.success('Added to cart successfully');
+              setAddToCartItem(initialState);
+              if (buy) {
+                history.push('/cart');
+              }
             }
           })
           .catch((err) => {
@@ -51,6 +58,17 @@ export const useAddToCart = () => {
           let cart = JSON.parse(localStorage.getItem('cartLocal'));
           products = cart.products.map((p) => ({ _id: p.product._id, count: p.count }));
         }
+        for (let i = 0; i < products.length; i++) {
+          if (products[i]._id.toString() === item?._id.toString()) {
+            if (buy) {
+              history.push('/cart');
+            } else {
+              message.success('Already in cart');
+              setAddToCartItem(initialState);
+            }
+            return;
+          }
+        }
         products.push({
           _id: item._id,
           count: 1,
@@ -60,6 +78,7 @@ export const useAddToCart = () => {
           addToCartLS('cartLocal', res.data);
           addToCartRS(res.data, dispatch);
           message.success('Added to cart successfully');
+          setAddToCartItem(initialState);
           if (buy) {
             history.push('/cart');
           }
