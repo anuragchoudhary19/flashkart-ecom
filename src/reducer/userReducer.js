@@ -7,7 +7,7 @@ if (localStorage.getItem('user')) {
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'LOGGED_IN_USER':
-      return action.payload;
+      return { ...state, ...action.payload };
     case 'LOGOUT':
       return action.payload;
     default:

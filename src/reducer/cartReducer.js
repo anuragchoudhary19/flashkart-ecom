@@ -1,8 +1,17 @@
-let initialState = [];
-
+let initialState;
 if (typeof window !== 'undefined') {
-  if (localStorage.getItem('cart')) {
-    initialState = JSON.parse(localStorage.getItem('cart'));
+  if (localStorage.getItem('user')) {
+    if (localStorage.getItem('cartOnDB')) {
+      initialState = JSON.parse(localStorage.getItem('cartOnDB'));
+    } else {
+      initialState = null;
+    }
+  } else {
+    if (localStorage.getItem('cartLocal')) {
+      initialState = JSON.parse(localStorage.getItem('cartLocal'));
+    } else {
+      initialState = null;
+    }
   }
 }
 export const cartReducer = (state = initialState, action) => {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Button from '../../components/Elements/Button/Button';
 import { addRating, addReview } from '../../axiosFunctions/productProfile';
 import styles from './Product.module.css';
 import { Rate, Input } from 'antd';
@@ -26,7 +25,7 @@ const RatingAndReviews = ({ product }) => {
       let existingReview = product.reviews.find((ele) => ele.postedBy._id.toString() === user._id.toString());
       existingReview && setReview(existingReview.review);
     }
-  }, []);
+  }, [product.ratings, product.reviews, user]);
   const ratingHandle = (e) => {
     setStars(e);
     console.log(e);
@@ -61,13 +60,12 @@ const RatingAndReviews = ({ product }) => {
     <div className={styles.rating}>
       <div>
         <header>Reviews</header>
-        <Button click={handleModal}>{user?.token ? 'Leave a review' : 'Login to review'}</Button>
       </div>
       <div>
         {product.reviews?.map((r) => (
           <div key={r._id}>
             <div>
-              <b>Reviewd By : {r.postedBy.name}</b>
+              <b>{r.postedBy.name}</b>
             </div>
             <div>{r.review}</div>
           </div>

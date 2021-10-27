@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProductsCarousel from '../../components/ProductsCarousel/ProductsCarousel';
+import Carousel from '../../components/Carousel/Carousel';
 import { getProfiles } from '../../axiosFunctions/productProfile';
 import styles from './Home.module.css';
 
@@ -9,10 +9,6 @@ const NewArrivals = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    loadAllProducts();
-  }, [page]);
-
-  const loadAllProducts = () => {
     setLoading(true);
     getProfiles('createdAt', 'desc', page)
       .then((res) => {
@@ -23,12 +19,12 @@ const NewArrivals = () => {
         console.log(err);
         setLoading(false);
       });
-  };
+  }, [page]);
 
   return (
-    <div className={styles.productsCarousel}>
+    <div className={styles.carousel}>
       <header>New Arrivals</header>
-      <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} />
+      <Carousel loading={loading} products={products} page={page} setPage={setPage} />
     </div>
   );
 };

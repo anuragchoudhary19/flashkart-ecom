@@ -1,10 +1,10 @@
-import React, { useEffect, lazy, Suspense } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { lazy, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { unsubscribe } from './functions/user';
-
+//
 import LoadingPage from './components/LoadingPage/LoadingPage';
-
+//
+import { useUnsubscribe } from './Hooks/useUnsubscribe';
+//
 import classes from './App.module.css';
 import 'antd/dist/antd.less';
 
@@ -50,7 +50,7 @@ const UpdateProductProfile = lazy(() =>
 const ListProducts = lazy(() => import('./pages/Admin/ListProducts/ListProducts'));
 const Product = lazy(() => import('./pages/Product/Product'));
 
-const Header = lazy(() => import('./components/nav/Header/Header'));
+const Header = lazy(() => import('./components/Header/Header'));
 const Footer = lazy(() => import('./components/nav/Footer/Footer'));
 const AuthModal = lazy(() => import('./components/AuthModal/AuthModal'));
 const UserRoute = lazy(() => import('./components/routes/UserRoute'));
@@ -59,20 +59,14 @@ const BrandNavbar = lazy(() => import('./components/nav/BrandNavbar/BrandNavbar'
 const Cart = lazy(() => import('./pages/Cart/Cart'));
 const Checkout = lazy(() => import('./pages/Checkout/Checkout'));
 const Payment = lazy(() => import('./pages/Payment/Payment'));
+const PaymentSuccessful = lazy(() => import('./pages/Payment/PaymentSuccessful'));
 const Orders = lazy(() => import('./pages/Orders/Orders'));
 const OrdersByUsers = lazy(() => import('./pages/Orders/OrdersByUsers'));
 const Wishlist = lazy(() => import('./pages/Wishlist/Wishlist'));
 const SearchResults = lazy(() => import('./pages/SearchResults/SearchResults'));
 
 function App() {
-  const dispatch = useDispatch();
-
-  //to check firebase auth state
-  useEffect(() => {
-    unsubscribe(dispatch);
-    return () => unsubscribe;
-  }, []);
-
+  useUnsubscribe();
   return (
     <Suspense
       fallback={
@@ -84,7 +78,7 @@ function App() {
         <Header />
         <BrandNavbar />
         <AuthModal />
-        <div className={classes.content}>
+        <div className={classes.main}>
           <Switch>
             <Route exact path='/' component={Home} />
             <Route exact path='/signup/complete' component={SignUpComplete} />
@@ -95,6 +89,7 @@ function App() {
 
             <UserRoute exact path='/checkout' component={Checkout} />
             <UserRoute exact path='/payment' component={Payment} />
+            <UserRoute exact path='/payment/success' component={PaymentSuccessful} />
             <UserRoute exact path='/user/orders' component={Orders} />
             <UserRoute exact path='/user/wishlist' component={Wishlist} />
 

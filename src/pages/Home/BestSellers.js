@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import ProductsCarousel from '../../components/ProductsCarousel/ProductsCarousel';
+import ProductsCarousel from '../../components/Carousel/Carousel';
 
 import { getProfiles } from '../../axiosFunctions/productProfile';
 import styles from './Home.module.css';
@@ -11,10 +11,6 @@ const BestSellers = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadAllProducts();
-  }, [page]);
-
-  const loadAllProducts = () => {
     setLoading(true);
     getProfiles('sold', 'desc', page)
       .then((res) => {
@@ -25,10 +21,10 @@ const BestSellers = () => {
         console.log(err);
         setLoading(false);
       });
-  };
-  // loading, products, page, setPage, perPage;
+  }, [page]);
+
   return (
-    <div className={styles.productsCarousel}>
+    <div className={styles.carousel}>
       <header>Best Sellers</header>
       <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} />
     </div>

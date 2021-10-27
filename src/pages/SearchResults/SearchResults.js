@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { fetchProductsByFilter } from '../../axiosFunctions/productProfile';
 import { getBrands } from '../../axiosFunctions/brand';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,8 +11,7 @@ const { SubMenu } = Menu;
 
 const FilteredProducts = () => {
   const [brands, setBrands] = useState([]);
-  const results = useRef([]);
-  const [filterResults, setFilterResults] = useState([]);
+  const [result, setResult] = useState([]);
   const [brandFilter, setBrandFilter] = useState([]);
   const [priceFilter, setPrice] = useState([0, 0]);
   const [loading, setLoading] = useState(false);
@@ -45,7 +44,7 @@ const FilteredProducts = () => {
     setLoading(true);
     fetchProductsByFilter(arg)
       .then((res) => {
-        results.current = res.data;
+        setResult(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -57,7 +56,7 @@ const FilteredProducts = () => {
     setLoading(true);
     fetchProductsByFilter(arg)
       .then((res) => {
-        setFilterResults(res.data);
+        setResult(res.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -150,18 +149,12 @@ const FilteredProducts = () => {
           </Menu>
         </div>
         <div>
-          <header>Products({results.current.length})</header>
+          <header>Products({result.length})</header>
           <div>
             {loading ? (
               <LoadingCard count={3} />
-            ) : filterResults.length ? (
-              filterResults?.map((product) => (
-                <div key={product._id}>
-                  <ProductCard product={product} />
-                </div>
-              ))
             ) : (
-              results.current.map((product) => (
+              result.map((product) => (
                 <div key={product._id}>
                   <ProductCard product={product} />
                 </div>

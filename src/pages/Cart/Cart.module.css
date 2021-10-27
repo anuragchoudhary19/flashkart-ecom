@@ -52,63 +52,57 @@
 .cart::-webkit-scrollbar {
   display: none;
 }
-.tableRow {
+.item {
   display: flex;
   flex-direction: column;
+  height: fit-content;
+  width: 100%;
   padding: 0.25rem;
   border-bottom: 1px solid #ccc;
 }
-.tableRow .product {
+.item .product {
   display: flex;
   align-items: flex-start;
   justify-content: left;
+  height: 80%;
+  padding: 0 1rem;
 }
-.tableRow .product > div:nth-child(2) {
+.item .product > div:nth-child(2) {
   display: flex;
   flex-direction: column;
   justify-content: left;
   align-items: flex-start;
   margin-left: 1rem;
 }
-.tableRow .product > div:nth-child(2) > b:first-child {
-  font-size: 1.1rem;
-}
-.tableRow .product > div:nth-child(2) > b:nth-child(2) {
-  font-size: 1.5rem;
-}
-.tableRow .controls {
+.item .controls {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 0.5rem;
+  justify-content: space-between;
+  padding: 0.25rem;
+  height: fit-content;
 }
-.tableRow .controls button {
+.item .controls button {
   width: fit-content;
   padding: 0.5rem 0.75rem;
 }
-.tableRow .controls > div {
+.item .controls > div {
   display: flex;
   flex-direction: row;
   align-items: center;
   flex-basis: 50%;
 }
-.tableRow .controls > div:nth-child(2) button {
-  margin: 0 0.5rem;
+.item .controls > div:nth-child(2) {
+  justify-content: flex-end;
 }
 .checkout {
   position: sticky;
   bottom: 0;
   display: flex;
   justify-content: flex-end;
-  background-color: #023047;
+  background-color: var(--background-color);
   font-size: 1.3rem;
   padding: 0.25rem;
-}
-.checkout button {
-  height: 3rem;
-  width: fit-content;
-  padding: 8px;
-  font-size: 1.3rem;
 }
 .price {
   display: flex;
@@ -124,14 +118,11 @@
   justify-content: left;
   margin-left: 2rem;
 }
-.orderSummary > div {
-  display: flex;
+.orderSummary > span {
+  display: inline-flex;
   justify-content: space-between;
   width: 100%;
-  padding: 12px;
-}
-.orderSummary > div > div {
-  color: #023047;
+  padding: 8px;
   font-weight: 500;
 }
 .orderSummary .total {

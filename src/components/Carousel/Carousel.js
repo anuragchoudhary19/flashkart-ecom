@@ -1,11 +1,11 @@
 import React from 'react';
 import LoadingCard from '../Card/LoadingCard';
 import ProductCard from '../Card/ProductCard';
-
+//
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import styles from './ProductsCarousel.module.css';
+import styles from './Carousel.module.css';
 
-const ProductsCarousel = ({ loading, products, page, setPage }) => {
+const Carousel = ({ loading, products, page, setPage }) => {
   return (
     <div className={styles.carousel}>
       {page > 1 && (
@@ -33,4 +33,4 @@ const ProductsCarousel = ({ loading, products, page, setPage }) => {
   );
 };
 
-export default ProductsCarousel;
+export default Carousel;

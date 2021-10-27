@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import classes from './Product.module.css';
 
 const Specifications = ({ product }) => {
-  console.log(product);
   const [expand, setExpand] = useState(false);
   return (
     <div className={classes.specifications}>
       <header>Specifications</header>
-      <div className={classes.data} style={expand ? { height: 'fit-content' } : { height: '300px' }}>
+      <div
+        className={classes.data}
+        style={expand ? { height: 'fit-content' } : { height: '300px', overflow: 'hidden' }}>
         <div>
           <div>General</div>
           <div>
@@ -114,8 +115,11 @@ const Specifications = ({ product }) => {
           </div>
         </div>
       </div>
-      <div className={classes.expand} onClick={() => setExpand(!expand)}>
-        {expand ? 'Less' : 'More'}
+      <div
+        className={classes.expand}
+        onClick={() => setExpand(!expand)}
+        style={expand ? { position: 'relative' } : { position: 'absolute' }}>
+        <span>{expand ? 'Less' : 'More'}</span>
       </div>
     </div>
   );

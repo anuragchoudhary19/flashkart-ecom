@@ -10,11 +10,11 @@ import SignInWithGoogle from './images/google.png';
 import { validateEmail } from '../../../functions/validateString';
 import { auth, googleAuthProvider } from '../../../firebase';
 import { createOrUpdateUser } from '../../../axiosFunctions/auth';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import classes from './Login.module.css';
 
-const Login = () => {
+const Login = ({ setIsOpen }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -135,55 +135,53 @@ const Login = () => {
         console.log(err);
       });
   };
-  const showPasswordRecoveryModal = () => {
-    dispatch({
-      type: 'SHOW_PASSWORD_RECOVERY_MODAL',
-      payload: { showPasswordRecoveryModal: true },
-    });
-  };
-  const showSignupAuthModal = () => {
-    dispatch({
-      type: 'SHOW_SIGNUP_MODAL',
-      payload: { showSignupModal: true },
-    });
-  };
+
   return (
-    <div className={classes.form}>
-      <header>Log In</header>
-      <form onSubmit={submitHandler}>
-        <div>
-          <label>Email</label>
-          <Input
-            type='email'
-            error={error.email}
-            value={email}
-            change={(e) => setEmail(e.target.value)}
-            placeholder='Email'
-            autoFocus
-            autoComplete='true'
-          />
+    <div className={classes.modal}>
+      <header>
+        <h1>Log In</h1>
+        <span>
+          <CloseOutlined style={{ color: 'black' }} onClick={() => setIsOpen('')} />
+        </span>
+      </header>
+      <div className={classes.form}>
+        <form onSubmit={submitHandler}>
+          <div>
+            <label>Email</label>
+            <Input
+              type='email'
+              error={error.email}
+              value={email}
+              change={(e) => setEmail(e.target.value)}
+              placeholder='Email'
+              autoFocus
+              autoComplete='true'
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <Input
+              type='password'
+              error={error.password}
+              value={password}
+              change={(e) => setPassword(e.target.value)}
+              placeholder='Password'
+            />
+          </div>
+          <span className={classes.error}>{error.email || error.password}</span>
+          <Button type='submit'>{loading ? <LoadingOutlined /> : 'Log In'}</Button>
+        </form>
+        <div className={classes.options}>
+          <button onClick={() => setIsOpen('signup')}>New User? Sign Up</button>
+          <button onClick={() => setIsOpen('passwordRecovery')}>Forgot Password?</button>
         </div>
-        <div>
-          <label>Password</label>
-          <Input
-            type='password'
-            error={error.password}
-            value={password}
-            change={(e) => setPassword(e.target.value)}
-            placeholder='Password'
-          />
+        <span className={classes.divider}>
+          <strong>or</strong>
+        </span>
+        <div className={classes.google} onClick={loginWithGoogle}>
+          <img src={SignInWithGoogle} alt='Signin With Google' />
         </div>
-        <div>
-          <span>{error.email || error.password}</span>
-          <span onClick={showPasswordRecoveryModal}>Forgot Password?</span>
-        </div>
-        <Button type='submit'>{loading ? <LoadingOutlined /> : 'Log In'}</Button>
-      </form>
-      <p>or</p>
-      <div className={classes.google} onClick={loginWithGoogle}>
-        <img src={SignInWithGoogle} alt='' />
       </div>
-      <span onClick={showSignupAuthModal}>New User? Sign Up</span>
     </div>
   );
 };

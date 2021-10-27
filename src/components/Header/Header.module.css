@@ -1,19 +1,21 @@
 .header {
   position: sticky;
+  position: -webkit-sticky;
   top: 0;
   z-index: 100;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 20% 40% 40%;
   align-items: center;
   width: 100%;
-  height: 8vh;
-  background-color: #023047;
+  height: 4rem;
+  background-color: var(--background-color);
   text-align: center;
 }
-.header > div:nth-child(2) {
+.header > div {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 @media only screen and (min-height: 768px) {
   .header {
@@ -21,25 +23,30 @@
   }
 }
 .home {
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   font-weight: bold;
 }
 .home a {
-  color: #ffb703;
+  color: var(--orange);
 }
 .actions {
   display: flex;
   flex-direction: row;
 }
 .actions button {
-  width: 100px;
+  width: fit-content;
+  min-width: 100px;
   margin: 0.25rem 0.5rem;
 }
 .cart {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100px;
+  width: fit-content;
+  padding: 0 1.5rem;
+}
+.cart svg {
+  color: var(--primary-color);
 }
 .dropdown {
   display: flex;
@@ -50,6 +57,9 @@
 }
 .dropdown .avatar {
   cursor: pointer;
+}
+.dropdown svg {
+  color: var(--primary-color);
 }
 .search {
   display: flex;

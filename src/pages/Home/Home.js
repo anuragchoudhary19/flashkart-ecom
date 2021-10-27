@@ -9,6 +9,7 @@ const Home = () => {
   return (
     <div className={styles.home}>
       <NewArrivals />
+      <br />
       <BestSellers />
     </div>
   );

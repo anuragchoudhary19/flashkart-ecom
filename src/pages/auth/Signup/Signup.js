@@ -8,10 +8,10 @@ import Input from '../../../components/Elements/Input/Input';
 import { checkDuplicateEmail } from '../../../axiosFunctions/auth';
 import { validateEmail } from '../../../functions/validateString';
 import { message } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
 import styles from './Signup.module.css';
 
-const SignUp = () => {
+const SignUp = ({ setIsOpen }) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -54,34 +54,36 @@ const SignUp = () => {
       });
     });
   };
-  const showLoginAuthModal = () => {
-    dispatch({
-      type: 'SHOW_LOGIN_MODAL',
-      payload: { showLoginModal: true },
-    });
-  };
+
   return (
-    <div className={styles.form}>
-      <header>Sign Up</header>
-      <form onSubmit={submitHandler}>
-        <div>
-          <label>Email</label>
-          <Input
-            type='email'
-            error={error}
-            value={email}
-            change={inputHandle}
-            placeholder=' Email'
-            autoFocus
-            autoComplete></Input>
-        </div>
-        <span>{error}</span>
-        <Button type='submit'>{loading ? <LoadingOutlined /> : 'Sign Up'}</Button>
+    <div className={styles.modal}>
+      <header>
+        <h1>Sign Up</h1>
         <span>
-          <b>or</b>
+          <CloseOutlined style={{ color: 'white' }} onClick={() => setIsOpen('')} />
         </span>
-        <Button click={showLoginAuthModal}>Log In</Button>
-      </form>
+      </header>
+      <div className={styles.form}>
+        <form onSubmit={submitHandler}>
+          <div>
+            <label>Email</label>
+            <Input
+              type='email'
+              error={error}
+              value={email}
+              change={inputHandle}
+              placeholder=' Email'
+              autoFocus
+              autoComplete></Input>
+          </div>
+          <span>{error}</span>
+          <Button type='submit'>{loading ? <LoadingOutlined /> : 'Sign Up'}</Button>
+        </form>
+        <span className={styles.divider}>
+          <strong>Already have an account?</strong>
+        </span>
+        <Button click={() => setIsOpen('login')}>Log In</Button>
+      </div>
     </div>
   );
 };

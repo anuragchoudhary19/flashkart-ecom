@@ -1,11 +1,17 @@
-.search {
+.search form {
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 360px;
-  margin-right: 50px;
+  width: 100%;
 }
-.search input {
+.search form input {
   border-radius: 4px;
+  padding: 0 0.5rem;
+}
+.search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
 }

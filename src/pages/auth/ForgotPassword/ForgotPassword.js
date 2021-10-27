@@ -8,10 +8,10 @@ import Button from '../../../components/Elements/Button/Button';
 import Input from '../../../components/Elements/Input/Input';
 
 import { message } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
 import classes from './ForgotPassword.module.css';
 
-function ForgotPassword() {
+function ForgotPassword({ setIsOpen }) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -53,47 +53,41 @@ function ForgotPassword() {
       });
   };
 
-  const showSignupAuthModal = () => {
-    dispatch({
-      type: 'SHOW_SIGNUP_MODAL',
-      payload: { showSignupModal: true },
-    });
-  };
-
-  const showLoginAuthModal = () => {
-    dispatch({
-      type: 'SHOW_LOGIN_MODAL',
-      payload: { showLoginModal: true },
-    });
-  };
-
   return (
-    <div className={classes.form}>
-      <header>Reset Password</header>
-      <form onSubmit={submitHandler}>
-        <div>
-          <label>Email</label>
-          <Input
-            type='email'
-            value={email}
-            error={error}
-            change={(e) => setEmail(e.target.value)}
-            placeholder='Email'
-            autoFocus
-            autoComplete
-            required
-          />
-        </div>
-        <span>{error}</span>
-        <Button type='submit' disabled={!email}>
-          {loading ? <LoadingOutlined /> : 'Send Link'}
-        </Button>
+    <div className={classes.modal}>
+      <header>
+        <h1>Recover Password</h1>
         <span>
-          <b>or</b>
+          <CloseOutlined style={{ color: 'white' }} onClick={() => setIsOpen('')} />
         </span>
-        <Button click={showLoginAuthModal}>Log In</Button>
-        <Button click={showSignupAuthModal}>New User?Create an account</Button>
-      </form>
+      </header>
+      <div className={classes.form}>
+        <form onSubmit={submitHandler}>
+          <div>
+            <label>Email</label>
+            <Input
+              type='email'
+              value={email}
+              error={error}
+              change={(e) => setEmail(e.target.value)}
+              placeholder='Email'
+              autoFocus
+              autoComplete
+              required
+            />
+          </div>
+          <span>{error}</span>
+          <Button type='submit' disabled={!email}>
+            {loading ? <LoadingOutlined /> : 'Send Link'}
+          </Button>
+        </form>
+        <span className={classes.divider}>
+          <strong>or</strong>
+        </span>
+        <div className={classes.options}>
+          <Button click={() => setIsOpen('login')}>Try Again</Button>
+        </div>
+      </div>
     </div>
   );
 }

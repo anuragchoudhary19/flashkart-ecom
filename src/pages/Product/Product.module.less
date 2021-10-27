@@ -1,15 +1,17 @@
-.page {
+.product {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   height: auto;
+  min-height: calc(100vh - 6rem);
   width: 100%;
-  background-color: #f1f1f1;
+  background-color: hsl(0, 0%, 99%);
 }
 
 @media only screen and (min-width: 1500px) {
-  .page {
+  .product {
     width: 80vw;
     margin: 1rem 0;
     box-shadow: 0 0 5px 0 #ccc;
@@ -17,24 +19,26 @@
   }
 }
 
-.content {
+.description {
+  position: relative;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 40% 58%;
+  justify-content: space-between;
   width: 100%;
+  height: fit-content;
 }
 
 .carousel {
-  position: sticky;
-  top: 15vh;
+  position: relative;
   display: block;
   margin: 1rem;
-  height: min-content;
-  outline: 1px solid #ccc;
+  width: 100%;
+  height: fit-content;
   background-color: white;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
   img {
-    width: 300px;
-    height: fit-content;
+    width: 150px;
+    height: 400px;
     transform: scaleX(0.5);
   }
 }
@@ -43,7 +47,6 @@
   flex-direction: row;
   justify-content: center;
   > img {
-    border: 1px solid #ccc;
     height: 50px;
     width: 70px;
     cursor: pointer;
@@ -58,7 +61,7 @@
   height: fit-content;
   overflow-y: auto;
   background-color: white;
-  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
   > div {
     display: flex;
   }
@@ -80,6 +83,10 @@
   }
 }
 .stars {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
   > span {
     display: flex;
     flex-direction: row;
@@ -87,7 +94,7 @@
   }
 }
 .price {
-  padding: 10px 0;
+  padding: 4px 0;
   align-items: center;
   h2 {
     margin: 0;
@@ -102,9 +109,8 @@
   }
 }
 .availability {
-  padding: 5px;
   span {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
   }
 }
@@ -116,14 +122,13 @@
   }
 }
 .buttons {
-  display: block;
-  width: 80%;
-  button {
-    margin-right: 20px;
-  }
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
 }
 
 .specifications {
+  position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
@@ -154,13 +159,16 @@
   }
 }
 .expand {
+  bottom: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  width: 100%;
   padding: 10px;
   cursor: pointer;
-  color: #342ead;
   font-weight: bold;
-  background-image: linear-gradient(to top, #ccc, white);
+  color: #342ead;
 }
 .more {
   border-top: 1px solid #f1f1f1;
@@ -211,21 +219,11 @@
       padding: 10px;
       border-bottom: 1px solid #ccc;
     }
-    > button {
-      width: 200px;
-      background-color: white;
-      box-shadow: 0 4px 5px 0 #ccc;
-      border: none;
-      outline: none;
-      font-size: 1rem;
-      font-weight: bold;
-      padding: 2px;
-    }
   }
   > div:nth-child(2) {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 0.5rem;
   }
 }
 .backdrop {

@@ -23,6 +23,9 @@ export const removeProductProfile = async (slug, authtoken) => {
 export const getProductProfile = async (slug) => {
   return await axios.get(`${process.env.REACT_APP_API}/productProfile/${slug}`);
 };
+export const getProductProfilePrice = async (id) => {
+  return await axios.get(`${process.env.REACT_APP_API}/productProfile/price/${id}`);
+};
 
 export const updateProductProfile = async (slug, product, authtoken) => {
   return await axios.put(`${process.env.REACT_APP_API}/productProfile/${slug}`, product, {

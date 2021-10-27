@@ -18,44 +18,55 @@
 }
 .content {
   display: grid;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 65% 35%;
   width: 90%;
   background-color: transparent;
-}
-
-.form {
-  button {
-    width: 100px;
-  }
-  label {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-  form > div {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 1rem;
-  }
 }
 .checkoutForm,
 .orderSummary {
   display: flex;
   flex-direction: column;
-  justify-content: left;
+  justify-content: center;
   height: fit-content;
   background-color: white;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
   > header {
     font-size: 1.3rem;
     font-weight: bold;
-    color: @bgcolor;
+    color: black;
     padding: 10px;
     background-color: white;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
   }
 }
 
 .controls {
   display: flex;
+  width: 100%;
+}
+.form {
+  > form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  label {
+    margin-left: 0;
+    margin-right: auto;
+    font-size: 1rem;
+    font-weight: 500;
+    > span {
+      color: red;
+    }
+  }
+  form > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+    width: 100%;
+  }
 }
 .addressOptions {
   display: flex;
@@ -72,9 +83,9 @@
   > div {
     display: flex;
     flex-direction: column;
-    padding: 0.5rem;
+    width: 100%;
     > div {
-      padding: 0.5rem;
+      width: 100%;
     }
   }
 }

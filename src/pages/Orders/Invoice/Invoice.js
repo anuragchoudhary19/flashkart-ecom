@@ -3,7 +3,6 @@ import { Document, Page, Text, StyleSheet } from '@react-pdf/renderer';
 import { Table, TableHeader, TableCell, TableBody, DataTableCell } from '@david.kucsai/react-pdf-table';
 
 const Invoice = ({ order }) => {
-  console.log(order);
   return (
     <Document>
       <Page style={styles.body}>

@@ -1,7 +1,10 @@
+html,
 body {
-  height: 100%;
+  height: fit-content;
+  min-height: 100vh;
+  width: 98.7vw;
 }
-* {
+body * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -9,6 +12,16 @@ body {
     'Helvetica Neue', sans-serif;
 }
 
-#root {
-  display: block;
+:root {
+  --background-color: #14279b;
+  --primary-color: #e6e6e6;
+  --secondary-color: #54e346;
+  --orange: #e6e6e6;
+  --backdrop-color: hsla(240, 100%, 60%, 0.1);
+  --color: hsl(0, 0%, 90%);
+  --success-color: hsl(120, 100%, 40%);
+  --button-hover-color: hsla(240, 100%, 60%, 1);
+  --success-hover-color: hsl(120, 100%, 50%);
+  --hover-color: hsl(203, 90%, 8%);
+  --danger-color: hsl(0, 100%, 40%);
 }

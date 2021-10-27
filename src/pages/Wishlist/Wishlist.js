@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Button from '../../components/Elements/Button/Button';
-import { addToCartHandle } from '../../functions/cart';
+import { useAddToCart } from '../../Hooks/useAddToCart';
 import { removeFromWishlist } from '../../axiosFunctions/user';
 import { getWishlist } from '../../axiosFunctions/user';
-import { message } from 'antd';
 import styles from './Wishlist.module.css';
 
 const Wishlist = () => {
+  const { setAddToCartItem } = useAddToCart();
   const [wishlist, setWishlist] = useState([]);
   const { user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
-
   useEffect(() => {
     loadWishlist();
     return loadWishlist;
@@ -29,9 +27,7 @@ const Wishlist = () => {
     });
   };
   const addToCart = (item) => {
-    addToCartHandle(item, dispatch, user).then((res) => {
-      removeHandle(item._id);
-    });
+    setAddToCartItem({ item: item, buy: false });
   };
   return (
     <div className={styles.page}>
@@ -70,7 +66,6 @@ const Wishlist = () => {
         ))}
         {wishlist.length === 0 ? <div className={styles.empty}>Wishlist is empty</div> : null}
       </div>
-      {/* <pre>{JSON.stringify(wishlist, null, 4)}</pre> */}
     </div>
   );
 };

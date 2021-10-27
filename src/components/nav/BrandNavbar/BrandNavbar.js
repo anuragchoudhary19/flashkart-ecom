@@ -23,42 +23,36 @@ const BrandNavbar = () => {
     });
   };
 
-  const handleDropdownOnMouseEnter = (id) => {
-    setKey(id);
-  };
-  const handleDropdownOnMouseLeave = () => {
-    setKey('');
-  };
   const handleBrandSearch = (brand) => {
     history.push(`/search?brandId=${brand._id}&brand=${brand.slug}`);
   };
   const handleProductSearch = (product) => {
     history.push(`/search?productId=${product._id}&product=${product.slug}`);
   };
-
+  if (brands.length === 0) return null;
   return (
-    brands && (
-      <div className={classes.brandNavbar}>
-        <div className={classes.Menu}>
-          {brands.map((brand) => (
-            <div
-              className={classes.Submenu}
-              key={brand._id}
-              onMouseOver={() => handleDropdownOnMouseEnter(brand._id)}
-              onMouseLeave={() => handleDropdownOnMouseLeave()}>
-              <div onClick={() => handleBrandSearch(brand)}>{brand.name}</div>
-              <Dropdown dropdown={key === brand._id}>
-                {brand.products.map((product) => (
-                  <div key={product._id} onClick={() => handleProductSearch(product)}>
-                    {product.name}
-                  </div>
-                ))}
-              </Dropdown>
-            </div>
-          ))}
-        </div>
+    <div className={classes.nav}>
+      <div className={classes.brands}>
+        {brands.map((brand) => (
+          <div
+            className={classes.list}
+            key={brand._id}
+            onMouseOver={() => setKey(brand._id)}
+            onMouseLeave={() => setKey('')}>
+            <span onClick={() => handleBrandSearch(brand)} className={classes.brand}>
+              {brand.name}
+            </span>
+            <Dropdown dropdown={key === brand._id}>
+              {brand.products.map((product) => (
+                <span key={product._id} onClick={() => handleProductSearch(product)}>
+                  {product.name}
+                </span>
+              ))}
+            </Dropdown>
+          </div>
+        ))}
       </div>
-    )
+    </div>
   );
 };
 

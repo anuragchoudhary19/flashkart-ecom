@@ -11,11 +11,12 @@ const Payment = () => {
   let history = useHistory();
 
   useEffect(() => {
-    if (history.location.state?.from !== '/checkout') {
+    let { location } = history;
+    let { state } = location;
+    if (state?.from !== '/checkout') {
       history.push('/');
     }
-    console.log(promise);
-  }, []);
+  }, [history]);
   return (
     <div className={styles.page}>
       <div className={styles.content}>

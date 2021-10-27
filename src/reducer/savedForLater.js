@@ -1,8 +1,8 @@
 let initialState = [];
 
 if (typeof window !== 'undefined') {
-  if (localStorage.getItem('savedForLater')) {
-    initialState = JSON.parse(localStorage.getItem('savedForLater'));
+  if (localStorage.getItem('saved')) {
+    initialState = JSON.parse(localStorage.getItem('saved'));
   }
 }
 export const savedForLaterReducer = (state = initialState, action) => {

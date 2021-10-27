@@ -3,11 +3,11 @@
 .page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: auto;
+  flex-grow: 1;
   width: 100%;
-  background-color: transparent;
+  background-color: hsl(0, 0%, 99%);
 }
 
 @media only screen and (min-width: 1500px) {
@@ -16,16 +16,21 @@
     margin: 1rem 0;
   }
 }
-.content {
+.content,
+.paymentSuccess {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 80%;
-  background-color: transparent;
+  margin-top: 5rem;
+  width: fit-content;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: var(--background-color);
   h2,
-  h4 {
-    color: bgcolor;
+  h4,
+  p {
+    color: white;
   }
 }
 .payment {
@@ -33,8 +38,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: auto;
-  min-height: 85vh;
   background-color: #f1f1f1;
   h4 {
     color: #342ead;
@@ -55,5 +58,22 @@
   justify-content: center;
   align-items: center;
   width: 30vw;
-  height: fit-content;
+  height: 100%;
+}
+
+.demo {
+  margin-top: 1rem;
+  > p {
+    font-weight: bold;
+  }
+}
+.paymentSuccess {
+  a {
+    text-decoration: none;
+    color: white;
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+  }
 }

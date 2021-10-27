@@ -14,7 +14,7 @@ function LoadingToRedirect({ isAuthenticated }) {
     count === 0 && history.push('/');
     //cleanup
     return () => clearInterval(interval);
-  }, [count]);
+  }, [count, history]);
 
   return <div className={classes.loading}>L{<LoadingOutlined />}ading...</div>;
 }

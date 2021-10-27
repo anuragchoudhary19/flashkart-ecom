@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+//
 import laptop from '../../images/laptop.jpeg';
 import StarRating from '../StarRating/StarRating';
-import Button from '../Elements/Button/Button';
-
-import { unsubscribe } from '../../functions/user';
-import { addToCartHandle } from '../../functions/cart';
+//
 import { addToWishlist, removeFromWishlist } from '../../axiosFunctions/user';
-
+import { useUpdateUser } from '../../Hooks/useUpdateUser';
+//
 import { Tooltip, message } from 'antd';
 import { HeartTwoTone } from '@ant-design/icons';
 import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product }) => {
+  const { updateReduxStore, updateLocalStore } = useUpdateUser();
   const [wishlist, setWishlist] = useState(false);
   const { title, images, price, discount, _id, ratings } = product;
   const { user } = useSelector((state) => ({ ...state }));
@@ -22,13 +21,14 @@ const ProductCard = ({ product }) => {
 
   useEffect(() => {
     if (user?.wishlist) {
-      setWishlist(user.wishlist.find((ele) => ele === _id));
+      if (user.wishlist.find((ele) => ele === _id)) {
+        setWishlist(true);
+      } else {
+        setWishlist(false);
+      }
     }
-  }, [user]);
+  }, [user, _id]);
 
-  const addToCart = () => {
-    addToCartHandle(product, dispatch, user);
-  };
   const wishlistHandle = () => {
     if (!user) {
       message.error('Login to add to wishlist');
@@ -42,14 +42,16 @@ const ProductCard = ({ product }) => {
   };
   const handleAddToWishlist = () => {
     addToWishlist(user.token, product._id).then((res) => {
+      updateReduxStore(res.data, user.token, dispatch);
+      updateLocalStore(res.data, user.token);
       message.success('Successfully Added To Wishlist');
-      unsubscribe(dispatch);
     });
   };
   const handleRemoveFromWishlist = () => {
     removeFromWishlist(user.token, product._id).then((res) => {
+      updateReduxStore(res.data, user.token, dispatch);
+      updateLocalStore(res.data, user.token);
       message.success('Successfully Removed From Wishlist');
-      unsubscribe(dispatch);
     });
   };
 
@@ -62,7 +64,13 @@ const ProductCard = ({ product }) => {
       </div>
       <div>
         <Link to={`/product/${product.slug}`}>
-          <img src={images?.length ? images[0].url : laptop} alt={product.name} width='100px' height='180px' />
+          <img
+            src={images?.length ? images[0].url : laptop}
+            alt={product.name}
+            width='100px'
+            height='180px'
+            style={{ marginBottom: '4px' }}
+          />
           <StarRating ratings={ratings} />
           <span>
             <b>{title}</b>
@@ -81,7 +89,6 @@ const ProductCard = ({ product }) => {
             )}
           </div>
         </Link>
-        <Button click={addToCart}>Add To Cart</Button>
       </div>
     </div>
   );

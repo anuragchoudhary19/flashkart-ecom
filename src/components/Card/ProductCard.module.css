@@ -3,9 +3,8 @@
   display: flex;
   flex-direction: column;
   background-color: white;
-  padding: 0.5rem;
   width: 250px;
-  height: 340px;
+  height: fit-content;
   cursor: pointer;
 }
 .card > div:nth-child(2) {
@@ -13,43 +12,15 @@
   min-height: fit-content;
   flex-grow: 1;
   flex-direction: column;
-}
-.card > div:nth-child(2) > button {
-  position: absolute;
-  bottom: 0;
-  width: 95%;
+  width: 100%;
+  padding: 0.5rem;
 }
 .card:hover {
-  box-shadow: 0 0 10px 0 #ccc;
+  box-shadow: 0 0 4px 1px hsla(0, 0%, 0%, 0.4);
 }
 .wishlist {
   position: absolute;
+  top: 0;
   right: 1rem;
   font-size: 1.4rem;
-}
-.link {
-  text-align: center;
-  margin: 0.25rem;
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 0.5rem 1rem;
-  outline: none;
-  border: none;
-  color: #ffb703;
-  width: 100%;
-  min-width: fit-content;
-  background-color: #023047;
-}
-.link:hover {
-  background-color: #ffb703;
-  color: #023047;
-}
-.link:focus {
-  outline: none;
-}
-.loadingCard {
-  display: flex;
-  width: fit-content;
-  flex-direction: row;
-  margin: 0.5rem 1rem;
 }

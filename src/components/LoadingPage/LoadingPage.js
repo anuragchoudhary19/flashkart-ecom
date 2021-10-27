@@ -5,7 +5,6 @@ const LoadingPage = () => {
   return (
     <div className={styles.page}>
       <LoadingOutlined />
-      Loading...
     </div>
   );
 };

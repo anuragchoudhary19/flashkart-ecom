@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPaymentIntent } from '../../axiosFunctions/stripe';
@@ -11,7 +11,7 @@ import './Stripe.css';
 const StripePayment = () => {
   const dispatch = useDispatch();
   const { user, cart } = useSelector((state) => ({ ...state }));
-  const [succeedded, setSucceeded] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -21,17 +21,19 @@ const StripePayment = () => {
   const elements = useElements();
   const history = useHistory();
   useEffect(() => {
-    if (cart?.products) {
-      createPaymentIntent(user.token).then((res) => {
-        console.log('create payment intent', res.data);
+    createPaymentIntent(user.token)
+      .then((res) => {
         setClientSecret(res.data.clientSecret);
+      })
+      .catch((err) => {
+        if (err) {
+          history.goBack();
+        }
       });
-    } else {
-      history.push('/');
-    }
-  }, []);
+  }, [history, user.token]);
 
   const handleSubmit = async (e) => {
+    console.log(e.target);
     e.preventDefault();
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -51,21 +53,27 @@ const StripePayment = () => {
       createOrder(user.token, payload).then((res) => {
         if (res.data.ok) {
           //empty cart from local storage
-          if (typeof window !== 'undefined') localStorage.removeItem('cart');
-          //empty redux cart
-          dispatch({
-            type: 'ADD_TO_CART',
-            payload: [],
-          });
           //empty cart from DB
-          emptyCart(user.token);
+          emptyCart(user.token)
+            .then((res) => {
+              if (res.data.ok) {
+                if (typeof window !== 'undefined') localStorage.removeItem('cartOnDB');
+                //empty redux cart
+                dispatch({
+                  type: 'ADD_TO_CART',
+                  payload: null,
+                });
+              }
+            })
+            .then(() => {
+              history.push({ pathname: '/payment/success', state: { from: '/payment' } });
+            });
         }
       });
       //empty cart from reduc and localstorage
-      console.log(JSON.stringify(payload, null, 4));
       setError(null);
       setProcessing(false);
-      setSucceeded(true);
+      setSuccess(true);
     }
   };
   const handleChange = async (e) => {
@@ -91,28 +99,26 @@ const StripePayment = () => {
   };
   return (
     <div className={styles.stripCard}>
-      {succeedded || error ? null : <h2>Complete Your Purchase</h2>}
-      {succeedded ? <h2>Payment Successful</h2> : null}
+      <h2>Complete Your Purchase</h2>
       {error ? <h2>Payment Failed</h2> : null}
-      {succeedded ? (
-        <p className={succeedded ? 'result-message' : 'result-message hidden'}>
-          <Link to='/user/orders'>
-            <span>See it in your orders section</span>
-          </Link>
-        </p>
-      ) : null}
       {error ? <p className={error ? 'result-message' : 'result-message hidden'}>{error}</p> : null}
-      <div>
-        <b>
-          Amount to be paid :{' '}
-          {cart?.totalDiscountedPrice?.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}
-        </b>
-      </div>
-
+      {cart !== null && (
+        <p>
+          <b>
+            {` Amount to be paid : ${cart?.cartTotalAfterDiscount?.toLocaleString('en-IN', {
+              style: 'currency',
+              currency: 'INR',
+            })}`}
+          </b>
+        </p>
+      )}
+      <br />
       <form id='payment-form' className='stripe-form' onSubmit={handleSubmit}>
         <CardElement id='card-element' options={cartStyle} onChange={handleChange} />
-        <button className='stripe-button' disabled={processing || disabled || succeedded}>
-          <span id='button-text'>{processing ? <div className='spinner' id='spinner'></div> : 'Pay'}</span>
+        <button className='stripe-button' disabled={processing || disabled}>
+          {!processing && !success && <span id='button-text'>Pay</span>}
+          {processing && <span id='button-text'>{<div className='spinner' id='spinner'></div>}</span>}
+          {success && <span id='button-text'>Paid</span>}
         </button>
         {error && (
           <div className='card-error' role='alert'>
@@ -120,8 +126,9 @@ const StripePayment = () => {
           </div>
         )}
       </form>
-      <p>Use this card number for dummy payment</p>
-      <p>Card no. : 4242 4242 4242 4242</p>
+      <div className={styles.demo}>
+        <p>Demo : 4242 4242 4242 4242 MM(ANY)/YY(ANY)</p>
+      </div>
     </div>
   );
 };
