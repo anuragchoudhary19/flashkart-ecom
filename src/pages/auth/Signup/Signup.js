@@ -32,11 +32,9 @@ const SignUp = ({ setOpen }) => {
     }
     const res = await checkDuplicateEmail(email);
     if (res.data.duplicate) {
-      console.log('duplicate');
       setError('Email already registered');
       return;
     }
-
     setLoading(true);
     const config = {
       url: process.env.REACT_APP_REGISTER_REDIRECT_URL,
@@ -73,8 +71,7 @@ const SignUp = ({ setOpen }) => {
               value={email}
               change={inputHandle}
               placeholder=' Email'
-              autoFocus
-              autoComplete></Input>
+              autoFocus={true}></Input>
           </div>
           <span>{error}</span>
           <Button type='submit'>{loading ? <LoadingOutlined /> : 'Sign Up'}</Button>

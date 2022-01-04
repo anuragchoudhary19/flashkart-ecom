@@ -73,6 +73,29 @@
     color: var(--primary-color);
   }
 }
+.cartCount {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  > div {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    bottom: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    font-weight: bold;
+    border: 1px solid #e6e6e6;
+  }
+}
 @media (max-width: 768px) {
   .header {
     grid-template-areas:

@@ -12,7 +12,7 @@ import { createOrUpdateUser } from '../../axiosFunctions/auth';
 //css
 import classes from './Header.module.css';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { Avatar, Badge } from 'antd';
+import { Avatar } from 'antd';
 import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import Modal from '../../pages/auth/Modal/Modal';
@@ -53,13 +53,9 @@ function Header() {
     try {
       const result = await auth.signInWithEmailAndPassword(demoEmail, demoPassword);
       const { user } = result;
-      console.log(result);
       const idTokenResult = await user.getIdTokenResult();
-      console.log(idTokenResult);
-
       createOrUpdateUser(idTokenResult.token)
         .then((res) => {
-          console.log(res.data);
           window.localStorage.setItem(
             'user',
             JSON.stringify({
@@ -139,10 +135,11 @@ function Header() {
           </div>
         )}
         <div className={classes.cart}>
-          <Link to={'/cart'}>
-            <Badge count={cart?.products?.length} style={{ backgroundColor: 'red', color: '#e6e6e6' }}>
-              <ShoppingCartOutlined style={{ fontSize: '2rem' }} />
-            </Badge>
+          <Link to={'/cart'} className={classes.cartCount}>
+            <ShoppingCartOutlined style={{ fontSize: '2rem' }} />
+            {cart?.products?.length > 0 && (
+              <div style={{ backgroundColor: 'red', color: '#e6e6e6' }}>{cart?.products?.length}</div>
+            )}
           </Link>
         </div>
       </div>
