@@ -1,18 +1,16 @@
 .input {
   width: 100%;
+  padding: 0.25rem;
   height: 2.5rem;
   font-size: 1rem;
   outline: none;
   border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .input:focus {
-  border-color: #ffb703;
-  outline: 2px solid rgba(255, 183, 3, 0.3);
+  border-color: var(--secondary-color);
+  outline: 1px solid var(--secondary-color);
 }
 .input:hover {
-  border-color: #ffb703;
-}
-.danger {
-  border: 1px solid #fa1e0e;
-  outline: 2px solid rgba(250, 30, 14, 0.3);
+  border-color: var(--secondary-color);
 }

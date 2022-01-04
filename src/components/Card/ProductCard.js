@@ -14,7 +14,7 @@ import styles from './ProductCard.module.css';
 
 const ProductCard = ({ product }) => {
   const { updateReduxStore, updateLocalStore } = useUpdateUser();
-  const [wishlist, setWishlist] = useState(false);
+  const [isInWishlist, setIsInWishlist] = useState(false);
   const { title, images, price, discount, _id, ratings } = product;
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
@@ -22,19 +22,19 @@ const ProductCard = ({ product }) => {
   useEffect(() => {
     if (user?.wishlist) {
       if (user.wishlist.find((ele) => ele === _id)) {
-        setWishlist(true);
+        setIsInWishlist(true);
       } else {
-        setWishlist(false);
+        setIsInWishlist(false);
       }
     }
   }, [user, _id]);
 
-  const wishlistHandle = () => {
+  const handleWishlist = () => {
     if (!user) {
       message.error('Login to add to wishlist');
       return;
     }
-    if (wishlist) {
+    if (isInWishlist) {
       handleRemoveFromWishlist();
     } else {
       handleAddToWishlist();
@@ -57,12 +57,12 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className={styles.card}>
-      <div onClick={wishlistHandle} className={styles.wishlist}>
-        <Tooltip title={wishlist ? 'Wishlisted' : 'Add To Wishlist'}>
-          <HeartTwoTone twoToneColor={wishlist ? '#d62828' : 'grey'} />
+      <div onClick={handleWishlist} className={styles.wishlist}>
+        <Tooltip title={isInWishlist ? 'Wishlisted' : 'Add To Wishlist'}>
+          <HeartTwoTone twoToneColor={isInWishlist ? '#d62828' : 'grey'} />
         </Tooltip>
       </div>
-      <div>
+      <div className={styles.content}>
         <Link to={`/product/${product.slug}`}>
           <img
             src={images?.length ? images[0].url : laptop}
@@ -72,12 +72,12 @@ const ProductCard = ({ product }) => {
             style={{ marginBottom: '4px' }}
           />
           <StarRating ratings={ratings} />
-          <span>
+          <div>
             <b>{title}</b>
-          </span>
-          <span style={{ fontSize: '1.3rem' }}>
+          </div>
+          <div style={{ fontSize: '1.3rem' }}>
             <b>{(price - (discount * price) / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</b>
-          </span>
+          </div>
           <div>
             {discount > 0 && (
               <>

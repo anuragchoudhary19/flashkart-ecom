@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 //components
 import Button from '../Elements/Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
-import Search from '../Search/Search';
 //functions
 import firebase from 'firebase';
 import { auth } from '../../firebase';
@@ -14,12 +13,15 @@ import { createOrUpdateUser } from '../../axiosFunctions/auth';
 import classes from './Header.module.css';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Avatar, Badge } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 import { message } from 'antd';
-import Modal from '../Modal/Modal';
+import Modal from '../../pages/auth/Modal/Modal';
+import Search from './../Search/Search';
+import Sidebar from '../Sidebar/Sidebar';
 
 function Header() {
-  const [isOpen, setIsOpen] = useState('');
+  const [open, setOpen] = useState('');
+  const [openSidebar, setOpenSidebar] = useState(false);
   const demoEmail = 'anuragdemoemail@gmail.com';
   const demoPassword = 'Password123';
   const [dropdown, setDropdown] = useState(false);
@@ -27,7 +29,7 @@ function Header() {
   let { user, cart } = useSelector((state) => ({ ...state }));
 
   let dispatch = useDispatch();
-  let history = useHistory();
+  const history = useHistory();
 
   const logout = () => {
     firebase.auth().signOut();
@@ -80,7 +82,7 @@ function Header() {
           });
         })
         .then(() => {
-          setIsOpen('');
+          setOpen('');
         })
         .catch((err) => {
           message.error('Server Error');
@@ -96,21 +98,26 @@ function Header() {
       setLoading(false);
     }
   };
-
+  const style = { border: '2px solid var(--white)' };
   return (
     <div className={classes.header}>
       <div className={classes.home}>
-        <NavLink to='/'>FlashKart</NavLink>
+        <div className={classes.menuIcon} onClick={() => setOpenSidebar(true)}>
+          <MenuOutlined />
+        </div>
+        <Link to='/'>FlashKart</Link>
       </div>
-      <Search />
-      <div>
+      <div className={classes.search}>
+        <Search />
+      </div>
+      <div className={classes.menu}>
         {!user && (
-          <div className={classes.actions}>
+          <div className={classes.authButtons}>
             <Button click={handleDemoLogin} loading={loading}>
               Demo Log In
             </Button>
-            <Button click={() => setIsOpen('login')}> Log In</Button>
-            <Button click={() => setIsOpen('signup')}>Sign Up</Button>
+            <Button click={() => setOpen('login')}> Log In</Button>
+            <Button click={() => setOpen('signup')}>Sign Up</Button>
           </div>
         )}
         {user && (
@@ -119,25 +126,14 @@ function Header() {
             onMouseOver={() => setDropdown(true)}
             onMouseLeave={() => setDropdown(false)}>
             <div className={classes.avatar}>
-              <Avatar
-                shape='circle'
-                size={42}
-                icon={<UserOutlined />}
-                style={{
-                  backgroundColor: 'transparent',
-                  border: '2px solid',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              />
+              <Avatar shape='circle' size={42} icon={<UserOutlined />} style={style} />
             </div>
             <Dropdown dropdown={dropdown}>
               {user?.role === 'admin' && <Link to='/admin/brand'>Dashboard</Link>}
               {user?.role === 'admin' && <Link to='/admin/orders'>User Orders</Link>}
               {user?.role === 'subscriber' && <Link to='/user/orders'>My Orders</Link>}
               {user?.role === 'subscriber' && <Link to='/user/wishlist'>Wishlist</Link>}
-              <Link to='/admin/profile'>Profile</Link>
+              <Link to='/profile'>Profile</Link>
               <span onClick={logout}>Logout</span>
             </Dropdown>
           </div>
@@ -150,7 +146,8 @@ function Header() {
           </Link>
         </div>
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Sidebar open={openSidebar} setOpen={setOpenSidebar} setAuthModal={setOpen} />
+      <Modal open={open} setOpen={setOpen} />
     </div>
   );
 }

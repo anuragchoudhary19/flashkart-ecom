@@ -1,15 +1,9 @@
-.search form {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+.search {
   width: 100%;
-}
-.search form input {
-  border-radius: 4px;
   padding: 0 0.5rem;
 }
-.search {
+.search > form {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -1,21 +1,21 @@
-@color: #ffb703;
-@danger: #fa1e0e;
 .input {
   width: 100%;
+  padding: 0.25rem;
   height: 2.5rem;
   font-size: 1rem;
   outline: none;
   border: 1px solid #ccc;
+  border-radius: 4px;
   &:focus {
-    border-color: @color;
-    outline: 2px solid fade(#ffb703, 30%);
+    border-color: var(--secondary-color);
+    outline: 1px solid var(--secondary-color);
   }
   &:hover {
-    border-color: @color;
+    border-color: var(--secondary-color);
   }
 }
 
 .danger {
-  border: 1px solid @danger;
-  outline: 2px solid fade(@danger, 30%);
+  // border: 1px solid @danger;
+  // outline: 2px solid fade(@danger, 30%);
 }

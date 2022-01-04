@@ -7,6 +7,9 @@ import { useUnsubscribe } from './Hooks/useUnsubscribe';
 //
 import classes from './App.module.css';
 import 'antd/dist/antd.less';
+// import Search from './components/Search/Search';
+// import Sidebar from './components/Sidebar/Sidebar';
+// import SearchBar from './components/SearchBar/SearchBar';
 
 //auth component
 // import Home from './pages/Home/Home';
@@ -52,7 +55,6 @@ const Product = lazy(() => import('./pages/Product/Product'));
 
 const Header = lazy(() => import('./components/Header/Header'));
 const Footer = lazy(() => import('./components/nav/Footer/Footer'));
-const AuthModal = lazy(() => import('./components/AuthModal/AuthModal'));
 const UserRoute = lazy(() => import('./components/routes/UserRoute'));
 const AdminRoute = lazy(() => import('./components/routes/AdminRoute'));
 const BrandNavbar = lazy(() => import('./components/nav/BrandNavbar/BrandNavbar'));
@@ -77,7 +79,6 @@ function App() {
       <div className={classes.App}>
         <Header />
         <BrandNavbar />
-        <AuthModal />
         <div className={classes.main}>
           <Switch>
             <Route exact path='/' component={Home} />

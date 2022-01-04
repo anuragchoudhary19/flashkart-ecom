@@ -11,7 +11,7 @@ import { message } from 'antd';
 import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
 import classes from './ForgotPassword.module.css';
 
-function ForgotPassword({ setIsOpen }) {
+function ForgotPassword({ setOpen }) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ function ForgotPassword({ setIsOpen }) {
     if (user && user.token) {
       history.push('/');
     }
-  }, [user]);
+  }, [history, user]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -58,7 +58,7 @@ function ForgotPassword({ setIsOpen }) {
       <header>
         <h1>Recover Password</h1>
         <span>
-          <CloseOutlined style={{ color: 'white' }} onClick={() => setIsOpen('')} />
+          <CloseOutlined style={{ color: 'white' }} onClick={() => setOpen('')} />
         </span>
       </header>
       <div className={classes.form}>
@@ -85,7 +85,7 @@ function ForgotPassword({ setIsOpen }) {
           <strong>or</strong>
         </span>
         <div className={classes.options}>
-          <Button click={() => setIsOpen('login')}>Try Again</Button>
+          <Button click={() => setOpen('login')}>Try Again</Button>
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@ import Input from '../Elements/Input/Input';
 import { SearchOutlined } from '@ant-design/icons';
 import styles from './Search.module.css';
 
-const Search = () => {
+const Search = ({ submit, change }) => {
   const { search } = useSelector((state) => ({ ...state }));
   const { text } = search;
 

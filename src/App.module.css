@@ -6,8 +6,13 @@
   align-items: center;
   height: fit-content;
   min-height: 100vh;
-  width: 100%;
-  background-color: blue;
+  width: 100vw;
+  max-width: calc(100vw - 1.1rem);
+}
+@media (max-width: 768px) {
+  .App {
+    min-width: 100vw;
+  }
 }
 .main {
   display: flex;

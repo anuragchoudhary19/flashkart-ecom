@@ -14,7 +14,7 @@ import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import classes from './Login.module.css';
 
-const Login = ({ setIsOpen }) => {
+const Login = ({ setOpen }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -141,7 +141,7 @@ const Login = ({ setIsOpen }) => {
       <header>
         <h1>Log In</h1>
         <span>
-          <CloseOutlined style={{ color: 'black' }} onClick={() => setIsOpen('')} />
+          <CloseOutlined style={{ color: 'black' }} onClick={() => setOpen('')} />
         </span>
       </header>
       <div className={classes.form}>
@@ -172,8 +172,8 @@ const Login = ({ setIsOpen }) => {
           <Button type='submit'>{loading ? <LoadingOutlined /> : 'Log In'}</Button>
         </form>
         <div className={classes.options}>
-          <button onClick={() => setIsOpen('signup')}>New User? Sign Up</button>
-          <button onClick={() => setIsOpen('passwordRecovery')}>Forgot Password?</button>
+          <button onClick={() => setOpen('signup')}>New User? Sign Up</button>
+          <button onClick={() => setOpen('passwordRecovery')}>Forgot Password?</button>
         </div>
         <span className={classes.divider}>
           <strong>or</strong>

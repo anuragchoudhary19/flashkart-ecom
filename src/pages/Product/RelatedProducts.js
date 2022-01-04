@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
 import Carousel from '../../components/Carousel/Carousel';
-
 import { relatedProducts } from '../../axiosFunctions/productProfile';
 import classes from './Product.module.css';
 
@@ -27,9 +25,8 @@ const RelatedProducts = ({ brand }) => {
   }, [page, brand]);
   if (products.length < 0) return null;
   return (
-    <div className={classes.products}>
-      <header>Related Products</header>
-      <Carousel loading={loading} products={products} page={page} setPage={setPage} />
+    <div className={classes.relatedProducts}>
+      <Carousel carouselName='Related Products' loading={loading} products={products} page={page} setPage={setPage} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useUpdateCart } from '../../Hooks/useUpdateCart';
 import Button from '../../components/Elements/Button/Button';
 import styles from './Cart.module.css';
-import Modal from './../../components/Modal/Modal';
+import Modal from '../auth/Modal/Modal';
 
 const CartProducts = ({ products, user }) => {
   const [isOpen, setIsOpen] = useState('');

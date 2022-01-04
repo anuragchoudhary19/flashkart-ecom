@@ -147,7 +147,8 @@ const Product = ({ match }) => {
           <div className={classes.buttons}>
             <Button
               style={{
-                width: '25%',
+                minWidth: '40%',
+                width: 'fit-content',
                 height: '2.5rem',
               }}
               disabled={product.quantity === 0 ? true : false}
@@ -157,8 +158,8 @@ const Product = ({ match }) => {
             {product.quantity > 0 && (
               <Button
                 style={{
-                  width: '25%',
-                  height: '2.5rem',
+                  minWidth: '40%',
+                  width: 'fit-content',
                   marginLeft: '1rem',
                 }}
                 disabled={product.quantity === 0 ? true : false}
@@ -171,7 +172,7 @@ const Product = ({ match }) => {
           <RatingAndReviews product={product} ratings={product.ratings} />
         </div>
       </div>
-      <div className={classes.relatedProducts}>
+      <div className={classes.related}>
         <RelatedProducts brand={product.brand} />
       </div>
     </div>

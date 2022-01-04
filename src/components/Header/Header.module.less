@@ -4,40 +4,44 @@
   top: 0;
   z-index: 100;
   display: grid;
-  grid-template-columns: 20% 40% 40%;
-  // justify-content: space-around;
+  grid-template-columns: 20% 50% 30%;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 4rem;
   background-color: var(--background-color);
-  text-align: center;
-  > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+}
+@media (min-width: 769px) {
+  .menuIcon {
+    display: none;
   }
 }
-@media only screen and (min-height: 768px) {
-  .header {
-    height: 6vh;
-  }
-}
-
 .home {
-  font-size: 1.7rem;
+  font-size: clamp(1.4rem, 8vw, 1.9rem);
   font-weight: bold;
+  text-align: center;
+  color: var(--white);
   a {
-    color: var(--orange);
+    font-size: inherit;
+    color: var(--white);
   }
 }
+.search {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 
-.actions {
+.authButtons {
   display: flex;
   flex-direction: row;
   button {
     width: fit-content;
-    min-width: 100px;
+    min-width: 80px;
     margin: 0.25rem 0.5rem;
   }
 }
@@ -46,7 +50,6 @@
   justify-content: center;
   align-items: center;
   width: fit-content;
-  padding: 0 1.5rem;
   svg {
     color: var(--primary-color);
   }
@@ -59,14 +62,54 @@
   width: 50px;
   .avatar {
     cursor: pointer;
+    * {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+    }
   }
   svg {
     color: var(--primary-color);
   }
 }
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30%;
+@media (max-width: 768px) {
+  .header {
+    grid-template-areas:
+      'home cart'
+      'search search';
+    grid-template-columns: 80% 20%;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--background-color);
+  }
+  .menuIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+  }
+  .home {
+    grid-area: home;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+  .cart {
+    grid-area: cart;
+  }
+  .search {
+    grid-area: search;
+  }
+  .authButtons {
+    display: none;
+  }
+  .dropdown {
+    display: none;
+  }
 }

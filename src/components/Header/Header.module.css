@@ -4,38 +4,44 @@
   top: 0;
   z-index: 100;
   display: grid;
-  grid-template-columns: 20% 40% 40%;
+  grid-template-columns: 20% 50% 30%;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: 4rem;
   background-color: var(--background-color);
-  text-align: center;
 }
-.header > div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-@media only screen and (min-height: 768px) {
-  .header {
-    height: 6vh;
+@media (min-width: 769px) {
+  .menuIcon {
+    display: none;
   }
 }
 .home {
-  font-size: 1.7rem;
+  font-size: clamp(1.4rem, 8vw, 1.9rem);
   font-weight: bold;
+  text-align: center;
+  color: var(--white);
 }
 .home a {
-  color: var(--orange);
+  font-size: inherit;
+  color: var(--white);
 }
-.actions {
+.search {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+.menu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.authButtons {
   display: flex;
   flex-direction: row;
 }
-.actions button {
+.authButtons button {
   width: fit-content;
-  min-width: 100px;
+  min-width: 80px;
   margin: 0.25rem 0.5rem;
 }
 .cart {
@@ -43,7 +49,6 @@
   justify-content: center;
   align-items: center;
   width: fit-content;
-  padding: 0 1.5rem;
 }
 .cart svg {
   color: var(--primary-color);
@@ -58,12 +63,50 @@
 .dropdown .avatar {
   cursor: pointer;
 }
-.dropdown svg {
-  color: var(--primary-color);
-}
-.search {
+.dropdown .avatar * {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  background-color: transparent;
+}
+.dropdown svg {
+  color: var(--primary-color);
+}
+@media (max-width: 768px) {
+  .header {
+    grid-template-areas: 'home cart' 'search search';
+    grid-template-columns: 80% 20%;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--background-color);
+  }
+  .menuIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+  }
+  .home {
+    grid-area: home;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 0 0.5rem;
+  }
+  .cart {
+    grid-area: cart;
+  }
+  .search {
+    grid-area: search;
+  }
+  .authButtons {
+    display: none;
+  }
+  .dropdown {
+    display: none;
+  }
 }

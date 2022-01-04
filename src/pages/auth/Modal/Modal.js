@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import Auth from '../../pages/auth/Auth';
+import AuthModal from '../AuthModal';
 import styles from './Modal.module.css';
 
-const Modal = ({ isOpen, setIsOpen }) => {
-  if (!isOpen) return null;
+const Modal = ({ open, setOpen }) => {
+  if (!open) return null;
   return ReactDom.createPortal(
     <div className={styles.modal}>
-      <Auth isOpen={isOpen} setIsOpen={setIsOpen} />
+      <AuthModal open={open} setOpen={setOpen} />
     </div>,
     document.getElementById('modal')
   );

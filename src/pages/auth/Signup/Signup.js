@@ -11,7 +11,7 @@ import { message } from 'antd';
 import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
 import styles from './Signup.module.css';
 
-const SignUp = ({ setIsOpen }) => {
+const SignUp = ({ setOpen }) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -60,7 +60,7 @@ const SignUp = ({ setIsOpen }) => {
       <header>
         <h1>Sign Up</h1>
         <span>
-          <CloseOutlined style={{ color: 'white' }} onClick={() => setIsOpen('')} />
+          <CloseOutlined style={{ color: 'white' }} onClick={() => setOpen('')} />
         </span>
       </header>
       <div className={styles.form}>
@@ -82,7 +82,7 @@ const SignUp = ({ setIsOpen }) => {
         <span className={styles.divider}>
           <strong>Already have an account?</strong>
         </span>
-        <Button click={() => setIsOpen('login')}>Log In</Button>
+        <Button click={() => setOpen('login')}>Log In</Button>
       </div>
     </div>
   );

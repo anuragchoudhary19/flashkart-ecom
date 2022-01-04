@@ -7,7 +7,7 @@ const loadingCards = (count) => {
   for (let i = 0; i < count; i++) {
     cardsArray.push(
       <div className={styles.loadingCard} key={i}>
-        <Card style={{ width: '250px', height: '340px' }}>
+        <Card style={{ width: '250px', height: '250px' }}>
           <Skeleton active></Skeleton>
         </Card>
       </div>

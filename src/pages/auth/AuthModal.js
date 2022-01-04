@@ -1,18 +1,17 @@
 import React from 'react';
 import ForgotPassword from './ForgotPassword/ForgotPassword';
-
 import Login from './Login/Login';
 import SignUp from './Signup/Signup';
 
-function Auth({ isOpen, setIsOpen }) {
+function AuthModal({ open, setOpen }) {
   const getModal = () => {
-    switch (isOpen) {
+    switch (open) {
       case 'login':
-        return <Login setIsOpen={setIsOpen} />;
+        return <Login setOpen={setOpen} />;
       case 'signup':
-        return <SignUp setIsOpen={setIsOpen} />;
+        return <SignUp setOpen={setOpen} />;
       case 'passwordRecovery':
-        return <ForgotPassword setIsOpen={setIsOpen} />;
+        return <ForgotPassword setOpen={setOpen} />;
       default:
         return null;
     }
@@ -20,4 +19,4 @@ function Auth({ isOpen, setIsOpen }) {
   return <>{getModal()}</>;
 }
 
-export default Auth;
+export default AuthModal;

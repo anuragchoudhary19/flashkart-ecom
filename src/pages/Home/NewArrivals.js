@@ -23,8 +23,7 @@ const NewArrivals = () => {
 
   return (
     <div className={styles.carousel}>
-      <header>New Arrivals</header>
-      <Carousel loading={loading} products={products} page={page} setPage={setPage} />
+      <Carousel carouselName='New Arrivals' loading={loading} products={products} page={page} setPage={setPage} />
     </div>
   );
 };

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
-import ProductsCarousel from '../../components/Carousel/Carousel';
-
+import Carousel from '../../components/Carousel/Carousel';
 import { getProfiles } from '../../axiosFunctions/productProfile';
 import styles from './Home.module.css';
 
@@ -25,8 +23,7 @@ const BestSellers = () => {
 
   return (
     <div className={styles.carousel}>
-      <header>Best Sellers</header>
-      <ProductsCarousel loading={loading} products={products} page={page} setPage={setPage} />
+      <Carousel carouselName='Best Sellers' loading={loading} products={products} page={page} setPage={setPage} />
     </div>
   );
 };

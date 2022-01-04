@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  flex-grow: 1;
   width: 100%;
   background-color: hsl(0, 0%, 99%);
 }
@@ -72,4 +71,36 @@
 .paymentSuccess a:hover {
   text-decoration: underline;
   color: white;
+}
+@media (max-width: 768px) {
+  .content,
+  .paymentSuccess {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    width: 95%;
+    background-color: var(--background-color);
+  }
+  .content h2,
+  .paymentSuccess h2,
+  .content h4,
+  .paymentSuccess h4,
+  .content p,
+  .paymentSuccess p {
+    color: white;
+  }
+  .stripCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
 }

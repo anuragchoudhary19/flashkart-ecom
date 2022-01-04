@@ -5,14 +5,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../components/Elements/Button/Button';
 import styles from './Cart.module.css';
-import Modal from './../../components/Modal/Modal';
+import Modal from '../auth/Modal/Modal';
 
 const EmptyCart = () => {
-  const [isOpen, setIsOpen] = useState('');
+  const [open, setOpen] = useState('');
   const { user } = useSelector((state) => ({ ...state }));
 
   const showLoginModal = () => {
-    setIsOpen('login');
+    setOpen('login');
   };
   return (
     <div className={styles.emptyCart}>
@@ -21,15 +21,15 @@ const EmptyCart = () => {
         <FontAwesomeIcon icon={faCartPlus} />
       </div>
       <div>
-        {user && user.token ? (
+        {user?.token ? (
           <Link to='/'>
-            <Button>Build your Cart</Button>
+            <Button>ADD ITEMS TO THE CART</Button>
           </Link>
         ) : (
           <Button click={showLoginModal}>Login to Build Your Cart</Button>
         )}
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Modal open={open} setOpen={setOpen} />
     </div>
   );
 };
