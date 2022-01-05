@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { getUserOrders } from '../../axiosFunctions/user';
+import { cancelOrder, getUserOrders } from '../../axiosFunctions/user';
 import { useSelector } from 'react-redux';
 import Button from '../../components/Elements/Button/Button';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import styles from './Orders.module.css';
+import { message } from 'antd';
 import Invoice from './Invoice/Invoice';
+import styles from './Orders.module.css';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -24,8 +25,10 @@ const Orders = () => {
     </PDFDownloadLink>
   );
 
-  const cancelOrder = () => {
-    //
+  const handleCancelOrder = (id) => {
+    cancelOrder(user.token, id).then((res) => {
+      message.success('Order Cancelled');
+    });
   };
   if (loading) return null;
   return (
@@ -36,6 +39,7 @@ const Orders = () => {
           <div className={styles.order} key={order._id}>
             <header style={{ padding: '0.5rem' }}>
               <b>Order ID:{order._id}</b>
+              <b>Date: {new Date(order.createdAt.split('T', 1)[0]).toLocaleDateString()}</b>
             </header>
             <div className={styles.orderItem}>
               <div className={styles.tableRow}>
@@ -69,12 +73,10 @@ const Orders = () => {
                   <label>Order Status</label>
                   <div>
                     <b>{order.orderStatus}</b>
-                    {order.orderStatus !== 'Delivered' ? (
-                      <b onClick={() => cancelOrder(order._id)} style={{ color: 'red', cursor: 'pointer' }}>
+                    {!['Cancelled', 'Delivered'].includes(order.orderStatus) && (
+                      <b onClick={() => handleCancelOrder(order._id)} style={{ color: 'red', cursor: 'pointer' }}>
                         Cancel Order
                       </b>
-                    ) : (
-                      <b>Return?</b>
                     )}
                   </div>
                 </div>

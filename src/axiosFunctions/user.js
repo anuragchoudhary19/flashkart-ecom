@@ -37,6 +37,13 @@ export const createOrder = async (authToken, stripeResponse) => {
     }
   );
 };
+export const cancelOrder = async (authToken, orderId) => {
+  return await axios.delete(`${process.env.REACT_APP_API}/user/order/${orderId}`, {
+    headers: {
+      authToken,
+    },
+  });
+};
 export const getUserOrders = async (authToken) => {
   return await axios.get(`${process.env.REACT_APP_API}/user/order`, {
     headers: {

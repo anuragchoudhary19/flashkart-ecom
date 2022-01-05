@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import LoadingPage from './components/LoadingPage/LoadingPage';
 //
 import { useUnsubscribe } from './Hooks/useUnsubscribe';
+import '@stripe/stripe-js';
 //
 import classes from './App.module.css';
 import 'antd/dist/antd.less';

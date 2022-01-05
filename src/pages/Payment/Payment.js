@@ -17,6 +17,7 @@ const Payment = () => {
       history.push('/');
     }
   }, [history]);
+  console.log(promise);
   return (
     <div className={styles.page}>
       <div className={styles.content}>

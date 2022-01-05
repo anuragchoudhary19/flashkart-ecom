@@ -33,7 +33,6 @@ const StripePayment = () => {
   }, [history, user.token]);
 
   const handleSubmit = async (e) => {
-    console.log(e.target);
     e.preventDefault();
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(clientSecret, {
@@ -44,12 +43,11 @@ const StripePayment = () => {
         },
       },
     });
-    console.log(payload);
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
     } else {
-      //create orderand save to Database
+      //create order and save to Database
       createOrder(user.token, payload).then((res) => {
         if (res.data.ok) {
           //empty cart from local storage
