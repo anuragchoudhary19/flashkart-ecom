@@ -10,27 +10,26 @@
   background-color: hsl(0, 0%, 99%);
   box-shadow: 0 0 1rem 2px hsla(0, 0%, 0%, 0.4);
   > header {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: fit-content;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     border-radius: 4px 4px 0 0;
-    background-color: var(--background-color);
+    background-color: var(--blue);
     h1 {
-      color: var(--primary-color);
-    }
-    span {
-      position: absolute;
-      right: -0.75rem;
-      top: -0.75rem;
-      font-size: 1.5rem;
-      font-weight: bold;
-      cursor: pointer;
+      color: var(--mint);
     }
   }
+}
+.close {
+  position: absolute;
+  right: -2rem;
+  top: -2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
 }
 .form {
   display: flex;
@@ -48,7 +47,6 @@
   align-items: center;
   width: 100%;
   height: fit-content;
-  // padding: 0.5rem;
   > div {
     width: 100%;
     margin: 0.25rem 0;

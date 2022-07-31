@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import classes from './Input.module.css';
 
 const Input = ({ type, name, value, change, placeholder, error, ...rest }) => {
-  const style = [];
-  style.push(classes.input);
-  if (error && error.length) {
-    style.push(classes.danger);
-  }
+  const [styles, setStyles] = useState([]);
+  useEffect(() => {
+    if (error && error.length) {
+      setStyles([classes.input, classes.danger]);
+    } else {
+      setStyles([classes.input]);
+    }
+  }, [error]);
+
   return (
     <input
-      className={style.join(' ')}
+      className={styles.join(' ')}
       type={type}
       name={name}
       value={value}

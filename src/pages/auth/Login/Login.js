@@ -10,7 +10,7 @@ import SignInWithGoogle from './images/google.png';
 import { validateEmail } from '../../../functions/validateString';
 import { auth, googleAuthProvider } from '../../../firebase';
 import { createOrUpdateUser } from '../../../axiosFunctions/auth';
-import { LoadingOutlined, CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import classes from './Login.module.css';
 
@@ -23,13 +23,13 @@ const Login = ({ setOpen }) => {
   let history = useHistory();
   let dispatch = useDispatch();
 
-  const roleBasedRedirect = (res) => {
+  const roleBasedRedirect = (role) => {
     let intended = history.location.state;
     if (intended) {
       console.log(intended);
       history.push(intended.from);
     } else {
-      if (res.data.role === 'admin') {
+      if (role === 'admin') {
         history.push('/admin/brand');
       } else {
         history.push('/');
@@ -80,12 +80,15 @@ const Login = ({ setOpen }) => {
               _id: res.data._id,
             },
           });
-          dispatch({
-            type: 'HIDE_MODAL',
-            payload: null,
-          });
-          roleBasedRedirect(res);
+          return res.data.role;
         })
+        .then((role) => {
+          roleBasedRedirect(role);
+        })
+        .then(() => {
+          setOpen(false);
+        })
+
         .catch((err) => {
           message.error('Server Error');
         });
@@ -119,11 +122,13 @@ const Login = ({ setOpen }) => {
                 _id: res.data._id,
               },
             });
-            dispatch({
-              type: 'HIDE_MODAL',
-              payload: null,
-            });
-            roleBasedRedirect(res);
+            return res.data.role;
+          })
+          .then((role) => {
+            roleBasedRedirect(role);
+          })
+          .then(() => {
+            setOpen(false);
           })
           .catch((err) => {
             setError('Error in Sign In with Google');
@@ -138,11 +143,11 @@ const Login = ({ setOpen }) => {
 
   return (
     <div className={classes.modal}>
+      <span className={classes.close}>
+        <CloseOutlined style={{ color: '#d3f6cb' }} onClick={() => setOpen('')} />
+      </span>
       <header>
         <h1>Log In</h1>
-        <span>
-          <CloseOutlined style={{ color: 'black' }} onClick={() => setOpen('')} />
-        </span>
       </header>
       <div className={classes.form}>
         <form onSubmit={submitHandler}>
@@ -169,7 +174,9 @@ const Login = ({ setOpen }) => {
             />
           </div>
           <span className={classes.error}>{error.email || error.password}</span>
-          <Button type='submit'>{loading ? <LoadingOutlined /> : 'Log In'}</Button>
+          <Button type='submit' loading={loading}>
+            Log In
+          </Button>
         </form>
         <div className={classes.options}>
           <button onClick={() => setOpen('signup')}>New User? Sign Up</button>

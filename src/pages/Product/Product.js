@@ -148,8 +148,7 @@ const Product = ({ match }) => {
             <Button
               style={{
                 minWidth: '40%',
-                width: 'fit-content',
-                height: '2.5rem',
+                width: '100%',
               }}
               disabled={product.quantity === 0 ? true : false}
               click={addToCart}>
@@ -159,8 +158,7 @@ const Product = ({ match }) => {
               <Button
                 style={{
                   minWidth: '40%',
-                  width: 'fit-content',
-                  marginLeft: '1rem',
+                  width: '100%',
                 }}
                 disabled={product.quantity === 0 ? true : false}
                 click={proceedToBuy}>

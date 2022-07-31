@@ -3,19 +3,19 @@ import { LoadingOutlined } from '@ant-design/icons';
 import classes from './Button.module.css';
 
 const Button = (props) => {
-  const { click, style, type, loading, children } = props;
+  const { click, style, type, disabled, loading, children } = props;
   const [styles, setStyles] = useState([]);
   useEffect(() => {
     if (loading) {
-      setStyles([...styles, classes.disabled]);
+      setStyles([classes.button, classes.disabled]);
     } else {
       setStyles([classes.button]);
     }
-  }, [loading, styles]);
+  }, [loading]);
 
   return (
     <div className={styles.join(' ')}>
-      <button onClick={click} style={style} type={type} disabled={loading}>
+      <button onClick={click} style={style} type={type} disabled={loading || disabled}>
         {loading ? <LoadingOutlined /> : children}
       </button>
     </div>
