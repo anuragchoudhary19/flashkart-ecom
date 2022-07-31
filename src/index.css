@@ -7,15 +7,21 @@
 }
 
 :root {
-  --background-color: #14279b;
+  --background-color: #003865;
   --primary-color: #e6e6e6;
-  --secondary-color: #54e346;
+  --secondary-color: #3600b3;
   --white: #e6e6e6;
   --backdrop-color: hsla(240, 100%, 60%, 0.1);
   --color: hsl(0, 0%, 90%);
   --success-color: hsl(120, 100%, 40%);
-  --button-hover-color: hsla(240, 100%, 60%, 1);
+  --button-hover-color: #3600b3;
   --success-hover-color: hsl(120, 100%, 50%);
   --hover-color: hsl(203, 90%, 8%);
   --danger-color: hsl(0, 100%, 40%);
+  --blue: #003865;
+  --lightblue: hsl(207, 100%, 25%);
+  --orange: #ef5b0c;
+  --mint: hsl(109, 70%, 88%);
+  --green: hsl(127, 55%, 50%);
+  --darkgreen: hsl(127, 55%, 45%);
 }

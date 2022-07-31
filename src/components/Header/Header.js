@@ -5,6 +5,9 @@ import { useHistory } from 'react-router-dom';
 //components
 import Button from '../Elements/Button/Button';
 import Dropdown from '../Dropdown/Dropdown';
+import Modal from '../../pages/auth/Modal/Modal';
+import Search from './../Search/Search';
+import Sidebar from '../Sidebar/Sidebar';
 //functions
 import firebase from 'firebase';
 import { auth } from '../../firebase';
@@ -15,17 +18,14 @@ import { ShoppingCartOutlined } from '@ant-design/icons';
 import { Avatar } from 'antd';
 import { UserOutlined, MenuOutlined } from '@ant-design/icons';
 import { message } from 'antd';
-import Modal from '../../pages/auth/Modal/Modal';
-import Search from './../Search/Search';
-import Sidebar from '../Sidebar/Sidebar';
 
 function Header() {
   const [open, setOpen] = useState('');
   const [openSidebar, setOpenSidebar] = useState(false);
-  const demoEmail = 'anuragdemoemail@gmail.com';
-  const demoPassword = 'Password123';
   const [dropdown, setDropdown] = useState(false);
   const [loading, setLoading] = useState(false);
+  const demoEmail = process.env.REACT_APP_DEMO_EMAIL;
+  const demoPassword = process.env.REACT_APP_DEMO_PASSWORD;
   let { user, cart } = useSelector((state) => ({ ...state }));
 
   let dispatch = useDispatch();
@@ -101,7 +101,9 @@ function Header() {
         <div className={classes.menuIcon} onClick={() => setOpenSidebar(true)}>
           <MenuOutlined />
         </div>
-        <Link to='/'>FlashKart</Link>
+        <Link className={classes.logo} to='/'>
+          FlashKart
+        </Link>
       </div>
       <div className={classes.search}>
         <Search />

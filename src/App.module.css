@@ -1,5 +1,4 @@
 .App {
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -8,6 +7,8 @@
   min-height: 100vh;
   width: 100vw;
   max-width: calc(100vw - 1.1rem);
+  background-color: red;
+  scroll-behavior: smooth;
 }
 @media (max-width: 768px) {
   .App {

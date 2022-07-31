@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 //components
 import Dropdown from '../../Dropdown/Dropdown';
-
 //functions
 import { getBrands } from '../../../axiosFunctions/brand';
 //css
@@ -18,9 +17,13 @@ const BrandNavbar = () => {
   }, []);
 
   const loadBrands = () => {
-    getBrands().then((res) => {
-      setBrands(res.data);
-    });
+    getBrands()
+      .then((res) => {
+        setBrands(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleBrandSearch = (brand) => {
@@ -42,13 +45,15 @@ const BrandNavbar = () => {
             <span onClick={() => handleBrandSearch(brand)} className={classes.brand}>
               {brand.name}
             </span>
-            <Dropdown dropdown={key === brand._id}>
-              {brand.products.map((product) => (
-                <span key={product._id} onClick={() => handleProductSearch(product)}>
-                  {product.name}
-                </span>
-              ))}
-            </Dropdown>
+            {brand.products.length > 0 && (
+              <Dropdown dropdown={key === brand._id}>
+                {brand.products.map((product) => (
+                  <span key={product._id} onClick={() => handleProductSearch(product)}>
+                    {product.name}
+                  </span>
+                ))}
+              </Dropdown>
+            )}
           </div>
         ))}
       </div>

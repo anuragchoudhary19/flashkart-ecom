@@ -9,7 +9,7 @@ import App from './App';
 import './index.css';
 
 const store = createStore(rootReducer, composeWithDevTools());
-
+console.log(store.getState())
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
