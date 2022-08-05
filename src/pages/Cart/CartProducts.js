@@ -7,7 +7,7 @@ import styles from './Cart.module.css';
 import Modal from '../auth/Modal/Modal';
 
 const CartProducts = ({ products, user }) => {
-  const [isOpen, setIsOpen] = useState('');
+  const [open, setOpen] = useState('');
   const { setUpdate } = useUpdateCart(products);
   let history = useHistory();
 
@@ -20,7 +20,7 @@ const CartProducts = ({ products, user }) => {
       history.push({ pathname: '/checkout', state: { from: '/cart' } });
     } else {
       history.push({ state: { from: '/cart' } });
-      setIsOpen('login');
+      setOpen('login');
     }
   };
 
@@ -90,7 +90,7 @@ const CartProducts = ({ products, user }) => {
           {user?.token ? 'Checkout' : 'Login to Checkout'}
         </Button>
       </div>
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Modal open={open} setOpen={setOpen} />
     </div>
   );
 };
