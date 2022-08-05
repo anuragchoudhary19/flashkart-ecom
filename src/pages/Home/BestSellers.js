@@ -13,7 +13,7 @@ const BestSellers = () => {
     setLoading(true);
     getProfiles('sold', 'desc', page)
       .then((res) => {
-        setProducts([...res.data?.profiles]);
+        setProducts(res.data.profiles);
         setIsLastPage(res.data?.isLastPage);
       })
       .then(() => {

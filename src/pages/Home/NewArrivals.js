@@ -13,7 +13,7 @@ const NewArrivals = () => {
     setLoading(true);
     getProfiles('createdAt', 'desc', page)
       .then((res) => {
-        setProducts([...res.data?.profiles]);
+        setProducts(res.data.profiles);
         setIsLastPage(res.data?.isLastPage);
       })
       .then(() => {
