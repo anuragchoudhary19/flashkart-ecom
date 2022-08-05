@@ -27,17 +27,28 @@
 }
 .carousel {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+  width: 100%;
+  height: fit-content;
+  background-color: white;
+}
+.carousel img {
+  width: 150px;
+  height: 400px;
+  transform: scaleX(0.5);
+}
+.displayImage {
+  position: relative;
   display: block;
   margin: 1rem;
   width: 100%;
   height: fit-content;
   background-color: white;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.3);
-}
-.carousel img {
-  width: 150px;
-  height: 400px;
-  transform: scaleX(0.5);
 }
 .thumnail {
   display: flex;
@@ -116,7 +127,8 @@
 }
 .buttons {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: center;
   gap: 2rem;
   width: 100%;
   height: 2.5rem;

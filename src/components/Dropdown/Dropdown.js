@@ -5,8 +5,7 @@ const Dropdown = (props) => {
     <div
       className={classes.dropdown}
       style={{ visibility: props.dropdown ? 'visible' : 'hidden', opacity: props.dropdown ? '1' : '0' }}>
-      <div className={classes.menu} style={{ height: props.dropdown ? 'fit-content' : '0' }}>
-        <span className={classes.triangle}></span>
+      <div className={classes.menu}>
         <div className={classes.item}>{props.children}</div>
       </div>
     </div>

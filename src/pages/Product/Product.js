@@ -90,15 +90,39 @@ const Product = ({ match }) => {
     <div className={classes.product}>
       <div className={classes.description}>
         <div className={classes.carousel}>
-          <Carousel autoplay dots ref={(ref) => (slider.current = ref)}>
-            {product.images.map((i) => (
-              <img key={i.public_id} alt={product.slug} src={i.url} />
-            ))}
-          </Carousel>
+          <div className={classes.displayImage}>
+            <Carousel autoplay dots ref={(ref) => (slider.current = ref)}>
+              {product.images.map((i) => (
+                <img key={i.public_id} alt={product.slug} src={i.url} />
+              ))}
+            </Carousel>
+          </div>
           <div className={classes.thumnail}>
             {product.images.map((i, j) => (
               <img key={i.public_id} alt={product.slug} src={i.url} onClick={() => selectImage(j)} />
             ))}
+          </div>
+          <div className={classes.buttons}>
+            <Button
+              style={{
+                minWidth: '40%',
+                width: '200px',
+              }}
+              disabled={product.quantity === 0 ? true : false}
+              click={addToCart}>
+              {product.quantity === 0 ? 'Out Of Stock' : 'Add to Cart'}
+            </Button>
+            {product.quantity > 0 && (
+              <Button
+                style={{
+                  minWidth: '40%',
+                  width: '200px',
+                }}
+                disabled={product.quantity === 0 ? true : false}
+                click={proceedToBuy}>
+                Proceed to Buy
+              </Button>
+            )}
           </div>
         </div>
         <div className={classes.profile}>
@@ -143,28 +167,6 @@ const Product = ({ match }) => {
               {product.quantity < 100 && product.quantity > 0 ? `Only few left in stock` : ''}
             </span>
             <span style={{ color: '#c7cfb7' }}>{product.quantity === 0 ? `Out of Stock` : ''}</span>
-          </div>
-          <div className={classes.buttons}>
-            <Button
-              style={{
-                minWidth: '40%',
-                width: '100%',
-              }}
-              disabled={product.quantity === 0 ? true : false}
-              click={addToCart}>
-              {product.quantity === 0 ? 'Out Of Stock' : 'Add to Cart'}
-            </Button>
-            {product.quantity > 0 && (
-              <Button
-                style={{
-                  minWidth: '40%',
-                  width: '100%',
-                }}
-                disabled={product.quantity === 0 ? true : false}
-                click={proceedToBuy}>
-                Proceed to Buy
-              </Button>
-            )}
           </div>
           <Specifications product={product} />
           <RatingAndReviews product={product} ratings={product.ratings} />

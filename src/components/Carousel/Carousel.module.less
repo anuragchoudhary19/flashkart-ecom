@@ -12,11 +12,11 @@
     height: fit-content;
     font-weight: 500;
     font-size: clamp(1.2rem, 8vw, 1.5rem);
-    color: fade(black, 70%);
+    color: fade(black, 50%);
     background-color: transparent;
     padding: 0.3rem;
     border-bottom: 2px solid #ccc;
-    border-left: 8px solid var(--secondary-color);
+    border-left: 8px solid var(--lightblue);
   }
 }
 .products {
@@ -31,16 +31,19 @@
 .next {
   z-index: 10;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   left: auto;
   right: 0.5rem;
   text-align: center;
-  width: 60px;
-  height: 60px;
+  width: fit-content;
+  height: fit-content;
+  padding: 1rem;
   top: 50%;
   transform: translateY(-50%);
   border-radius: 50%;
   background-color: hsl(0, 0%, 100%);
-  box-shadow: 0 0 8px 4px hsla(0, 0%, 50%, 0.4);
   border: none;
   outline: none;
   cursor: pointer;
