@@ -1,31 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import Carousel from '../../components/Carousel/Carousel';
 import { getProfiles } from '../../axiosFunctions/productProfile';
+import { productsReducer, INITIAL_STATE } from './productsReducer';
 import styles from './Home.module.css';
 
 const BestSellers = () => {
-  const [products, setProducts] = useState([]);
+  const [state, dispatch] = useReducer(productsReducer, INITIAL_STATE);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [isLastPage, setIsLastPage] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
+    let isMounted = true;
+    if (isMounted) dispatch({ type: 'FECTHING' });
     getProfiles('sold', 'desc', page)
       .then((res) => {
-        setProducts(res.data.profiles);
-        setIsLastPage(res.data?.isLastPage);
-      })
-      .then(() => {
-        setLoading(false);
+        if (isMounted)
+          dispatch({
+            type: 'FECTHED',
+            payload: {
+              loading: false,
+              products: res.data.profiles,
+              isLastPage: res.data.isLastPage,
+            },
+          });
       })
       .catch((err) => {
-        console.log(err);
-        setLoading(false);
+        if (isMounted)
+          dispatch({
+            type: 'ERROR',
+            payload: {
+              loading: false,
+            },
+          });
       });
     return () => {
-      setLoading(false);
-      setProducts([]);
+      isMounted = false;
     };
   }, [page]);
 
@@ -33,9 +41,9 @@ const BestSellers = () => {
     <div className={styles.carousel}>
       <Carousel
         carouselName='Best Sellers'
-        lastPage={isLastPage}
-        loading={loading}
-        products={products}
+        lastPage={state.isLastPage}
+        loading={state.loading}
+        products={state.products}
         page={page}
         setPage={setPage}
       />
