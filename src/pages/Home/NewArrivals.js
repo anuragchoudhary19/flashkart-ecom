@@ -13,6 +13,7 @@ const NewArrivals = () => {
     if (isMounted) dispatch({ type: 'FECTHING' });
     getProfiles('createdAt', 'desc', page)
       .then((res) => {
+        console.log(res.data);
         if (isMounted)
           dispatch({
             type: 'FECTHED',

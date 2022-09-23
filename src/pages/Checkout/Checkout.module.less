@@ -42,7 +42,11 @@
 
 .controls {
   display: flex;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
+  padding: 0.25rem;
+  background-color: var(--background-color);
 }
 .form {
   > form {
@@ -108,7 +112,7 @@
   flex-direction: column;
   justify-content: left;
   margin-right: 1rem;
-  > div {
+  > div:not(:last-child) {
     display: flex;
     justify-content: space-between;
     width: 100%;

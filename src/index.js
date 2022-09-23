@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import rootReducer from './reducer/rootReducer';
 import App from './App';
+import Modal from './Modal';
 import './index.css';
 
 const store = createStore(rootReducer, composeWithDevTools());
@@ -14,6 +15,7 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <App />
+        {/* <Modal /> */}
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,

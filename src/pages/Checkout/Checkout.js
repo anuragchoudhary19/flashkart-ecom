@@ -100,10 +100,10 @@ const Checkout = () => {
             <div>{cart.cartTotalAfterDiscount.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</div>
           </div>
           <div className={styles.controls}>
-            <Button style={{ width: '40%' }} click={() => history.push('/')}>
+            <Button style={{ height: '50%', padding: '.5rem' }} click={() => history.push('/')}>
               Shop More
             </Button>
-            <Button style={{ width: '40%' }} click={emptyCartHandle}>
+            <Button style={{ height: '50%', padding: '.5rem' }} click={emptyCartHandle}>
               Empty Cart
             </Button>
           </div>
