@@ -22,38 +22,37 @@ const Product = ({ match }) => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [wishlist, setWishlist] = useState(false);
-  const { setAddToCartItem } = useAddToCart();
+  const [addToCartLoading, addItemToCart] = useAddToCart();
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     const loadProductProfile = async () => {
-      setLoading(true);
-      await getProductProfile(slug)
-        .then((res) => {
-          setProduct(res.data);
-          if (user) {
-            user?.wishlist.forEach((item) => {
-              if (item === res.data._id) {
-                setWishlist(true);
-              }
-            });
-          }
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
+      try {
+        setLoading(true);
+        const { data } = await getProductProfile(slug);
+        setProduct(data);
+        if (user) {
+          user?.wishlist.forEach((item) => {
+            if (item === data._id) {
+              setWishlist(true);
+            }
+          });
+        }
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+      }
     };
     loadProductProfile();
   }, [slug, user]);
 
   const addToCart = () => {
-    setAddToCartItem({ item: product, buy: false });
+    addItemToCart({ item: product, buy: false });
   };
 
   const proceedToBuy = () => {
-    setAddToCartItem({ item: product, buy: true });
+    addItemToCart({ item: product, buy: true });
   };
   const slider = useRef();
   const selectImage = (j) => {
@@ -108,6 +107,7 @@ const Product = ({ match }) => {
                 minWidth: '40%',
                 width: '200px',
               }}
+              loading={addToCartLoading}
               disabled={product.quantity === 0 ? true : false}
               click={addToCart}>
               {product.quantity === 0 ? 'Out Of Stock' : 'Add to Cart'}
@@ -118,6 +118,7 @@ const Product = ({ match }) => {
                   minWidth: '40%',
                   width: '200px',
                 }}
+                loading={addToCartLoading}
                 disabled={product.quantity === 0 ? true : false}
                 click={proceedToBuy}>
                 Proceed to Buy

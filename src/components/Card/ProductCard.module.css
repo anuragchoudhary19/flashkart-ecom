@@ -2,7 +2,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 250px;
   height: fit-content;
   cursor: pointer;
 }
@@ -23,7 +22,4 @@
   font-size: 1.4rem;
 }
 @media (max-width: 768px) {
-  .card {
-    width: 80vw;
-  }
 }

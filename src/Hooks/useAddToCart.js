@@ -24,70 +24,78 @@ export const useAddToCart = () => {
     }),
     []
   );
-  const [addToCartItem, setAddToCartItem] = useState(initialState);
-  const { item, buy } = addToCartItem;
+  const [product, setProduct] = useState(initialState);
+  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
   const history = useHistory();
+
   useEffect(() => {
+    const { item, buy } = product;
     if (item === null) return;
-    let products = [];
-    if (typeof window !== 'undefined') {
-      if (user?.token) {
-        addToCart(user.token, item._id)
-          .then((res) => {
-            if (res.data.alreadyInCart && buy) {
-              history.push('/cart');
-            } else if (res.data.alreadyInCart) {
-              message.success('Already in cart');
-            } else {
-              addToCartLS('cartOnDB', res.data);
-              addToCartRS(res.data, dispatch);
-              message.success('Added to cart successfully');
-              setAddToCartItem(initialState);
-              if (buy) {
-                history.push('/cart');
-              }
-            }
-          })
-          .catch((err) => {
-            message.error('Add To Cart Failed');
-          });
-      } else {
-        if (localStorage.getItem('cartLocal')) {
-          let cart = JSON.parse(localStorage.getItem('cartLocal'));
-          products = cart.products.map((p) => ({ _id: p.product._id, count: p.count }));
-        }
-        for (let i = 0; i < products.length; i++) {
-          if (products[i]._id.toString() === item?._id.toString()) {
+    if (typeof window == 'undefined') return;
+    if (user?.token) {
+      const handleAddToCart = async () => {
+        setLoading(true);
+        try {
+          const { data } = await addToCart(user.token, item._id);
+          if (data.alreadyInCart && buy) {
+            setLoading(false);
+            history.push('/cart');
+          } else if (data.alreadyInCart) {
+            setLoading(false);
+            message.success('Already in cart');
+          } else {
+            setLoading(false);
+            addToCartLS('cartOnDB', data);
+            addToCartRS(data, dispatch);
+            setProduct(initialState);
+            message.success('Added to cart successfully');
             if (buy) {
               history.push('/cart');
-            } else {
-              message.success('Already in cart');
-              setAddToCartItem(initialState);
             }
-            return;
           }
+        } catch (error) {
+          message.error('Add To Cart Failed');
         }
-        products.push({
-          _id: item._id,
-          count: 1,
-        });
-        let uniqueProducts = _.uniqWith(products, _.isEqual);
-        getCartValue(uniqueProducts).then((res) => {
-          addToCartLS('cartLocal', res.data);
-          addToCartRS(res.data, dispatch);
-          message.success('Added to cart successfully');
-          setAddToCartItem(initialState);
+      };
+      handleAddToCart();
+    } else {
+      let products = [];
+      if (localStorage.getItem('cartLocal')) {
+        let cart = JSON.parse(localStorage.getItem('cartLocal'));
+        products = cart.products.map((p) => ({ _id: p.product._id, count: p.count }));
+      }
+      for (let i = 0; i < products.length; i++) {
+        if (products[i]._id.toString() === item?._id.toString()) {
           if (buy) {
             history.push('/cart');
+          } else {
+            message.success('Already in cart');
+            setProduct(initialState);
           }
-        });
+          return;
+        }
       }
+      products.push({
+        _id: item._id,
+        count: 1,
+      });
+      let uniqueProducts = _.uniqWith(products, _.isEqual);
+      getCartValue(uniqueProducts).then((res) => {
+        addToCartLS('cartLocal', res.data);
+        addToCartRS(res.data, dispatch);
+        message.success('Added to cart successfully');
+        setProduct(initialState);
+        if (buy) {
+          history.push('/cart');
+        }
+      });
     }
+
     return () => {
-      setAddToCartItem(initialState);
+      setProduct(initialState);
     };
-  }, [item, user?.token, dispatch, history, buy, initialState]);
-  return { setAddToCartItem };
+  }, [product, user?.token, dispatch, history, initialState]);
+  return [loading, setProduct];
 };

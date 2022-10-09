@@ -9,6 +9,7 @@ import styles from './Cart.module.css';
 const Cart = () => {
   const { loading } = useGetCart();
   const { user, cart, savedForLater } = useSelector((state) => ({ ...state }));
+  // console.log(cart);
   if (cart === null || cart?.products?.length === 0)
     return (
       <div className={styles.page}>
