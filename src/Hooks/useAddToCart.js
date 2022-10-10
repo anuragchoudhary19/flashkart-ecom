@@ -4,17 +4,8 @@ import { useHistory } from 'react-router-dom';
 import _ from 'lodash';
 import { addToCart, getCartValue } from '../axiosFunctions/cart';
 import { message } from 'antd';
-
-const addToCartLS = (cartType, cart) => {
-  localStorage.setItem(cartType, JSON.stringify(cart));
-};
-
-const addToCartRS = (cart, dispatch) => {
-  dispatch({
-    type: 'ADD_TO_CART',
-    payload: cart,
-  });
-};
+import { useLocalStorage } from './useLocalStorage';
+import { useReduxStore } from './useReduxStore';
 
 export const useAddToCart = () => {
   const initialState = useMemo(
@@ -27,7 +18,8 @@ export const useAddToCart = () => {
   const [product, setProduct] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const { user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
+  const [addToLocalStorage] = useLocalStorage();
+  const [addToReduxStore] = useReduxStore();
   const history = useHistory();
 
   useEffect(() => {
@@ -47,13 +39,11 @@ export const useAddToCart = () => {
             message.success('Already in cart');
           } else {
             setLoading(false);
-            addToCartLS('cartOnDB', data);
-            addToCartRS(data, dispatch);
+            addToLocalStorage('cartOnDB', data);
+            addToReduxStore('ADD_TO_CART', data);
             setProduct(initialState);
             message.success('Added to cart successfully');
-            if (buy) {
-              history.push('/cart');
-            }
+            if (buy) history.push('/cart');
           }
         } catch (error) {
           message.error('Add To Cart Failed');
@@ -83,8 +73,8 @@ export const useAddToCart = () => {
       });
       let uniqueProducts = _.uniqWith(products, _.isEqual);
       getCartValue(uniqueProducts).then((res) => {
-        addToCartLS('cartLocal', res.data);
-        addToCartRS(res.data, dispatch);
+        addToLocalStorage('cartLocal', res.data);
+        addToReduxStore('ADD_TO_CART', res.data);
         message.success('Added to cart successfully');
         setProduct(initialState);
         if (buy) {
@@ -96,6 +86,6 @@ export const useAddToCart = () => {
     return () => {
       setProduct(initialState);
     };
-  }, [product, user?.token, dispatch, history, initialState]);
+  }, [product, addToLocalStorage, addToReduxStore, user?.token, history, initialState]);
   return [loading, setProduct];
 };

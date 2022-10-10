@@ -57,7 +57,7 @@ const CartProducts = ({ products, user }) => {
           </Link>
           <div className={styles.controls}>
             <div>
-              <Button style={{ width: '30px' }} click={() => updateHandle(item.product._id, 'add')}>
+              <Button width='30px' click={() => updateHandle(item.product._id, 'add')}>
                 +
               </Button>
               <span
@@ -70,10 +70,7 @@ const CartProducts = ({ products, user }) => {
                 }}>
                 <b>{item.count.toString()}</b>
               </span>
-              <Button
-                style={{ width: '30px' }}
-                click={() => updateHandle(item.product._id, 'subtract')}
-                disabled={item.count === 0}>
+              <Button width='30px' click={() => updateHandle(item.product._id, 'subtract')} disabled={item.count === 0}>
                 -
               </Button>
             </div>

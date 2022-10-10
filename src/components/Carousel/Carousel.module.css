@@ -2,11 +2,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   height: fit-content;
   width: 100%;
-  background-color: hsl(0, 0%, 99%);
+  background-color: white;
 }
 .carousel > header {
   width: 100%;
@@ -14,65 +14,62 @@
   font-weight: 500;
   font-size: clamp(1.2rem, 8vw, 1.5rem);
   color: rgba(0, 0, 0, 0.5);
-  background-color: transparent;
+  background-color: white;
   padding: 0.3rem;
   border-bottom: 2px solid #ccc;
   border-left: 8px solid var(--lightblue);
 }
 .products {
   display: grid;
-  grid-template-columns: repeat(4, minmax(250px, 1fr));
-  gap: 0 1rem;
-  align-items: flex-start;
+  grid-template-columns: 2em 1fr 2em;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 0 48px;
+  background-color: white;
 }
 .back,
 .next {
-  z-index: 10;
-  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  left: auto;
-  right: 0.5rem;
   text-align: center;
-  width: fit-content;
+  width: auto;
   height: fit-content;
   padding: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+}
+.back button,
+.next button {
   border-radius: 50%;
   background-color: hsl(0, 0%, 100%);
   border: none;
   outline: none;
   cursor: pointer;
 }
-.back:focus,
-.next:focus {
+.back button:hover,
+.next button:hover {
+  box-shadow: 0px 0 8px 0 #ccc;
+}
+.back button:focus,
+.next button:focus {
   outline: none;
-}
-.back {
-  right: auto;
-  left: 0.5rem;
-}
-.back:hover {
-  box-shadow: 0px 0 8px 0 #ccc;
-}
-.next {
-  left: auto;
-  right: 0.5rem;
-}
-.next:hover {
-  box-shadow: 0px 0 8px 0 #ccc;
 }
 .card {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: auto;
   flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(250px, 1fr));
+  gap: 0 1rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0 1rem;
+  background-color: transparent;
 }
 @media (max-width: 768px) {
   .carousel {

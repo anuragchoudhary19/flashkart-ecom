@@ -59,7 +59,7 @@ const ProductCard = ({ product }) => {
     <div className={styles.card}>
       <div onClick={handleWishlist} className={styles.wishlist}>
         <Tooltip title={isInWishlist ? 'Wishlisted' : 'Add To Wishlist'}>
-          <HeartTwoTone twoToneColor={isInWishlist ? '#d62828' : 'grey'} />
+          <HeartTwoTone twoToneColor={isInWishlist ? '#d62828' : 'rgb(217,217,219)'} />
         </Tooltip>
       </div>
       <div className={styles.content}>
@@ -72,12 +72,10 @@ const ProductCard = ({ product }) => {
             style={{ marginBottom: '4px' }}
           />
           <StarRating ratings={ratings} />
-          <div>
-            <b>{title}</b>
-          </div>
-          <div style={{ fontSize: '1.3rem' }}>
+          <span>{title}</span>
+          <span style={{ fontSize: '1.1rem' }}>
             <b>{(price - (discount * price) / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</b>
-          </div>
+          </span>
           <div>
             {discount > 0 && (
               <>
