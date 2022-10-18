@@ -76,7 +76,7 @@ const ProductCard = ({ product }) => {
           <span style={{ fontSize: '1.1rem' }}>
             <b>{(price - (discount * price) / 100).toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</b>
           </span>
-          <div>
+          <span>
             {discount > 0 && (
               <>
                 <span>
@@ -85,7 +85,7 @@ const ProductCard = ({ product }) => {
                 <span style={{ marginLeft: '5px', color: 'green', fontWeight: 'bold' }}>{discount}%Off</span>
               </>
             )}
-          </div>
+          </span>
         </Link>
       </div>
     </div>

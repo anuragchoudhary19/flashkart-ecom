@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LoadingOutlined } from '@ant-design/icons';
+import Loading from '../Loading/Loading';
 import classes from './Button.module.css';
 
 const Button = (props) => {
@@ -16,7 +16,7 @@ const Button = (props) => {
   return (
     <div className={styles.join(' ')} style={{ minWidth: width ? width : null }}>
       <button onClick={click} style={style} type={type} disabled={loading || disabled}>
-        {loading ? <LoadingOutlined /> : children}
+        {loading ? <Loading /> : children}
       </button>
     </div>
   );
