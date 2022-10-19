@@ -31,13 +31,6 @@ const Product = ({ match }) => {
         setLoading(true);
         const { data } = await getProductProfile(slug);
         setProduct(data);
-        if (user) {
-          user?.wishlist.forEach((item) => {
-            if (item === data._id) {
-              setWishlist(true);
-            }
-          });
-        }
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -46,6 +39,16 @@ const Product = ({ match }) => {
     };
     loadProductProfile();
   }, [slug, user]);
+  useEffect(() => {
+    const isInWishlist = () => {
+      user?.wishlist?.forEach((item) => {
+        if (item === product?._id) {
+          setWishlist(true);
+        }
+      });
+    };
+    isInWishlist();
+  }, [product, user]);
 
   const addToCart = () => {
     addItemToCart({ item: product, buy: false });
@@ -71,7 +74,6 @@ const Product = ({ match }) => {
       });
     }
     if (!wishlist) {
-      console.log(product._id);
       addToWishlist(user?.token, product._id).then((res) => {
         message.success('ADDED TO WISHLIST');
         setWishlist(res.data.ok);
@@ -118,7 +120,6 @@ const Product = ({ match }) => {
                   minWidth: '40%',
                   width: '200px',
                 }}
-                loading={addToCartLoading}
                 disabled={product.quantity === 0 ? true : false}
                 click={proceedToBuy}>
                 Proceed to Buy

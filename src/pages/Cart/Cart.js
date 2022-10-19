@@ -9,7 +9,6 @@ import styles from './Cart.module.css';
 const Cart = () => {
   const { loading } = useGetCart();
   const { user, cart, savedForLater } = useSelector((state) => ({ ...state }));
-  // console.log(cart);
   if (cart === null || cart?.products?.length === 0)
     return (
       <div className={styles.page}>
@@ -24,11 +23,11 @@ const Cart = () => {
           <header>Order Summary</header>
           <span>
             <span>Total Items</span>
-            <span>{cart.products.length}</span>
+            <span>{cart.products?.length}</span>
           </span>
           <span>
             <span>Price</span>
-            <span>{cart.cartTotal.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
+            <span>{cart.cartTotal?.toLocaleString('en-IN', { style: 'currency', currency: 'INR' })}</span>
           </span>
           <span>
             <span>Discount</span>
