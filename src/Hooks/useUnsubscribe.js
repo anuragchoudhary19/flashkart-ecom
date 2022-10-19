@@ -6,12 +6,12 @@ import { useReduxStore } from './useReduxStore';
 
 const getPayloadFromResponse = (res, token) => {
   return {
+    _id: res.data._id,
     name: res.data.name,
     email: res.data.email,
     token: token,
     wishlist: res.data.wishlist,
     role: res.data.role,
-    _id: res.data._id,
   };
 };
 
@@ -25,7 +25,7 @@ export const useUnsubscribe = () => {
       currentUser(token)
         .then((res) => {
           const payload = getPayloadFromResponse(res, token);
-          addToLocalStorage('user', JSON.stringify(payload));
+          addToLocalStorage('user', payload);
           addToReduxStore('LOGGED_IN_USER', payload);
         })
         .catch((err) => {
