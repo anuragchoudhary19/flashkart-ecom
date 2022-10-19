@@ -1,1 +1,1 @@
-Frontend of E-commerse WebApp
+Frontend of E-commerce WebApp
